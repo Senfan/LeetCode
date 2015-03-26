@@ -1,0 +1,78 @@
+O(n^2) ： 超时
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<int> re;
+        int len = numbers.size();
+        for(int i = 0; i < len; i++) {
+            for(int j = i+1; j < len; j++) {
+                if(numbers[i] + numbers[j] == target) {
+                    re.push_back(i+1);
+                    re.push_back(j+1);
+                    return re;
+                }
+            }
+        }
+    }
+};
+
+O(nlogn): 先排序后二分查找 20ms
+#include <stdlib.h>
+
+class Solution {
+public:
+
+    struct num {
+            int v;
+            int index;
+    };
+    
+    static int compare(const num a, const num b) {
+           return a.v < b.v;
+    }
+    
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        
+        vector<int> re;
+        
+        vector<num> num_vec;
+        int len = numbers.size();
+        for(int i = 0; i < len; i++) {
+            num tem;
+            tem.v = numbers[i];
+            tem.index = i;
+            num_vec.push_back(tem);
+        }
+        
+        //对元素进行快速排序
+        //qsort(num_vec.begin(), num_vec.size(), sizeof(int), compare);
+        sort(num_vec.begin(), num_vec.end(), compare);
+        
+        //二分查找
+        for(int i = 0; i < len && num_vec[i].v <= (target+2)/2; i++) {
+            int b = i+1, e = len-1;
+            int mid = (b + e) / 2;
+            
+            //查找次项是否存在
+            int v2 = target - num_vec[i].v;
+            while(b <= e) {
+                mid = (b + e) / 2;
+                if(num_vec[mid].v == v2) {
+                    if(num_vec[i].index >  num_vec[mid].index) {
+                        re.push_back(num_vec[mid].index + 1);
+                        re.push_back(num_vec[i].index + 1);
+                        return re;
+                    }else {
+                        re.push_back(num_vec[i].index + 1);
+                        re.push_back(num_vec[mid].index + 1);
+                        return re;
+                    }
+                }else if(num_vec[mid].v > v2) {
+                    e = mid-1;
+                }else {
+                    b = mid + 1;
+                }
+            }
+        }
+    }
+};
