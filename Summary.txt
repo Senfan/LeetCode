@@ -1,0 +1,6 @@
+1 Min Stack:
+	A. 数组初始化大小：
+		若太大：runtime error
+		若太小：可能Wrong error
+		此题中取：100000 * 2 * 4B = 200 KB
+	

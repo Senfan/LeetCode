@@ -1,0 +1,42 @@
+class MinStack {
+    
+private:
+    int stack[100000];
+    int min_stack[100000];
+    int top_min = 0;
+    int topp = 0;
+    int min = 0x7fffffff;
+public:
+    void push(int x) {
+        if(topp < 99999){
+            if(min > x){
+                min = x;
+                min_stack[top_min] = topp;
+                top_min++;
+            }
+            stack[topp] = x;
+            topp++;
+        }
+    }
+
+    void pop() {
+        if(topp > 0){
+            topp--;
+            if(topp == min_stack[top_min-1]){
+                top_min--;
+                min = stack[min_stack[top_min-1]];
+            }
+        }
+    }
+
+    int top() {
+        if(topp > 0)
+            return stack[topp-1];
+    }
+
+    int getMin() {
+        if(topp > 0){
+            return stack[min_stack[top_min-1]];
+        }
+    }
+};
