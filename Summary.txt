@@ -4,3 +4,11 @@
 		若太小：可能Wrong error
 		此题中取：100000 * 2 * 4B = 200 KB
 	
+2 Tow Sum:
+	A. struct 可以声明在类内部
+	
+3 Add tow numbers:
+	A. 用new申请的指针，如果不用，一定要delete掉
+	B. 链表中尽量应用已存在节点，new，delete操作比较耗时间
+	C. 超时可能是死循环
+	D. delete会把相应内存释放掉，不管是不是还存在其他的引用，若存在其他引用，则该应用也无效
