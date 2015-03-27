@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<int> > generate(int numRows) {
+        vector<vector<int>> re;
+        //re.clear();
+        vector<int> tem;
+        //tem.clear();
+        
+        if(numRows == 0) {
+            return re;
+        }
+        
+        tem.push_back(1);
+        re.push_back(tem);
+        if(numRows == 1){
+            return re;
+        }
+        
+        tem.push_back(1);
+        re.push_back(tem);
+        if(numRows == 2){
+            return re;
+        }
+        
+        tem.clear();
+        for(int i = 3; i <= numRows; i++) { //each line
+            tem.push_back(1);
+            for(int p = 0; p < i-2; p++) {
+                int v = re[i-2][p] + re[i-2][p+1];
+                tem.push_back(v);
+            }
+            tem.push_back(1);
+            re.push_back(tem);
+            tem.clear();
+        }
+        return re;
+    }
+};

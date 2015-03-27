@@ -1,0 +1,30 @@
+12ms
+
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int i = 1;
+        int re = 0;
+        
+        for(int j = 0; j < 32; j++) {
+            if(n & (i << j)) re++;
+        }
+        
+        return re;
+    }
+};
+
+16ms
+public:
+    int hammingWeight(uint32_t n) {
+        int i = 1;
+        int re = 0;
+        
+        for(int j = 0; j < 32; j++) {
+            if(n & i) re++;
+			i <<= 1;
+        }
+        
+        return re;
+    }
+};
