@@ -40,3 +40,6 @@
 7  Divide Two Integers
 	A. TLE：在时间复杂度一定的情况下，注意检查循环是否有infinit loop。本题中就是因为左移运算定义为int，从而造成失误。
 	B. 编译器大多不支持正负数数量对称。
+
+8 Find Minimum in Rotated Sorted Array
+	A. 就是这样，先有个整体的思考思路，然后沉下心来做。
