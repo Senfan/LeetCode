@@ -1,0 +1,23 @@
+O(2^n) 27ms
+
+class Solution {
+public:
+    vector<vector<int> > combine(int n, int k) {
+        vector<vector<int>> re;
+        vector<int> tem;
+        for(int i = 0; i < (1 << n); i++) { //each subset
+            tem.clear();
+            int cnt = 0;
+            for(int j = 0; j < n; j++) {
+                if(i & (1 << j)){
+                    cnt++;
+                    tem.push_back(j+1);
+                }
+            }
+            if(cnt == k) {
+                re.push_back(tem);
+            }
+        }
+        return re;
+    }
+};
