@@ -1,0 +1,16 @@
+O(log5 n) 8ms
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int s = 5;
+        int mark = 1;
+        int re = 0;
+        while(mark) {
+            if(n /= 5) {
+                re += n;
+            }else
+                mark = 0;
+        }
+        return re;
+    }
+};
