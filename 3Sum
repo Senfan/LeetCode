@@ -1,0 +1,164 @@
+前三种方案，似乎去重都有问题，OLE
+
+class Solution {
+public:
+    vector<vector<int> > threeSum(vector<int> &num) {
+        
+        sort(num.begin(), num.end());
+        vector<vector<int>> res;
+        int pa, pb, pc;
+        pa = pb = pc = 0;
+        
+        for(int a = 0; a < num.size(); a++) {
+            for( int b = a + 1; b < num.size(); b++) {
+                
+                int low = b + 1;
+                int high = num.size() - 1;
+                int mid;
+                int target = -(num[a] + num[b]);
+                int pa, pb, pc;
+                pa = pb = pc = 0;
+                
+                while(low <= high) {
+                    mid = (low + high) >> 1;
+                    if( (target == num[mid]) && (num[a] != pa || num[b] != pb || num[mid] != pc)) {
+                        vector<int> temp{num[a], num[b], num[mid]};
+                        res.push_back(temp);
+                        pa = num[a], pb = num[b], pc = num[mid];
+                    }else if(num[mid] < target) {
+                        low = mid + 1;
+                    }else
+                        high = mid - 1;
+                }
+            }
+        }
+        
+        return res;
+    }
+};
+
+
+class Solution {
+public:
+    vector<vector<int> > threeSum(vector<int> &num) {
+        
+        sort(num.begin(), num.end());
+        vector<vector<int>> res;
+        int pa, pb, pc;
+        pa = pb = pc = INT_MAX;
+        
+        for(int a = 0; a < num.size(); a++) {
+           int low = a + 1, high = num.size() - 1;
+           
+           while(low < high) {
+               int sum = num[a] + num[low] + num[high];
+               if( sum == 0 && ( (num[a] != pa) || (num[low] != pb)) ) {
+                   vector<int> temp{num[a], num[low], num[high]};
+                   res.push_back(temp);
+                   pa = num[a];
+                   pb = num[low];
+                   pc = num[high];
+               }else if(sum < 0) {
+                   low++;
+               }else {
+                   high--;
+               }
+           }
+        }
+        
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<vector<int> > threeSum(vector<int> &num) {
+        
+        sort(num.begin(), num.end());
+        vector<vector<int>> res;
+        vector<int> processed;
+        int cnt = 0;
+        int cz = 0;
+        
+        if(num.size()) {
+            processed.push_back(num[0]);
+            for(int i = 1; i < num.size(); i++){
+                if(num[i] == 0 && cz < 3) {
+                    processed.push_back(num[i]);
+                    cz++;
+                }
+                if(i > 0 && num[i] != num[i-1]) {
+                    processed.push_back(num[i]);
+                    cnt = 1;
+                }else {
+                    cnt++;
+                }
+            
+                if(cnt < 2) {
+                    processed.push_back(num[i]);
+                }else {
+                    continue;
+                }
+            }
+        
+            for(int a = 0; a < processed.size(); a++) {
+               int low = a + 1, high = processed.size() - 1;
+               
+               while(low < high) {
+                   
+                   int sum = processed[a] + processed[low] + processed[high];
+                   
+                   if( sum == 0 ) {
+                       vector<int> temp{processed[a], processed[low], processed[high]};
+                       res.push_back(temp);
+                       low++;
+                       high--;
+                   }else if(sum < 0) {
+                       low++;
+                   }else {
+                       high--;
+                   }
+               }
+            }
+        }
+        return res;
+    }
+};
+
+class Solution {
+public:
+    vector<vector<int> > threeSum(vector<int> &num) {
+        
+        sort(num.begin(), num.end());
+        vector<vector<int>> res;
+        int pa, pb, pc;
+        pa = pb = pc = INT_MAX;
+        
+        for(int a = 0; a < num.size(); a++) {
+           int low = a + 1, high = num.size() - 1;
+           
+           if(a > 0 && num[a] == num[a-1]) continue;
+           
+           while(low < high) {
+               
+               if(low > a+1 && num[low] == num[low-1]) {low++; continue;}
+               if(high < num.size()-1 && num[high] == num[high+1]) {high--; continue;}
+               
+               int sum = num[a] + num[low] + num[high];
+               
+               if( sum == 0 ) {
+                   vector<int> temp{num[a], num[low], num[high]};
+                   res.push_back(temp);
+                   low++;
+                   high--;
+               }else if(sum < 0) {
+                   low++;
+               }else {
+                   high--;
+               }
+           }
+        }
+        
+        return res;
+    }
+};
