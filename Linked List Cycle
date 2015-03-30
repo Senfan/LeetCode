@@ -1,0 +1,57 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+ O(n^2) TLE
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *cur, *pre;
+        if(head) {
+            cur = head -> next, pre = head;
+        }else
+            return false;
+        ListNode *sp = head;
+        while(cur) {
+            sp = head;
+            while(sp && sp != pre) {
+                if(sp == cur) return true;
+                sp = sp -> next;
+            }
+            if(pre == cur) return true;
+            
+            pre = cur;
+            cur = cur -> next;
+        }
+        return false;
+    }
+};
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+ O(n) 18ms
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *cur = head;
+        while(cur) {
+            if(cur -> val == INT_MAX) return true;
+            cur -> val = INT_MAX;
+            cur = cur -> next;
+        }
+        return false;
+    }
+};
