@@ -43,3 +43,6 @@
 
 8 Find Minimum in Rotated Sorted Array
 	A. 就是这样，先有个整体的思考思路，然后沉下心来做。
+
+9 Reverse Linked List II
+	A. 链表要注意返回的指针，避免想当然：引用同一地址的两个变量各自维护自己的值。
