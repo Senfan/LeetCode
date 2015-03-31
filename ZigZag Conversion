@@ -1,0 +1,40 @@
+O(n)  24ms
+
+class Solution {
+public:
+    string convert(string s, int nRows) {
+
+        if(nRows == 1) return s;
+
+        int len = s.size();
+        const int uni = 2 * nRows - 2;
+
+        char *res = new char[len+1];
+        int rLen = 0;
+
+        int i = 0;
+        while(i < len) {
+            res[rLen++] = s[i];
+            i += uni;
+        }
+
+        for(int r = 1; r < nRows - 1; r++) { //each line
+            i = r;
+            while( i < len) {
+                res[rLen++] = s[i];
+                if( i + ((nRows - r -1) << 1) < len) {
+                    res[rLen++] = s[ i + ((nRows - r -1) << 1)];
+                }
+                i += uni;
+            }
+        }
+
+        i = nRows - 1;
+        while( i < len) {
+            res[rLen++] = s[i];
+            i += uni;
+        }
+        res[rLen] = '\0';
+        return res;
+    }
+};
