@@ -1,0 +1,22 @@
+O(n) 18ms :较慢
+class Solution {
+public:
+    int maxSubArray(int A[], int n) {
+        int tSum = INT_MIN;
+        int sum = INT_MIN;
+        int cur = 0;
+        
+        while(cur < n) {
+            if(A[cur] > tSum && tSum < 0) {
+                tSum = A[cur];
+            }else {
+                tSum += A[cur];
+            }
+            if(tSum >sum){
+                sum = tSum;
+            }
+            cur++;
+        }
+        return sum;
+    }
+};

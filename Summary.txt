@@ -60,3 +60,6 @@
 
         long long lx = abs(x) 不是等价的。因为当x是最小值的时候abs取出来的值是不变的
         先扩大后再取绝对值！！！！
+
+12 Maximum Subarray
+	A.	拿case进行找规律，找到该有的方案！！！！！纸笔先行！
