@@ -1,0 +1,30 @@
+O(n^2) 20ms
+class Solution {
+public:
+    int threeSumClosest(vector<int> &num, int target) {
+        
+        int a, low, high, res = INT_MAX ,temp = INT_MAX;
+        sort(num.begin(), num.end());
+        
+        for(a = 0; a < num.size(); a++) {
+            low = a + 1;
+            high = num.size() - 1;
+            
+            while(low < high) {
+                int sum = num[a] + num[low] + num[high];
+                if(abs(sum - target) < temp) {
+                    if(abs(sum - target) == 0) return target;
+                    res = sum;
+                    temp = abs(sum - target);
+                }
+                
+                if(sum > target) {
+                    high--;
+                }else {
+                    low++;
+                }
+            }
+        }
+        return res;
+    }
+};
