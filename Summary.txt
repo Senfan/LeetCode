@@ -73,3 +73,6 @@
 
 15 Insertion Sort List
 	A. 在确定时间复杂度可以通过时，若TLE，则可以调整部分代码实现以提高速度（剪枝、短路等）
+
+16 Text Justification
+	A. 一定要把思路搞清楚，不可模棱两可，确定之后积极自信的coding，切忌犹豫！

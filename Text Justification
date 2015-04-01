@@ -1,0 +1,81 @@
+2ms
+
+class Solution {
+public:
+    vector<string> fullJustify(vector<string> &words, int L) {
+
+        int cntWords = words.size();
+        int curLen = 0;
+        int sLen;
+        int cn = 0;
+        int leftIndex = 0;
+        string subStr;
+        vector<string> res;
+
+        for(int i = 0; i < cntWords; i++) {
+
+            sLen = words[i].size();
+            if(curLen + sLen + cn <= L) {
+                cn++;
+                curLen += sLen;
+
+                if(i == cntWords - 1) {
+                    for(int pl = leftIndex; pl < i; pl++) {
+                        subStr += words[pl];
+                        subStr += " ";
+                    }
+                    subStr += words[i];
+                    int st = L - subStr.size();
+                    string addStr(st, ' ');
+                    subStr += addStr;
+                    res.push_back(subStr);
+                }
+
+            }else {
+                int spaceNum = L - curLen;
+                if(cn == 1) {
+                    subStr = words[leftIndex];
+                    string addStr(spaceNum, ' ');
+                    subStr += addStr;
+                    res.push_back(subStr);
+                }else {
+                    if(spaceNum % (cn-1) == 0) {
+                        string nullStr(spaceNum/(cn-1), ' ');
+                        for(int j = leftIndex; j < i-1; j++) {
+                            subStr += words[j];
+                            subStr += nullStr;
+                        }
+                        subStr += words[i-1];
+                    }else {
+                        int biggerNum = spaceNum / (cn-1) + 1;
+                        int nomalNum = spaceNum / (cn-1);
+                        int widerNum = spaceNum % (cn-1);
+                        string nullStr(biggerNum, ' ');
+
+                        int j, ja;
+                        for(j = leftIndex, ja = 0; ja < widerNum && j < i-1; ja++, j++) {
+                            subStr += words[j];
+                            subStr += nullStr;
+                        }
+
+                        string nullStr2(nomalNum, ' ');
+                        for(; j < i-1; j++) {
+                            subStr += words[j];
+                            subStr += nullStr2;
+                        }
+                        subStr += words[i-1];
+                    }
+                    res.push_back(subStr);
+                }
+
+                leftIndex = i;
+                i--;
+                cn = 0;
+                curLen = 0;
+                subStr = "";
+            }
+
+        }
+        return res;
+    }
+};
