@@ -1,0 +1,60 @@
+O(n^2) 30ms
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *insertionSortList(ListNode *head) {
+        
+        if(head == NULL || head -> next == NULL) return head;
+        
+        ListNode *cur = head -> next;
+        ListNode *pre = head;
+        ListNode *swap;
+        
+        while(cur) { // each element
+            
+            ListNode *tmp;
+            ListNode *tp;
+            
+            if(cur -> val >= pre -> val) {
+                pre = cur;
+                cur = cur -> next;
+                continue;
+            }
+            
+            if(head -> val >= cur -> val) {
+                swap = head;
+                head = cur;
+                pre -> next = cur -> next;
+                cur -> next = swap;
+                cur = pre -> next;
+            }else {
+                tmp = head -> next;
+                tp = head;
+                
+                while( tmp && tmp -> val <= cur -> val) {
+                    tp = tmp;
+                    tmp = tmp -> next;
+                }
+                
+                if(tp == cur) {
+                    pre = cur;
+                    cur = cur -> next;
+                }else {
+                    pre -> next = cur -> next;
+                    tp -> next = cur;
+                    cur -> next = tmp;
+                    cur = pre -> next;
+                }
+            }
+        }
+        
+        return head;
+    }
+};
