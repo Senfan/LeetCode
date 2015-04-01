@@ -1,0 +1,21 @@
+O(2 ^ n+1) 11ms
+class Solution {
+public:
+    vector<vector<int> > subsets(vector<int> &S) {
+        sort(S.begin(), S.end());
+        int cnt = S.size();
+        vector<int> sub;
+        vector<vector<int>> res;
+        
+        for(int i = 0; i < 1 << cnt; i++) {
+            for(int p = 0; p < cnt; p++) {
+                if(i & 1 << p) {
+                    sub.push_back(S[p]);
+                }
+            }
+            res.push_back(sub);
+            sub.clear();
+        }
+        return res;
+    }
+};
