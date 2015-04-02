@@ -1,0 +1,57 @@
+3ms
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    
+private:
+
+    enum Tag {L, R};
+    struct stackNode {
+        TreeNode *ptr;
+        Tag tag;
+        
+        stackNode(TreeNode *N = NULL) : ptr(N), tag(L) {}
+    };
+    
+public:
+    vector<int> postorderTraversal(TreeNode *root) {
+        stack<stackNode> stk;
+        stackNode w;
+        TreeNode *p = root;
+        vector<int> res;
+        
+        do {
+            while(p != NULL) {
+                w.ptr = p;
+                w.tag = L;
+                stk.push(w);
+                p = p -> left;
+            }
+            bool continue1 = true;
+            while(continue1 && !stk.empty()) {
+                w = stk.top();
+                p = w.ptr;
+                stk.pop();
+                switch(w.tag) {
+                    case L: w.tag = R;
+                            continue1 = false;
+                            stk.push(w);
+                            p = p -> right;
+                            break;
+                    case R: res.push_back(p -> val);
+                            break;
+                }
+            }
+        }while(!stk.empty());
+        
+        return res;
+    }
+};
