@@ -1,0 +1,32 @@
+18ms 较慢
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void dfs(TreeNode *root, int tmp, int &res) {
+        if(root == NULL) return;
+        tmp++;
+        if(root -> left == NULL && root -> right == NULL) res = res > tmp ? tmp : res;
+        
+        dfs(root -> left, tmp, res);
+        dfs(root -> right, tmp, res);
+    }
+    
+    int minDepth(TreeNode *root) {
+        int res = INT_MAX;
+        
+        if(root == NULL) return 0;
+        
+        dfs(root, 0, res);
+        
+        return res;
+    }
+};
