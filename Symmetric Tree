@@ -1,0 +1,64 @@
+四次遍历 O(n) 16ms, too slow !!!
+
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    void midDfs(TreeNode *root, vector<int> &res) {
+        if(root == NULL) return;
+        midDfs(root -> left, res);
+        res.push_back(root -> val);
+        midDfs(root -> right, res);
+    }
+    
+     void midDfs2(TreeNode *root, vector<int> &res) {
+        if(root == NULL) return;
+        midDfs2(root -> right, res);
+        res.push_back(root -> val);
+        midDfs2(root -> left, res);
+    }
+    
+    void preDfs(TreeNode *root, vector<int> &res) {
+        if(root == NULL) return;
+        res.push_back(root -> val);
+        preDfs(root -> left, res);
+        preDfs(root -> right, res);
+    }
+    
+    void preDfs2(TreeNode *root, vector<int> &res) {
+        if(root == NULL) return;
+        res.push_back(root -> val);
+        preDfs2(root -> right, res);
+        preDfs2(root -> left, res);
+    }
+    
+    
+    bool isSymmetric(TreeNode *root) {
+        vector<int> left, right;
+        
+        midDfs(root, left);
+        midDfs2(root, right);
+        
+        if(left != right)
+            return false;
+        
+        left.clear();
+        right.clear();
+        
+        preDfs(root, left);
+        preDfs2(root, right);
+        
+        if(left != right)
+            return false;
+        return true;
+        
+    }
+};
