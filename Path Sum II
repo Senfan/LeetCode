@@ -1,0 +1,72 @@
+TLE same idea, but can't understand
+
+class Solution {
+private:
+
+    vector<int> stackPath;
+    vector<vector<int>> res;
+    int curSum = 0;
+    int top = 0;
+
+public:
+    
+    
+    vector<vector<int> > pathSum(TreeNode *root, int sum) {
+       
+        if(root == NULL) return res;
+        
+        curSum += root -> val;
+        stackPath.push_back(root -> val);
+        if(curSum == sum && root -> left == NULL && root -> right == NULL) {
+            res.push_back(stackPath);
+        }
+    
+        
+        pathSum(root -> left, sum);
+        
+        pathSum(root -> right, sum);
+        
+        curSum -= root -> val;
+        stackPath.pop_back();
+        
+        return res;
+    }
+};
+
+
+18ms
+class Solution {
+private:
+
+    vector<int> stackPath;
+    vector<vector<int>> res;
+    int curSum = 0;
+    int top = 0;
+
+public:
+    
+    void dfs(vector<vector<int>> &result, int target, int curSum, TreeNode *root, vector<int> &stackPath) {
+         if(root == NULL) return;
+        
+        curSum += root -> val;
+        stackPath.push_back(root -> val);
+        if(curSum == target && root -> left == NULL && root -> right == NULL) {
+            res.push_back(stackPath);
+        }
+    
+        
+        dfs(result, target, curSum, root -> left, stackPath);
+        
+        dfs(result, target, curSum, root -> right, stackPath);
+        
+        curSum -= root -> val;
+        stackPath.pop_back();
+    }
+    
+    vector<vector<int> > pathSum(TreeNode *root, int sum) {
+       
+        dfs(res, sum, 0, root, stackPath);
+        
+        return res;
+    }
+};
