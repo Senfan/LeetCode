@@ -112,3 +112,7 @@
 
 26 Count and Say
 	A. 使用sstringstream时，注意清空问题：ss.str("") + ss.clear();
+
+
+27 Balanced Binary Tree
+	A. 递归过程分析很重要，要考虑变量如何维护：返回到上层调用函数可以用引用参数，适用于本次调用的参数依赖于下层子问题的影响。
