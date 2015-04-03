@@ -1,0 +1,51 @@
+//17ms 
+class Solution {
+public:
+    vector<int> searchRange(int A[], int n, int target) {
+        vector<int> res;
+        if(n == 0) return res;
+        
+        int low = 0, high = n, pos = -1, mid;
+        while(low <= high) {
+            mid = (low + high) >> 1;
+            if(A[mid] == target) {
+                pos = mid;
+                break;
+            }else if(A[mid] > target) {
+                high = mid - 1;
+            }else {
+                low = mid + 1;
+            }
+        }
+        
+        if(pos == -1) {
+            res = {-1, -1};
+            return res;
+        }
+        
+        int left, right;
+        low = 0, high = pos;
+        while(low <= high) {
+            mid = (low + high) >> 1;
+            if(A[mid] < target) low = mid + 1;
+            else {
+                high = mid - 1;
+            }
+        }
+        left = low;
+        
+        low = pos, high = n-1;
+        while(low <= high) {
+            mid = (low + high) >> 1;
+            if(A[mid] > target) high = mid - 1;
+            else {
+                low = mid + 1;
+            }
+        }
+        right = high;
+        
+        res = {left, right};
+        
+        return res;
+    }
+};
