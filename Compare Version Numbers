@@ -1,0 +1,39 @@
+//4ms
+class Solution {
+public:
+
+    int split(string &str, char c) {
+        if(str.empty()) return 0;
+        stringstream stream;
+        int res;
+        int pos = str.find(c);
+        if(pos == string::npos) {
+            stream << str;
+            stream >> res;
+            str = "";
+            return res;
+        }else {
+            stream << str.substr(0, pos);
+            stream >> res;
+            str = str.substr(pos+1);
+            return res;
+        }
+    }
+
+    int compareVersion(string version1, string version2) {
+        int v1, v2;
+        while(!version1.empty() || !version2.empty()) {
+            
+            v1 = split(version1, '.');
+            v2 = split(version2, '.');
+            
+            if(v1 > v2) {
+                return 1;
+            }else if(v1 < v2) {
+                return -1;
+            }
+        }
+        return 0;
+        
+    }
+};
