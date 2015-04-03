@@ -109,3 +109,6 @@
 
 25 Majority Element
 	A. 可以考虑其他实现方法：充分挖掘题目隐含关系，从而实现高效算法！！！！！！！
+
+26 Count and Say
+	A. 使用sstringstream时，注意清空问题：ss.str("") + ss.clear();

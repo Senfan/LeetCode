@@ -1,0 +1,38 @@
+class Solution {
+public:
+    string countAndSay(int n) {
+        if(n == 0) return "";
+        string pre = "1";
+        stringstream ss;
+        for(int i = 1; i < n; i++) { // n th
+            string re = "";
+            char cur = pre[0];
+            int cnt = 0;
+            for(int j = 0; j < pre.size(); j++) {
+                if(pre[j] == cur) {
+                    cnt++;
+                }else {
+                    string tmpS;
+                    ss << cnt;
+                    ss >> tmpS;
+                    ss.str("");
+                    ss.clear();
+                    re += (tmpS + cur);
+                    cnt = 1;
+                    cur = pre[j];
+                }
+            }
+
+            string tmpS;
+            ss << cnt;
+            ss >> tmpS;
+            ss.clear();
+            ss.str("");
+            string subS = tmpS + cur;
+            re = re + subS;
+
+            pre = re;
+        }
+        return pre;
+    }
+};
