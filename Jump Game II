@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int jump(int A[], int n) {
+        int curInd = 0;
+        int res = 0;
+
+        while(curInd < n-1) {
+            if(A[curInd] > n - curInd - 2) return ++res;
+            int max = A[curInd];
+            int mark = curInd;
+            for(int i = 1; i <= A[curInd]; i++) {
+                if(curInd + i + A[curInd+i] > max) {
+                    max = curInd + i + A[curInd+i];
+                    mark = curInd + i;
+                }
+            }
+            res++;
+            curInd = mark;
+        }
+        return res;
+    }
+};
