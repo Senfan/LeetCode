@@ -1,0 +1,17 @@
+class Solution {
+public:
+    void sortColors(int A[], int n) {
+        int cr = 0, cw = 0, cb = 0;
+        for(int i = 0; i < n; i++) {
+            switch(A[i]) {
+                case 0: cr++; break;
+                case 1: cw++; break;
+                case 2: cb++; break;
+            }
+        }
+        int i;
+        for(i = 0; i < cr; i++) A[i] = 0;
+        for(; i < cw + cr; i++) A[i] = 1;
+        for(; i < cb + cw + cr; i++) A[i] = 2;
+    }
+};
