@@ -1,0 +1,59 @@
+//O(nlgn) 78ms
+
+class Solution {
+public:
+
+    ListNode *getMiddle(ListNode *low) {
+
+        ListNode *mid = low;
+        ListNode *cur = low;
+
+        while(cur) {
+            if(cur -> next) {
+                if(cur -> next -> next) {
+                    mid = mid -> next;
+                    cur = cur -> next -> next;
+                }
+            }
+            cur = cur -> next;
+        }
+        return mid;
+    }
+
+    ListNode *mergeSort(ListNode *left) {
+        if(left == NULL || left -> next == NULL) return left;
+        ListNode *mid = getMiddle(left);
+        ListNode *tmpPointer = mid -> next;
+
+        mid -> next = NULL;
+        left = mergeSort(left);
+        tmpPointer = mergeSort(tmpPointer);
+
+        //搞个头结点，插入删除统一、方便！！！
+        ListNode *iniNode = new ListNode(-1);
+        ListNode *pre = iniNode;
+        while(left && tmpPointer) {
+            if(left -> val >= tmpPointer -> val) {
+                pre -> next = tmpPointer;
+                tmpPointer = tmpPointer-> next;
+            }else {
+                pre -> next = left;
+                left = left -> next;
+            }
+            pre = pre -> next;
+        }
+        if(left != NULL)
+            pre -> next = left;
+        if(tmpPointer != NULL)
+            pre -> next = tmpPointer;
+        left = iniNode -> next;
+        delete iniNode;
+        return left;
+    }
+
+    ListNode *sortList(ListNode *head) {
+        head = mergeSort(head);
+        //cout << head -> val;
+        return head;
+    }
+};
