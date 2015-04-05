@@ -1,0 +1,79 @@
+class Solution {
+public:
+    string addByBit(string s1, string s2) {
+        int l1 = s1.size();
+        int l2 = s2.size();
+        string res = "";
+
+        char x = '0';
+        int t = 0;
+        int sum = 0;
+
+        int i, j;
+        for(i = 0, j = 0; i < l1 && j < l2; i++, j++) {
+            sum = s1[i] + s2[j] - 2 * '0' + t;
+            x = sum % 10 + '0';
+            res += x;
+            t = sum / 10;
+        }
+
+        for(;i < l1; i++) {
+            sum = t + s1[i] - '0';
+            x = sum % 10 + '0';
+            res += x;
+            t = sum / 10;
+        }
+        for(;j < l2; j++) {
+            sum = t + s2[j] - '0';
+            x = sum % 10 + '0';
+            res += x;
+            t = sum / 10;
+        }
+        if(t != 0) {
+            res += '1';
+        }
+        return res;
+    }
+
+    string mulByBit(string s, char c) {
+        if(c == '0' || s == "0") return "0";
+        string res = "";
+        int product = 0;
+        int mul = c - '0';
+        int t = 0;
+        char x = '0';
+
+        int len = s.size();
+
+        for(int i = len - 1; i >= 0; i--) {
+            product = (s[i] - '0') * mul + t;
+            t = product / 10;
+            x = product % 10 + '0';
+            res += x;
+        }
+        if(t != 0) {
+            res += (t + '0');
+        }
+
+        return res;
+    }
+
+    string multiply(string num1, string num2) {
+        if(num1 == "0" || num2 == "0") return "0";
+        int len2 = num2.size();
+        string res = "";
+        string product = "";
+        for(int i = len2 - 1; i >= 0; i--) {
+            product = "";
+            string pre(len2 - i - 1, '0');
+            product += pre;
+
+            string tmp = mulByBit(num1, num2[i]);
+            product += tmp;
+
+            res = addByBit(res, product);
+        }
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};
