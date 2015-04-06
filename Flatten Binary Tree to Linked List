@@ -1,0 +1,33 @@
+//12ms
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    TreeNode* preOrder(TreeNode *root) {
+        if(root == NULL) return NULL;
+        if(root -> left == NULL && root -> right == NULL) return root;
+        
+        TreeNode *leftRe = NULL;
+        TreeNode *tmp = root -> right;
+        
+        if(root -> left) {
+            root -> right = root -> left;
+            leftRe = preOrder(root -> left);
+            root -> left = NULL;
+            if(tmp) leftRe -> right = tmp;
+            else return leftRe;
+        }
+        return preOrder(root -> right);
+    }
+    void flatten(TreeNode *root) {
+        preOrder(root);
+    }
+};
