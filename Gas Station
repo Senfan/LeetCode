@@ -1,0 +1,31 @@
+//12ms
+class Solution {
+public:
+    int canCompleteCircuit(vector<int> &gas, vector<int> &cost) {
+        int len = gas.size();
+        int g = 0;
+        int cnt = 0;
+        int cur = 0;
+        int be = 0;
+        bool mark = true;
+        while(cnt < len && mark) {
+            g += gas[cur];
+            if( (g -= cost[cur]) >= 0) {
+                cnt++;
+                cur = (cur+1) % len;
+            }else {
+                //cur = (cur+1) % len;
+                if(be == cur){
+                    cur = (cur + 1) % len;
+                }
+                if(be >= cur) mark = false;
+                be = cur;
+                cnt = 0;
+                g = 0;
+            }
+        }
+
+        if(!mark) return -1;
+        return be;
+    }
+};
