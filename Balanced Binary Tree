@@ -19,3 +19,29 @@ public:
         return res;
     }
 };
+
+
+//遍历一遍即可的另一种 22ms
+class Solution {
+public:
+
+    bool dfs(TreeNode *root, int &high) {
+        if(root == NULL) {
+            high = 0;
+            return true;
+        }
+        int left = 0, right = 0;
+        if(dfs(root -> left, left) && dfs(root -> right, right)) {
+            if(abs(left - right) > 1 ) return false;
+            high = (left > right ? left : right) + 1;
+            return true;
+        }
+        
+        return false;
+    }
+
+    bool isBalanced(TreeNode *root) {
+        int depth = 0;
+        return dfs(root, depth);
+    }
+};

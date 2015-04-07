@@ -1,0 +1,34 @@
+// too slowly
+class Solution {
+public:
+    void merge(int A[], int m, int B[], int n) {
+        int curA = 0, curB = 0;
+        int C[m+n];
+        int curC = 0;
+        for(; curA < m && curB < n; ) {
+            if(A[curA] > B[curB]) {
+                C[curC] = B[curB];
+                curB++;
+            }else {
+                C[curC] = A[curA];
+                curA++;
+            }
+            curC++;
+        }
+        
+        while(curA < m) {
+            C[curC] = A[curA];
+            curC++;
+            curA++;
+        }
+        while(curB < n) {
+            C[curC] = B[curB];
+            curC++;
+            curB++;
+        }
+        
+        for(int i = 0; i < m + n; i++) {
+            A[i] = C[i];
+        }
+    }
+};

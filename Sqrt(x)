@@ -1,0 +1,17 @@
+// 17ms
+class Solution {
+public:
+    int sqrt(int x) {
+        if(x == 0) return 0;
+        double pre = 1;
+       
+        double cur = 1;
+        
+        do {
+            pre = cur;
+            cur = (pre + x/pre) / 2.0;
+        }while(abs(cur - pre) > 0.00001);
+        
+        return cur;
+    }
+};
