@@ -1,0 +1,50 @@
+class Solution {
+public:
+    string minWindow(string S, string T) {
+        if(S == "") return "";
+        int ls = S.size();
+        int lt = T.size();
+        if(ls < lt) return "";
+
+        int needFind[256] = {0};
+        int hasFound[256] = {0};
+
+        int beginX = 0;
+        int minBegin = 0, minEnd = INT_MAX;
+        int minLen = 20000;
+
+        for(int i = 0; i < lt; i++) {
+            needFind[T[i]]++;
+        }
+        int foundNum = 0;
+        for(int i = 0; i < ls; i++) {
+            if(!needFind[S[i]]) continue;
+
+            hasFound[S[i]]++;
+            if(hasFound[S[i]] <= needFind[S[i]]) foundNum++;
+
+            if(foundNum == lt) { // has found one substring
+                while(beginX <= i) {
+                    if(needFind[S[beginX]] == 0) {
+                        beginX++;
+                        continue;
+                    }
+                    if(hasFound[S[beginX]] > needFind[S[beginX]]) {
+                        hasFound[S[beginX]]--;
+                        beginX++;
+                    }else {
+                        if((i - beginX + 1) < minLen ) {
+                            minEnd = i;
+                            minBegin = beginX;
+                            minLen = i - beginX + 1;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(minEnd == INT_MAX) return "";
+        return S.substr(minBegin, minLen);
+    }
+};
