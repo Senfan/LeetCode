@@ -1,0 +1,52 @@
+class Solution {
+public:
+    
+    int binarySearch(int A[], int left, int right, int target) {
+        int mid;
+        
+        while(left <= right) {
+            mid = (left + right) >> 1;
+            if(A[mid] == target) return mid;
+            if(A[mid] > target) right = mid - 1;
+            else left = mid + 1;
+        }
+        
+        return -1;
+    }
+    
+    int search(int A[], int n, int target) {
+        int left = 0;
+        int right = n - 1;
+        int mid;
+        
+        if(A[left] <= A[right]) {
+            if(A[left] == target) return left;
+            
+            return binarySearch(A, left, right, target);
+        }
+        
+        while(left <= right) {
+            if(A[left] == target) return left;
+            if(A[left] > target) { //后半段
+                mid = (left + right) >> 1;
+                if(A[mid] == target) return mid;
+                if(A[mid] > target) {
+                    if(A[mid] >= A[left]) left = mid + 1;
+                    else right = mid - 1;
+                }else {
+                    return binarySearch(A, mid + 1, right, target);
+                }
+            }else {// 前半段
+                mid = (left + right) >> 1;
+                if(A[mid] == target) return mid;
+                if(A[mid] > target) {
+                    return binarySearch(A, left, mid-1, target);
+                }else {
+                    if(A[mid] >= A[left]) left = mid + 1;
+                    else right = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+};
