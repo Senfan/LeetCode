@@ -1,3 +1,6 @@
+重点题目： 140 84 
+
+
 1 Min Stack:
 	A. 数组初始化大小：
 		若太大：runtime error
@@ -169,3 +172,6 @@
 
 36 Best Time to Buy and Sell Stock IV
 	A. 动态规划主要是状态的表示及状态转移=====》建模！！
+
+37 Binary Tree Preorder Traversal
+	A. 设立哨兵可以给程序带来很大的便利！！！ stk.push(NULL);

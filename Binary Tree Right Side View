@@ -1,0 +1,48 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode *root) {
+        vector<int> res;
+        if(root == NULL) return res;
+        
+        stack<TreeNode*> stk;
+        stack<int> highStk;
+        int curHigh = 0;
+        
+        //preOrder traval
+        TreeNode *p = root;
+        stk.push(NULL);
+        highStk.push(0);
+        int eleHigh = 1;
+        
+        while(p != NULL) {
+            if(eleHigh > curHigh) {
+                res.push_back(p -> val);
+                curHigh++;
+            }
+            eleHigh++;
+            
+            if(p -> left) {
+                stk.push(p -> left);
+                highStk.push(eleHigh);
+            }
+            if(p -> right) p = p -> right;
+            else {
+                p = stk.top();
+                stk.pop();
+                eleHigh = highStk.top();
+                highStk.pop();
+            }
+        }
+        
+        return res;
+    }
+};
