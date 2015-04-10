@@ -179,3 +179,6 @@
 38 Populating Next Right Pointers in Each Node
 	A. 模型一定要在逻辑上描述清楚，要形式化，数据化，这样的模型才能迅速转化成代码！！避免模型模糊就开始code！！！
 	B. 一定要从多个角度去寻找关系，建立模型！！！！
+
+39 Populating Next Right Pointers in Each Node II
+	A. 一定要清晰的找到关系，从问题出发，仔细推敲，才能找到高效的模型！！！
