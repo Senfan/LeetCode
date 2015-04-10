@@ -1,0 +1,67 @@
+class Solution {
+public:
+
+    bool isInt(string s) {
+        if(s == "") return false;
+        
+        int sLen = s.size();
+        int num = 0;
+        for(int i = 0; i < sLen; i++) {
+            if(!isdigit(s[i])) {
+                if(i == 0 && (s[i] == '-' || s[i] == '+')) continue;
+                else return false;
+            }
+            num++;
+        }
+        if(num > 0) return true;
+        return false;
+    }
+    bool isNumber(string s) {
+        int sLen = s.size();
+        if(sLen == 0) return false;
+        int dotNum = 0;
+
+        while(s[0] == ' ') {
+            sLen--;
+            if(sLen == 0) return false;
+            s = s.substr(1, sLen);
+        }
+        int end = sLen - 1;
+        for(; end >= 0; end--) {
+            if(s[end] == ' ') {
+                sLen--;
+                s = s.substr(0, sLen);
+            }else break;
+        }
+        if(sLen == 0) return false;
+        int eNum = 0;
+        for(int j = 0; j < sLen; j++) {
+            if(s[j] == 'e') eNum++;
+            if(eNum > 1) return false;
+        }
+        int postNum = 0;
+        bool tmp = false, tmp2 = false;
+        int postSign = 0;
+        for(int i = 0; i < sLen; i++) {
+            if(!isdigit(s[i])) {
+                if(s[i] == '.') {
+                    dotNum++;
+                    tmp = true;
+                    if(dotNum > 1) return false;
+                }else if(s[i] == 'e'){
+                    if(postNum == 0) return false;
+                    return isInt(s.substr(i+1, sLen - i));
+                }else if(i == 0 && (s[i] == '-' || s[i] == '+')) {
+                    tmp2 = true;
+                }
+                else return false;
+            }else {
+                if(tmp2) postSign++;
+                postNum++;
+            }
+        }
+        if(tmp && postNum == 0) return false;
+        if(tmp2 && postSign == 0) return false;
+        return true;
+    }
+};
