@@ -175,3 +175,7 @@
 
 37 Binary Tree Preorder Traversal
 	A. 设立哨兵可以给程序带来很大的便利！！！ stk.push(NULL);
+
+38 Populating Next Right Pointers in Each Node
+	A. 模型一定要在逻辑上描述清楚，要形式化，数据化，这样的模型才能迅速转化成代码！！避免模型模糊就开始code！！！
+	B. 一定要从多个角度去寻找关系，建立模型！！！！
