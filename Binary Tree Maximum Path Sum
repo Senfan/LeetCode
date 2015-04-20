@@ -1,0 +1,60 @@
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+
+    int postOrder(TreeNode *root, int &res) {
+        if(!root) return INT_MIN;
+        
+        int leftMax = postOrder(root -> left, res); // 包含在当前路径上的左子树的最大路径和
+        int rightMax = postOrder(root -> right, res);
+        
+        if(leftMax >=0 && rightMax >= 0) {
+            if(root -> val >= 0) {
+                res = res > leftMax + rightMax + root -> val ? res : leftMax + rightMax + root -> val;
+            }else {
+                int tmp = max(leftMax, rightMax);
+                tmp = max(tmp, leftMax + rightMax + root -> val);
+                res = res > tmp ? res : tmp;
+            }
+            return max(leftMax, rightMax) + root -> val;
+        }else if(leftMax <= 0 && rightMax <= 0) {
+            if(root -> val >= 0) {
+                res = res > root -> val ? res : root -> val;
+            }else {
+                int tmp = max(leftMax, rightMax);
+                tmp = max(tmp, root -> val);
+                res = res > tmp ? res : tmp;
+            }
+            return root -> val;
+        }else if(leftMax >= 0 && rightMax <= 0) {
+            if(root -> val >= 0) {
+                res = res > leftMax + root -> val ? res : leftMax + root -> val;
+            }else {
+                res = res > leftMax ? res : leftMax;
+            }
+            return leftMax + root -> val;
+        }else {
+            if(root -> val >= 0) {
+                res = res > rightMax + root -> val ? res : rightMax + root -> val;
+            }else {
+                res = res > rightMax ? res : rightMax;
+            }
+            return rightMax + root -> val;
+        }
+        
+    }
+
+    int maxPathSum(TreeNode *root) {
+        int res = INT_MIN;
+        postOrder(root, res);
+        return res;
+    }
+};
