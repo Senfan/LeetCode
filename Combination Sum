@@ -1,0 +1,23 @@
+class Solution {
+public:
+
+    void backTrack(vector<vector<int> > &ans, vector<int> &candidates, vector<int> &solution, int target, int start, int last) {
+        if(target == 0) {
+            ans.push_back(solution);
+            return;
+        }
+        if(start > last || target < candidates[start]) return;
+        solution.push_back(candidates[start]);
+        backTrack(ans, candidates, solution, target - candidates[start], start, last);
+        solution.pop_back();
+        backTrack(ans, candidates, solution, target, start+1, last);
+    }
+
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        vector<vector<int> > ans;
+        vector<int> solution;
+        sort(candidates.begin(), candidates.end());
+        backTrack(ans, candidates, solution, target, 0, candidates.size() - 1);
+        return ans;
+    }
+};

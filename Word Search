@@ -1,0 +1,150 @@
+//288ms too slowly
+class Solution {
+public:
+
+    bool judge(vector<vector<char> > &board, string word, int r, int c, int rowNum, int colNum) {
+        stack<char> dirStk;
+        stack<int> rowStk;
+        stack<int> colStk;
+        set< pair<int, int> > cellSet;
+        pair<int, int> tmpPair;
+        int wordLen = word.size();
+        if(wordLen == 1) return true;
+        int dirRem = -1;
+        cellSet.insert(make_pair(r,c));
+        int remFr = r;
+        int remFc = c;
+        if(r > 0 && board[r-1][c] == word[1]) { //up
+                if (wordLen == 2) return true;
+                dirStk.push('u');
+                r--;
+                rowStk.push(r);
+                colStk.push(c);
+                cellSet.insert(make_pair(r, c));
+        }else if(r < rowNum - 1 && board[r+1][c] == word[1]) {
+                if (wordLen == 2) return true;
+                dirStk.push('d');
+                r++;
+                rowStk.push(r);
+                colStk.push(c);
+                cellSet.insert(make_pair(r, c));
+        }else if(c > 0 && board[r][c-1] == word[1]) {
+                if (wordLen == 2) return true;
+                dirStk.push('l');
+                c--;
+                rowStk.push(r);
+                colStk.push(c);
+                cellSet.insert(make_pair(r, c));
+        }else if(c < colNum - 1 && board[r][c+1] == word[1]) {
+                if (wordLen == 2) return true;
+                dirStk.push('r');
+                c++;
+                rowStk.push(r);
+                colStk.push(c);
+                cellSet.insert(make_pair(r, c));
+        }
+        if(dirStk.empty()) return false;
+        bool isBack = false;
+        for(int i = 2; i < wordLen; ) {
+            while(!dirStk.empty() || i == 1){
+                if( ((isBack && dirRem < 0 ) || (!isBack)) && r > 0 && cellSet.find(make_pair(r-1, c)) == cellSet.end() && board[r-1][c] == word[i]) { //up
+
+                    if(i == wordLen - 1) return true;
+                    else{
+                        dirStk.push('u');
+                        r--;
+                        rowStk.push(r);
+                        colStk.push(c);
+                        cellSet.insert(make_pair(r, c));
+                        i++;
+                        isBack = false;
+                        break;
+                    }
+                }else if(((isBack && dirRem < 1 ) || (!isBack)) && r < (rowNum - 1) && cellSet.find(make_pair(r+1, c)) == cellSet.end() && board[r+1][c] == word[i]) {
+                    if(i == wordLen - 1) return true;
+                    else {
+                        dirStk.push('d');
+                        r++;
+                        rowStk.push(r);
+                        colStk.push(c);
+                        cellSet.insert(make_pair(r, c));
+                        i++;
+                        isBack = false;
+                        break;
+                    }
+                }else if(((isBack && dirRem < 2 ) || (!isBack)) && c > 0 && cellSet.find(make_pair(r, c-1)) == cellSet.end() && board[r][c-1] == word[i]) {
+
+                    if(i == wordLen - 1) return true;
+                    else {
+                        dirStk.push('l');
+                        c--;
+                        rowStk.push(r);
+                        colStk.push(c);
+                        cellSet.insert(make_pair(r, c));
+                        i++;
+                        isBack = false;
+                        break;
+                    }
+                }else if(((isBack && dirRem < 3 ) || (!isBack)) && c < (colNum - 1) && cellSet.find(make_pair(r, c+1)) == cellSet.end() && board[r][c+1] == word[i]) {
+
+                    if(i == wordLen - 1) return true;
+                    else {
+                        dirStk.push('r');
+                        c++;
+                        rowStk.push(r);
+                        colStk.push(c);
+                        cellSet.insert(make_pair(r, c));
+                        i++;
+                        isBack = false;
+                        break;
+                    }
+                }else {
+                    isBack = true;
+                    if(i == 1 && dirStk.empty()) return false;
+                    char direct = dirStk.top();
+                    dirStk.pop();
+                    if(direct == 'r' && dirStk.empty()) return false;
+                    int rTmp = rowStk.top();
+                    int cTmp = colStk.top();
+                    rowStk.pop();
+                    colStk.pop();
+                    cellSet.erase(make_pair(rTmp, cTmp));
+                    if(dirStk.empty()) {
+                        r = remFr;
+                        c = remFc;
+                    }else {
+                        r = rowStk.top();
+                        c = colStk.top();
+                    }
+                    if(direct == 'l'){
+                        dirRem = 2;
+                    }else if(direct == 'd'){
+                        dirRem = 1;
+                    }else if(direct == 'u'){
+                        dirRem = 0;
+                    }else {
+                        dirRem = 3;
+                    }
+                    i--;
+                }
+            }
+        }
+    }
+    bool exist(vector<vector<char> > &board, string word) {
+        if(word == "") return true;
+
+        int rowNum = board.size();
+        int colNum = board[0].size();
+
+        bool isFund = false;
+        for(int r = 0; r < rowNum; r++) {
+            for(int c = 0; c < colNum; c++) {
+                if(board[r][c] == word[0]) {
+                    isFund = judge(board, word, r, c, rowNum, colNum);
+                    if(isFund) return true;
+                }
+            }
+        }
+        return isFund;
+    }
+};

@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int removeElement(int A[], int n, int elem) {
+        int cur = 0, end = n-1;
+        
+        while(cur <= end) {
+            if(A[cur] == elem) {
+                while(cur <= end && A[end] == elem) {
+                    end--;
+                }
+                if(end < cur) {
+                    if(end < 0) return 0;
+                    else return end + 1;
+                }
+                A[cur] = A[end];
+                end--;
+            }else {
+                cur++;
+            }
+        }
+        return end + 1;
+    }
+};

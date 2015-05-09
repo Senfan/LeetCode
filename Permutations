@@ -1,0 +1,22 @@
+class Solution {
+public:
+
+    void recurse(vector<vector<int> > &ans, vector<int> &num, int start) {
+        if(start == num.size()) {
+            ans.push_back(num);
+            return;
+        }
+        
+        for(int i = start; i < num.size(); i++) {
+            swap(num[start], num[i]);
+            recurse(ans, num, start+1);
+            swap(num[start], num[i]);
+        }
+    }
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int> > ans;
+        if(num.empty()) return ans;
+        recurse(ans, num, 0);
+        return ans;
+    }
+};

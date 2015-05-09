@@ -1,0 +1,37 @@
+class Solution {
+public:
+
+    void dfs(vector<vector<int> > &ans, vector<int> &num, int target, vector<int> &tmp, int start, int last) {
+        if(!target) {
+            if(!tmp.empty())
+                ans.push_back(tmp);
+            return;
+        }    
+        
+        if(start > last || target < num[start]) return;
+        
+        tmp.push_back(num[start]);
+        dfs(ans, num, target-num[start], tmp, start+1, last);
+        tmp.pop_back();
+        dfs(ans, num, target, tmp, start+1, last);
+    }
+    
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        sort(num.begin(), num.end());
+        vector<vector<int> > ans;
+        vector<int> tmp;
+        dfs(ans, num, target, tmp, 0, num.size() - 1);
+        if(ans.empty()) return ans;
+        vector<int> pre = ans[0];
+        sort(ans.begin(), ans.end());
+        vector<vector<int> > result;
+        result.push_back(pre);
+        for(int i = 1; i < ans.size(); i++) {
+            if(ans[i] != pre) {
+                result.push_back(ans[i]);
+                pre = ans[i];
+            }
+        }
+        return result;
+    }
+};

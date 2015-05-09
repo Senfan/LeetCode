@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<int> > subsetsWithDup(vector<int> &S) {
+        vector<vector<int> > ans;
+        vector<int> sub;
+        ans.push_back(sub);
+        if(S.empty()) return ans;
+        set<vector<int> > reSet;
+        sort(S.begin(), S.end());
+        int size = S.size();
+        long long cnt = pow(2, size);
+        long long tmp;
+        for(tmp = 1; tmp < cnt; tmp++) {//each subset
+            sub.clear();
+            for(int i = 0; i < size; i++) {
+                if(tmp & (1 << i)) {
+                    sub.push_back(S[i]);
+                }
+            }
+            reSet.insert(sub);
+        }
+        
+        set<vector<int> >::iterator it = reSet.begin();
+        while(it != reSet.end()) {
+            ans.push_back(*it);
+            it++;
+        }
+        return ans;
+    }
+};
