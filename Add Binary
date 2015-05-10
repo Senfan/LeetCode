@@ -1,0 +1,40 @@
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        int la = a.size();
+        int lb = b.size();
+        string res;
+        int tag = 0;
+        int digit, ai, bi;
+        for(ai = la-1, bi = lb-1; ai >= 0 && bi >= 0; ai--, bi--) {
+            digit = a[ai] + b[bi] - 2 * '0' + tag;
+            if(digit % 2)
+                res.append("1");
+            else 
+                res.append("0");
+            tag = digit >> 1;
+        }
+        while(ai >= 0) {
+            digit = a[ai] - '0' + tag;
+            if(digit % 2)
+                res.append("1");
+            else 
+                res.append("0");
+            tag = digit >> 1;
+            ai--;
+        }
+        while(bi >= 0) {
+            digit = b[bi]  - '0' + tag;
+            if(digit % 2)
+                res.append("1");
+            else 
+                res.append("0");
+            tag = digit >> 1;
+            bi--;
+        }
+        if(tag)
+            res.append("1");
+        reverse(res.begin(), res.end());
+        return res;
+    }
+};

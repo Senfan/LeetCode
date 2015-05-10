@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<vector<int> > fourSum(vector<int> &num, int target) {
+        vector<vector<int> > res;
+        if(num.size() < 4) return res;
+        
+        sort(num.begin(), num.end());
+        
+        for(int a = 0; a < num.size(); a++) {
+            if(a > 0 && num[a] == num[a-1]) continue;
+            
+            for(int b = a + 1; b < num.size(); b++) {
+                if(b > a + 1 && num[b] == num[b-1]) {continue;}
+                
+                int low = b + 1, high = num.size() - 1;
+                
+                while(low < high) {
+                    if(low > b+1 && num[low] == num[low-1]) {low++; continue;}
+                    if(high < num.size() - 1 && num[high+1] == num[high]) {high--; continue;}
+                    int sum = num[a] + num[b] + num[low] + num[high];
+                    
+                    if(sum == target) {
+                        vector<int> tmp{num[a], num[b], num[low], num[high]};
+                        res.push_back(tmp);
+                        low++;
+                        high--;
+                    }else if(sum > target) {
+                        high--;
+                    }else {
+                        low++;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};

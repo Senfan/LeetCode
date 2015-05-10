@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int len = digits.size();
+        if(len == 0) {
+            digits.push_back(1);
+            return digits;
+        }
+        int tag = 0;
+        int digt;
+        for(int i = len - 1; i >= 0; i--) {
+            if(i == len - 1) digt = digits[i] + 1;
+            else digt = digits[i] + tag;
+            digits[i] = digt % 10;
+            tag = digt / 10;
+        }
+        if(tag) {
+            digits.insert(digits.begin(), 1);
+        }
+        return digits;
+    }
+};
