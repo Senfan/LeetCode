@@ -1,0 +1,18 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        vector<bool> rp(1000, false);
+        int next;
+        while(1) {
+            next = 0;
+            while(n) {
+                next += pow(n % 10, 2);
+                n /= 10;
+            }
+            n = next;
+            if(next == 1) return true;
+            if(rp[next]) return false;
+            rp[next] = true;
+        }
+    }
+};
