@@ -1,0 +1,32 @@
+class Solution {
+public:
+    void scan(vector<vector<char>> &grid, int line, int col, int outLen, int inLen) {
+        if(line < outLen && col < inLen && (grid[line][col] == '-' || grid[line][col] == '0')) return;
+        if(line < outLen && col < inLen && grid[line][col] == '1') grid[line][col] = '-';
+        //down
+        if(line + 1 < outLen && col < inLen) scan(grid, line+1, col, outLen, inLen);
+        //left
+        if(line < outLen && col - 1 >= 0) scan(grid, line, col-1, outLen, inLen);
+        //right
+        if(line < outLen && col + 1 < inLen) scan(grid, line, col+1, outLen, inLen);
+        //up
+        if(line - 1 >= 0 && col < inLen) scan(grid, line-1, col, outLen, inLen);
+
+    }
+
+    int numIslands(vector<vector<char>>& grid) {
+        int outLen = grid.size();
+        if(outLen == 0) return 0;
+        int inLen = grid[0].size();
+        int line, col, res = 0;
+        for(line = 0; line < outLen; line++) {
+            for(col = 0; col < inLen; col++) {
+                if(grid[line][col] == '1') {
+                    res++;
+                    scan(grid, line, col, outLen, inLen);
+                }
+            }
+        }
+        return res;
+    }
+};
