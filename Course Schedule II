@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int> >& prerequisites) {
+        int parNum = prerequisites.size();
+        int *mark = new int[numCourses];
+        memset(mark, 0, numCourses*sizeof(int));
+        for(int i = 0; i < parNum; i++) {
+            mark[prerequisites[i].first]++;
+        }
+        
+        queue<int> q;
+        vector<int> res;
+        for(int i = 0; i < numCourses; i++) {
+            if(!mark[i]) q.push(i);
+        }
+        int done = 0;
+        while(!q.empty()) {
+            int cour = q.front();
+            res.push_back(cour);
+            q.pop();
+            done++;
+            for(int i = 0; i < parNum; i++) {
+                if(prerequisites[i].second == cour) {
+                    mark[prerequisites[i].first]--;
+                    if(mark[prerequisites[i].first] == 0) q.push(prerequisites[i].first);
+                }
+            }
+        }
+        vector<int> tmp;
+        if(done == numCourses) return res;
+        else return tmp;
+    }
+};
