@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void recurFun(string digits, string tmp, vector<string> &res, vector<string> &map) {
+        if(digits.empty()) {
+            if(!tmp.empty()) res.push_back(tmp);
+            return;
+        }
+        int len = map[digits[0]-'0'].size();
+        for(int i = 0; i < len; i++) {
+            recurFun(digits.substr(1), tmp+map[digits[0]-'0'][i], res, map);
+        }
+    }
+
+    vector<string> letterCombinations(string digits) {
+        vector<string> map;
+        map.push_back(" "), map.push_back(""), map.push_back("abc"), map.push_back("def"), map.push_back("ghi"), map.push_back("jkl"),
+        map.push_back("mno"), map.push_back("pqrs"), map.push_back("tuv"), map.push_back("wxyz");
+        
+        vector<string> res;
+        recurFun(digits, "", res, map);
+        return res;
+    }
+};

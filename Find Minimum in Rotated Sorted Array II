@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int findMin(vector<int> &num) {
+        int len = num.size();
+        int b = 0, e = len - 1, mid;
+        
+        while(b < e && num[b] >= num[e]) {
+            mid = (b+e) >> 1;
+            if(num[b] < num[mid]) {// forehead
+                if(num[mid] > num[mid+1])
+                    return num[mid+1];
+                b = mid + 1;
+            }else if(num[b] == num[mid]){
+                if(num[mid] > num[e]) { // post
+                    if(num[mid] > num[mid+1])
+                        return num[mid+1];
+                    else b = mid + 1;
+                }else if(num[mid] < num[e]){
+                    if(num[mid-1] > num[mid])
+                        return num[mid];
+                    else e = mid - 1;
+                }else {
+                	for(int i = b+1; i < mid; i++) {
+                		if(num[i] < num[e]) return num[i];
+                	}
+                	for(int i = mid + 1; i < e; i++) {
+                		if(num[i] < num[e]) return num[i];
+                	}
+                	return num[mid];
+                }
+            }else {// post segment
+                if(num[mid - 1] > num[mid]) 
+                    return num[mid];
+                else e = mid - 1;
+            }
+        }
+        return num[b];
+    }
+};

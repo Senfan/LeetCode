@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        int cnt = pow(2, n);
+        unordered_map<int, bool> mark;
+        int count = 1;
+        vector<int> res;
+        res.push_back(0);
+        int cur = 0;
+        mark[0] = 1;
+        int tmp;
+        while(count < cnt) {
+            for(int i = 0; i < n; i++) {
+                tmp = cur ^ (1 << i);
+                if(mark[tmp] == false) {
+                    mark[tmp] = true;
+                    res.push_back(tmp);
+                    count++;
+                    cur = tmp;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};

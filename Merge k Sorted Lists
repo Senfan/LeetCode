@@ -1,0 +1,80 @@
+// TLE
+class Solution {
+public:
+    ListNode* merge2Lists(ListNode *l1, ListNode *l2) {
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+        ListNode *res = NULL, *cur = res;
+        if(l1 -> val > l2 -> val) res = l2, l2 = l2 -> next;
+        else res = l1, l1 = l1 -> next;
+        cur = res;
+        while(l1 && l2) {
+            if(l1 -> val > l2 -> val) {
+                cur -> next = l2;
+                l2 = l2 -> next;
+                cur = cur -> next;
+            }else {
+                cur -> next = l1;
+                l1 = l1 -> next;
+                cur = cur -> next;
+            }
+        }
+        while(l1) {
+            cur -> next = l1;
+            l1 = l1 -> next;
+            cur = cur -> next;
+        }
+        while(l2) {
+            cur -> next = l2;
+            l2 = l2 -> next;
+            cur = cur -> next; 
+        }
+        return res;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode *res = NULL;
+        int len = lists.size();
+        if(len == 0) return NULL;
+        for(int i = 0; i < len; i++) {
+            res = merge2Lists(res, lists[i]);
+        }
+        return res;
+    }
+};
+
+// TLE
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode *res = new ListNode(-1), *cur = res;
+        int len = lists.size();
+        if(len == 0) return NULL;
+        bool done = false;
+        while(!done) {
+            int i;
+            done = true;
+            for(i = 0; i < len; i++) {
+                if(lists[i]) {
+                    done = false;
+                    break;
+                }
+            }
+            if(done) {
+                break;
+            }
+            
+            //select the minest value in the k lists
+            int ind = 0, minVal = INT_MAX;
+            for(i = 0; i < len; i++) {
+                if(lists[i] && lists[i] -> val < minVal) {
+                    minVal = lists[i] -> val;
+                    ind = i;
+                } 
+            }
+            cur -> next = lists[ind];
+            lists[ind] = lists[ind] -> next;
+            cur = cur -> next; 
+        }
+        return res -> next;
+    }
+};

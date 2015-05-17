@@ -230,3 +230,7 @@
 52 Pow(x, n)
 	A. 求幂，可以二分法，每次计算原先的二倍！！！
 
+53 Maximum Gap
+	A. 桶排序， 鸽巢原理的应用！！！
+	B. *max_element(), *min_element() STL算法！！
+
