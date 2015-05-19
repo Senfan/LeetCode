@@ -1,4 +1,3 @@
-// TLE
 class Solution {
 public:
     ListNode* merge2Lists(ListNode *l1, ListNode *l2) {
@@ -32,49 +31,12 @@ public:
         return res;
     }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode *res = NULL;
-        int len = lists.size();
-        if(len == 0) return NULL;
-        for(int i = 0; i < len; i++) {
-            res = merge2Lists(res, lists[i]);
-        }
-        return res;
-    }
-};
-
-// TLE
-class Solution {
-public:
-    ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode *res = new ListNode(-1), *cur = res;
-        int len = lists.size();
-        if(len == 0) return NULL;
-        bool done = false;
-        while(!done) {
-            int i;
-            done = true;
-            for(i = 0; i < len; i++) {
-                if(lists[i]) {
-                    done = false;
-                    break;
-                }
-            }
-            if(done) {
-                break;
-            }
-            
-            //select the minest value in the k lists
-            int ind = 0, minVal = INT_MAX;
-            for(i = 0; i < len; i++) {
-                if(lists[i] && lists[i] -> val < minVal) {
-                    minVal = lists[i] -> val;
-                    ind = i;
-                } 
-            }
-            cur -> next = lists[ind];
-            lists[ind] = lists[ind] -> next;
-            cur = cur -> next; 
-        }
-        return res -> next;
+        int listNum = lists.size();
+        if(listNum == 0) return NULL;
+        if(listNum == 1) return lists[0];
+        if(listNum == 2) return merge2Lists(lists[0], lists[1]);
+        vector<ListNode*> tmp1(lists.begin(), lists.begin() + listNum / 2);
+        vector<ListNode*> tmp2(lists.begin()+listNum/2, lists.end());
+        return merge2Lists(mergeKLists(tmp1), mergeKLists(tmp2));
     }
 };

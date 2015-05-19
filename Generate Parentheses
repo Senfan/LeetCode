@@ -1,0 +1,15 @@
+class Solution {
+public:
+    void recurFun(vector<string> &res, int l, int r, string tmpRes) {
+        if(!l && !r) {
+            res.push_back(tmpRes);
+        }
+        if(l > 0) recurFun(res, l-1, r+1, tmpRes+"(");
+        if(r > 0) recurFun(res, l, r-1, tmpRes + ")");
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        recurFun(res, n, 0, "");
+        return res;
+    }
+};
