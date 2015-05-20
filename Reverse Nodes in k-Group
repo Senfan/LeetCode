@@ -1,0 +1,48 @@
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head == NULL) return NULL;
+        if(k == 1) return head;
+        ListNode *pre, *cur, *tmp, *preTail, *tail;
+        ListNode *preHead = new ListNode(0);
+        preHead -> next = head;
+        pre = head, cur = head -> next, preTail = preHead;
+        int cnt = 1;
+        bool done = false;
+        while(cur && !done) {
+            while(!done && cur && cnt < k) {
+            	cnt++;
+            	if(cnt == 2) tail = pre;
+                tmp = cur -> next;
+                cur -> next = pre;
+                pre = cur;
+                cur = tmp;
+                if(cnt == k) {
+            		//tmp = preTail -> next;
+                	preTail -> next = pre;
+                	preTail = tail;
+                	if(cur) {
+                		pre = cur;
+                		cur = cur -> next;
+                		cnt = 1;
+                	}else {
+                		done = true;
+                		preTail -> next = NULL;
+                		break;
+                	}
+	            }else if(cur == NULL) {
+	                while(--cnt) {
+	                	tmp = pre -> next;
+	                    pre -> next = cur;
+	                    cur = pre;
+	                    pre = tmp;
+	                }
+	                preTail -> next = pre;
+	                done = true;
+	            }
+            }
+        }
+        if(preTail -> next) preTail -> next = pre;
+        return preHead -> next;
+    }
+};
