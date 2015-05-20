@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        if(tokens.empty()) return 0;\
+        int len = tokens.size();
+        stringstream strm;
+        int opa, opb;
+        stack<int> stk;
+        for(int i = 0; i < len; i++) {
+            switch(tokens[i][0]) {
+                case '+':
+                	if(tokens[i].size() == 1) {
+                		opa = stk.top();
+                    	stk.pop();
+                    	opb = stk.top();
+                    	stk.pop();
+                    	stk.push(opa + opb);
+                    	break;
+                	}else {
+                		strm.clear();
+                    	strm.str(tokens[i]);
+                    	strm >> opa;
+                    	stk.push(opa);
+                    	break;
+                	}
+                case '-':
+                	if(tokens[i].size() == 1) {
+                		opa = stk.top();
+                    	stk.pop();
+                    	opb = stk.top();
+                    	stk.pop();
+                    	stk.push(opb - opa);
+                    	break;
+                	}else {
+                		strm.clear();
+                    	strm.str(tokens[i]);
+                    	strm >> opa;
+                    	stk.push(opa);
+                    	break;
+                	}
+                case '*':
+                    opa = stk.top();
+                    stk.pop();
+                    opb = stk.top();
+                    stk.pop();
+                    stk.push(opa * opb);
+                    break;
+                case '/':
+                    opa = stk.top();
+                    stk.pop();
+                    opb = stk.top();
+                    stk.pop();
+                    stk.push(opb / opa);
+                    break;
+                default:
+                    strm.clear();
+                    strm.str(tokens[i]);
+                    strm >> opa;
+                    stk.push(opa);
+                    break;
+            }
+        }
+        return stk.top();
+    }
+};

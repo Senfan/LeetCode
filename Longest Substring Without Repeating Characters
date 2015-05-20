@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int len = s.size();
+        if(len == 0) return 0;
+        
+        int star = 0, e = 0, res = 0;
+        int mark[256];
+        memset(mark, -1, 256 * sizeof(int));
+        while(e < len) {
+            if(mark[s[e]] == -1) mark[s[e]] = e;
+            else if(mark[s[e]] >= star) {
+                res = res >= e - star ? res : e - star;
+                star = mark[s[e]] + 1;
+                mark[s[e]] = e;
+            }else mark[s[e]] = e;
+            e++;
+        }
+        
+        return res >= e - star ? res : e - star;
+    }
+};

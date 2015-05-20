@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int len = nums.size(), res = INT_MAX, start = 0, enda = 0, sum = 0;
+        if(len == 0) return 0;
+
+        while(enda < len) {
+        	bool isEnd = false;
+            while(sum < s && enda < len) {
+                sum += nums[enda];
+                enda++;
+            }
+            if(sum < s && start == 0) return 0;
+            while(sum >= s && start <= enda) {
+            	isEnd = true;
+                sum -= nums[start];
+                start++;
+            }
+            if(enda - start + 1)
+            	res = res > enda - start + 1 ? enda - start + 1 : res;
+        }
+        return res;
+    }
+};

@@ -1,0 +1,24 @@
+class Solution {
+    vector<vector<string> > res;
+    vector<string> oneRes;
+public:
+    void findPalindrome(string s) {
+        for(int i = 1; i <= s.size(); i++) {
+            int l = 0, r = i-1;
+            while(l <= r) {
+                if(s[l] != s[r]) break;
+                l++, r--;
+            }
+            if(l > r) {
+                oneRes.push_back(s.substr(0, i));
+                if(i == s.size()) res.push_back(oneRes);
+                findPalindrome(s.substr(i));
+                oneRes.pop_back();
+            }
+        }
+    }
+    vector<vector<string>> partition(string s) {
+        findPalindrome(s);
+        return res;
+    }
+};

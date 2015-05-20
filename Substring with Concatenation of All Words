@@ -1,0 +1,86 @@
+// 单词唯一的时候的解！！WA
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> res;
+        if(s.empty() || words.empty()) return res;
+        int sLen = s.size(), wordNum = words.size(), wordLen = words[0].size();
+        unordered_map<string, int> dict;
+        for(int i = 0; i < wordNum; i++) {
+            dict[words[i]]++;
+        }
+        
+        for(int i = 0; i < sLen - wordNum * wordLen + 1; i++) {
+            int cnt = 0;
+            int cur = i;
+            string target;
+            while(true) {
+                target = s.substr(cur, wordLen);
+                if(dict.count(target) > 0) {
+                    if(dict[target] <= i) {
+                        cnt++;
+                        dict[target] = cur;
+                    }else {
+                        if(dict[target] < cur) { // have existed
+                            break;
+                        }else {
+                            cnt++;
+                        }
+                    }
+                    if(cnt == wordNum) {
+                        res.push_back(i);
+                        break;
+                    }
+                    cur += wordLen;
+                }else {
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};
+
+//908ms :太慢，目标时间50ms左右
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> res;
+        if(s.empty() || words.empty()) return res;
+        int sLen = s.size(), wordNum = words.size(), wordLen = words[0].size();
+        unordered_map<string, int> dict;
+        for(int i = 0; i < wordNum; i++) {
+            dict[words[i]]++;
+        }
+        
+        for(int i = 0; i < sLen - wordNum * wordLen + 1; i++) {
+            int cnt = 0;
+            int cur = i;
+            string target;
+            unordered_map<string, int> count;
+            while(true) {
+                target = s.substr(cur, wordLen);
+                if(dict.count(target) > 0) {
+                    count[target]++;
+                    cnt++;
+                    if(cnt == wordNum) {
+                        bool isDone = true;
+                        for(auto each : dict) {
+                            if(dict[each.first] != count[each.first]) {
+                                isDone = false;
+                                break;
+                            }
+                        }
+                        if(isDone) res.push_back(i);
+                        else break;
+                    }else {
+                        cur += wordLen;
+                    }
+                }else {
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};

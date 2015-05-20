@@ -1,0 +1,17 @@
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        vector<string> res;
+        int len = s.size();
+        if(len == 0) return res;
+        unordered_map<int, int> strMap;
+        
+        int i = 0, t = 0;
+        while(i < len) {
+            if(strMap[t = (t << 3 | s[i++] & 7) & 0x3FFFFFFF]++ == 1) 
+                res.push_back(s.substr(i-10, 10));
+        }
+        return res;
+    }
+};
+
