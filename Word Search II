@@ -1,0 +1,129 @@
+//TLE
+class Solution {
+public:
+    bool dfs(vector<vector<char> > &board, string target, int l, int c, int lineNum, int colNum) {
+        if(target.size() == 1 && target[0] == board[l][c]) return true;
+        if(l > 0 && board[l-1][c] == target[1] && dfs(board, target.substr(1), l-1, c, lineNum, colNum) ) return true;
+        if(l < lineNum - 1 && board[l+1][c] == target[1] && dfs(board, target.substr(1), l+1, c, lineNum, colNum)) return true;
+        if(c > 0 && board[l][c-1] == target[1] && dfs(board, target.substr(1), l, c-1, lineNum, colNum) ) return true;
+        if(c < colNum - 1 && board[l][c+1] == target[1] && dfs(board, target.substr(1), l, c+1, lineNum, colNum) ) return true;
+        return false;
+    }
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> res;
+        int wordNum = words.size();
+        int lineNum = board.size(), colNum = board[0].size();
+        for(int i = 0; i < wordNum; i++) { //each word
+            bool found = false;
+            for(int l = 0; !found && l < lineNum; l++) {
+                for(int c = 0; !found && c < colNum; c++) {
+                    if(board[l][c] == words[i][0] && dfs(board, words[i], l,c, lineNum, colNum)) {
+                        res.push_back(words[i]);
+                        found = true;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
+
+// 64ms 经典字典树问题
+
+struct TrieNode {
+    TrieNode *childs[26];
+    char ch;
+    int ind;
+    bool isLeaf;
+    TrieNode() : ch(0), ind(-1), isLeaf(0) {
+        fill_n(childs, 26, nullptr);
+    }
+    TrieNode(char c) : ch(c), ind(-1), isLeaf(0) {
+        fill_n(childs, 26, nullptr);
+    }
+};
+
+class Solution {
+    TrieNode *root;
+public:
+    Solution() {
+        root = new TrieNode();
+    }
+    
+    void insert(string word, int ind) {
+        int len = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < len; i++) {
+            if(curNode -> childs[word[i]-'a'] == NULL) {
+                TrieNode *tmpNode = new TrieNode(word[i]);
+                curNode -> childs[word[i]-'a'] = tmpNode;
+                curNode = curNode -> childs[word[i] - 'a'];
+                tmpNode = NULL;
+            }else {
+                curNode = curNode -> childs[word[i] - 'a'];
+            }
+        }
+        curNode -> ind = ind;
+        curNode -> isLeaf = true;
+    }
+    
+    void dfs(vector<vector<char> > &board, int l, int c, int lineNum, int colNum, TrieNode *curNode, vector<string> &res, vector<string> &words) {
+        if(curNode -> isLeaf) {res.push_back(words[curNode->ind]); curNode -> isLeaf = false;}
+        //up
+        if(l - 1 >= 0 && board[l-1][c] != '-') {
+            int curInd = board[l-1][c] - 'a';
+            if(curNode -> childs[curInd] != NULL) {
+                board[l-1][c] = '-';
+                dfs(board, l-1, c, lineNum, colNum, curNode -> childs[curInd], res, words);
+                board[l-1][c] = 'a' + curInd;
+            }
+        }
+        //down
+        if(l + 1 < lineNum && board[l+1][c] != '-') {
+            int curInd = board[l+1][c] - 'a';
+            if(curNode -> childs[curInd] != NULL) {
+                board[l+1][c] = '-';
+                dfs(board, l+1, c, lineNum, colNum, curNode -> childs[curInd], res, words);
+                board[l+1][c] = 'a' + curInd;
+            }
+        }
+        //left
+        if(c - 1 >= 0 && board[l][c-1] != '-') {
+            int curInd = board[l][c-1] - 'a';
+            if(curNode -> childs[curInd] != NULL) {
+                board[l][c-1] = '-';
+                dfs(board, l, c-1, lineNum, colNum, curNode -> childs[curInd], res, words);
+                board[l][c-1] = 'a' + curInd;
+            }
+        }
+        //right 
+        if(c + 1 < colNum && board[l][c+1] != '-') {
+            int curInd = board[l][c+1] - 'a';
+            if(curNode -> childs[curInd] != NULL) {
+                board[l][c+1] = '-';
+                dfs(board, l, c+1, lineNum, colNum, curNode -> childs[curInd], res, words);
+                board[l][c+1] = 'a' + curInd;
+            }
+        }
+    }
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> res;
+        int wordNum = words.size();
+        int lineNum = board.size(), colNum = board[0].size();
+        for(int i = 0; i < wordNum; i++) {
+            insert(words[i], i);
+        }
+        for(int l = 0; l < lineNum; l++) {
+            for(int c = 0; c < colNum; c++) {
+                int curInd = board[l][c] - 'a';
+                if(root -> childs[curInd] != nullptr) {
+                    board[l][c] = '-';
+                    dfs(board, l, c, lineNum, colNum, root -> childs[curInd], res, words);
+                    board[l][c] = 'a' + curInd;
+                }
+                
+            }
+        }
+        return res;
+    }
+};
