@@ -1,0 +1,45 @@
+//回溯法：
+class Solution {
+public:
+    void recFun(vector<vector<int> > &res, vector<int> &nums, int curInd) {
+        if(curInd == nums.size()) {res.push_back(nums); return;}
+        unordered_set<int> set;
+        for(int i = curInd; i < nums.size(); i++) {
+            if(set.find(nums[i]) == set.end()) {
+                set.insert(nums[i]);
+                swap(nums[i], nums[curInd]);
+                recFun(res, nums, curInd+1);
+                swap(nums[i], nums[curInd]);
+            }
+        }
+        
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int> > res;
+        if(nums.empty()) return res;
+        recFun(res, nums, 0);
+        return res;
+    }
+};
+
+//非回溯法：sort + DFS :处置元素法建模
+class Solution {
+public:
+    void recursion(vector<int> num, int i, int j, vector<vector<int> > &res) {
+        if (i == j-1) {
+            res.push_back(num);
+            return;
+        }
+        for (int k = i; k < j; k++) {
+            if (i != k && num[i] == num[k]) continue;
+            swap(num[i], num[k]);
+            recursion(num, i+1, j, res);
+        }
+    }
+    vector<vector<int> > permuteUnique(vector<int> &num) {
+        sort(num.begin(), num.end());
+        vector<vector<int> >res;
+        recursion(num, 0, num.size(), res);
+        return res;
+    }
+};

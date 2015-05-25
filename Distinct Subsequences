@@ -1,0 +1,25 @@
+//从组合角度，暴力求解，O(2^n),TLE
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        if(s.empty()) return 0;
+        if(t.empty()) return 1;
+        int res = 0;
+        
+        int sLen = s.size();
+        int tLen = t.size();
+        int upper = ( (int)pow(2, tLen) << (sLen - tLen));
+        int lower = pow(2, tLen) - 1;
+        string tmp = "";
+        for(int i = lower; i < upper; i++) {
+            tmp = "";
+            int x = pow(2, sLen-1);
+            for(int j = 0; x >= 1; j++) {
+                if(x & i) tmp += s[j];
+                x >>= 1;
+            }
+            if(tmp == t) res++;
+        }
+        return res;
+    }
+};

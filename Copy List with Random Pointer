@@ -1,0 +1,39 @@
+class Solution {
+public:
+    RandomListNode *recFun(RandomListNode *head1) {
+        if(head1 == NULL) return NULL;
+        RandomListNode *head2 = new RandomListNode(head1-> label);
+        head2 -> next = recFun(head1 -> next);
+        return head2;
+    }
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        if(head == NULL) return NULL;
+        RandomListNode *head2 = recFun(head);
+        unordered_map<RandomListNode*, int> map1;
+        unordered_map<int, RandomListNode*> map2;
+        RandomListNode *curNode = head;
+        int cnt = 0;
+        while(curNode) {
+            map1[curNode] = ++cnt;
+            curNode = curNode -> next;
+        }
+        curNode = head2, cnt = 0;
+        while(curNode) {
+            map2[++cnt] = curNode;
+            curNode = curNode -> next;
+        }
+        
+        curNode = head;
+        RandomListNode *curNode2 = head2;
+        while(curNode) {
+            if(curNode -> random == NULL) {
+                curNode2 -> random = NULL;
+            }else {
+                curNode2 -> random = map2[map1[curNode -> random]];
+            }
+            curNode = curNode -> next;
+            curNode2 = curNode2 -> next;
+        }
+        return head2;
+    }
+};

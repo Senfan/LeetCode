@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class Solution {
 public:
     string shortestPalindrome(string s) {
@@ -17,5 +18,81 @@ public:
         
         s.insert(0, preS.substr(len+1, len - next[len << 1]));
         return s;
+=======
+//O(n^2) TLE
+class Solution {
+public:
+    bool isPalin(string s) {
+        if(s.empty()) return true;
+        int len = s.size();
+        int l = 0, r = len - 1;
+        
+        while(l < r) {
+            if(s[l] != s[r]) return false;
+            l++, r--;
+        }
+        return true;
+    }
+    string shortestPalindrome(string s) {
+        if(s.empty()) return "";
+        int len = s.size();
+        int cnt = len;
+        while(cnt > 1) {
+            if(isPalin(s.substr(0, cnt))) break;
+            cnt--;
+        }
+        if(cnt == len) return s;
+        string tmp = s.substr(cnt);
+        reverse(tmp.begin(), tmp.end());
+        return s.insert(0, tmp);
+    }
+};
+
+//改进：中心扩展法！！O(n^2),但是常数项上会有优化！！ TLE
+
+class Solution {
+public:
+    int isPalin(int pivot, int sLen, string s) {
+        int res = 0;
+        //odd 
+        int l = pivot - 1, r = pivot + 1;
+        while(l >= 0 && r < sLen && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        if(l == -1) res = 1;
+        
+        l = pivot, r = pivot + 1;
+        while(l >= 0 && r < sLen && s[l] == s[r]) {
+            l--;
+            r++;
+        }
+        if(l == -1) return 2;
+        return res;
+    }
+    string shortestPalindrome(string s) {
+        if(s.empty()) return "";
+        int len = s.size();
+        int cnt = len, pivot = (len-1) / 2;
+        
+        int re;
+        for(int i = pivot; i >= 0; i--) {
+            re = isPalin(i, len, s);
+            if(re == 2) {
+                int ind = (i + 1) << 1;
+                if(ind == len) return s;
+                string tmp = s.substr(ind);
+                reverse(tmp.begin(), tmp.end());
+                return s.insert(0, tmp);
+            }else if(re == 1) {
+                int ind = (i << 1) + 1;
+                if(ind == len) return s;
+                string tmp = s.substr(ind);
+                reverse(tmp.begin(), tmp.end());
+                return s.insert(0, tmp);
+            }
+        }
+        
+>>>>>>> origin/master
     }
 };

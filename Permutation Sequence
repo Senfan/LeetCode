@@ -1,0 +1,47 @@
+//brunt forces TLE =>应该找出数学规律，直接推出而不是枚举
+// WA :一般的递归得出的排序不是字典序排列！！
+class Solution {
+public:
+    void recFun(vector<string> &res, string &s, int start) {
+        if(start == s.size()) {
+            res.push_back(s);
+            return;
+        }
+        
+        for(int i = start; i < s.size(); i++) {
+            swap(s[start], s[i]);
+            recFun(res, s, start+1);
+            swap(s[start], s[i]);
+        }
+    }
+    string getPermutation(int n, int k) {
+        int target = 1;
+        int i = 1;
+        for(i = 1; target < k; target*i, i++);
+        string s = "";
+        for(int j = 1; j <= n; j++) s += (j +'0');
+        vector<string> res;
+        recFun(res, s, s.size() - i);
+        return res[k-1];
+    }
+};
+
+// 4ms注意模型的提炼！！！！
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string s = string("123456789").substr(0, n);
+        int total = 1;
+        for(int i = 1; i <= n; total *= i, i++);
+        string res(n, ' ');
+        int ind;
+        for(int i = 0; i < n; i++) {
+            total /= (n-i);
+            ind = (k-1) / total;
+            res[i] = s[ind];
+            k -= ind * total;
+            s.erase(ind, 1);
+        }
+        return res;
+    }
+};
