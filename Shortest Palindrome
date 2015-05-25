@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+// KMP
 class Solution {
 public:
     string shortestPalindrome(string s) {
@@ -18,7 +18,7 @@ public:
         
         s.insert(0, preS.substr(len+1, len - next[len << 1]));
         return s;
-=======
+}
 //O(n^2) TLE
 class Solution {
 public:
@@ -92,7 +92,5 @@ public:
                 return s.insert(0, tmp);
             }
         }
-        
->>>>>>> origin/master
     }
 };
