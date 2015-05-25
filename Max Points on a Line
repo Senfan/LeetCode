@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int maxPoints(vector<Point>& points) {
+        int len = points.size();
+        if(len < 2) return len;
+        
+        map<pair<int, int>, int> lines;
+        
+        int res = INT_MIN, dx, dy, gcd;
+        for(int st = 0; st < len; st++) {
+            int localMax = 0, vertical = 0, overlap = 0;
+            lines.clear();
+            for(int en = st+1; en < len; en++) {
+                if(points[en].x == points[st].x && points[en].y == points[st].y) {
+                    overlap++;
+                    continue;
+                }else if(points[en].x == points[st].x) vertical++;
+                else {
+                    dx = points[en].x - points[st].x;
+                    dy = points[en].y - points[st].y;
+                    gcd = _gcd(dx, dy);
+                    dx /= gcd;
+                    dy /= gcd;
+                    lines[{dx, dy}]++;
+                    localMax = max(localMax, lines[{dx, dy}]);
+                }
+                localMax = max(localMax, vertical);
+            }
+            res = max(res, localMax+1+overlap);
+        }
+        return res;
+    }
+    
+    int _gcd(int x, int y) {
+    	if(y == 0) return x;
+		return _gcd(y, x % y); 
+    }
+};

@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        if(s.empty()) return "";
+        string revS = s;
+        reverse(revS.begin(), revS.end());
+        const int len = s.size();
+        string preS = s + "#" + revS;
+        
+        vector<int> next(preS.size(), 0);
+        int tmp;
+        for(int i = 1; i < preS.size(); i++) {
+            tmp = next[i-1];
+            while(tmp > 0 && preS[i] != preS[tmp]) tmp = next[tmp-1];
+            next[i] = (tmp += (preS[i] == preS[tmp]));
+        }
+        
+        s.insert(0, preS.substr(len+1, len - next[len << 1]));
+        return s;
+    }
+};
