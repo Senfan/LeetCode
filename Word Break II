@@ -1,0 +1,106 @@
+//DP + 递归
+class Solution {
+public:
+    vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+        vector<string> res;
+        int len = s.size();
+        if(len == 0) return res;
+        vector<vector<int>> record(len+1);
+        for(int i = 1; i <= len; i++) {
+            for(int j = 0; j < i; j++) {
+                if((j == 0 || record[j].size())  && wordDict.count(s.substr(j, i-j))) {
+                    record[i].push_back(j);
+                }
+            }
+        }
+
+        res = recFun(record, len, s);
+        return res;
+    }
+
+    vector<string> recFun(vector<vector<int>> &record, int ind, string &s) {
+        vector<string> res;
+        if(ind == 0) {
+            res.push_back("");
+            return res;
+        }
+        for(int i = 0; i < record[ind].size(); i++) {//each subChild
+            string tmp = s.substr(record[ind][i], ind - record[ind][i]);
+            vector<string> subVec = recFun(record, record[ind][i], s);
+            for(int j = 0; j < subVec.size(); j++) {
+                if(subVec[j] != "") subVec[j] += (" " + tmp);
+                else subVec[j] = tmp;
+                res.push_back(subVec[j]);
+            }
+        }
+        return res;
+    }
+};
+
+
+//动态规划记录所有前述问题的划分 ：MLE 可以继续优化，加上一个递归，可以将空间复杂度降下来，时间换空间
+class Solution {
+public:
+    vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+        vector<string> res;
+        int len = s.size();
+        if(len == 0) return res;
+        vector<vector<string>> record(len+1);
+        for(int i = 0; i <= len; i++) {
+            for(int j = 0; j < i; j++) {
+                if((j == 0 || record[j].size())  && wordDict.find(s.substr(j, i-j)) != wordDict.end()) {
+                    for(int cnt = 0; j ==0 || cnt < record[j].size(); cnt++) {
+                        if(j == 0) {
+                            record[i].push_back(s.substr(j, i-j));
+                            break;
+                        }else {
+                            string tmp = record[j][cnt] + " " + s.substr(j, i-j);
+                            record[i].push_back(tmp);
+                        }
+                    }
+                }
+            }
+        }
+        return record[len];
+    }
+};
+
+//递归， MLE
+class Solution {
+public:
+    void recursion(string s, unordered_set<string> &wordDict, vector<string> &res, string &sentence, int minLen, int maxLen) {
+        int len = s.size();
+        for(int i = minLen; i <= maxLen && i <= len; i++) {//each length for each substring
+            string word = s.substr(0, i);
+            unordered_set<string>::const_iterator it = wordDict.find(word);
+            if(it != wordDict.end()) {
+                if(sentence == "") {
+                    sentence.append(word);
+                }else {
+                    sentence.append(" ");
+                    sentence.append(word);
+                }
+                if(len - i > 0)
+                    recursion(s.substr(i, len-i), wordDict, res, sentence, minLen, maxLen);
+            }
+        }
+        if(sentence != "") {
+            res.push_back(sentence);
+            sentence = "";
+        }
+    }
+
+    vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+        int minLen = INT_MAX;
+        int maxLen = 0;
+        vector<string> res;
+        for(auto it = wordDict.begin(); it != wordDict.end(); it++) {
+            string tmp = *it;
+            maxLen = tmp.size() > maxLen ? tmp.size() : maxLen;
+            minLen = tmp.size() < minLen ? tmp.size() : minLen;
+        }
+        string sentence = "";
+        recursion(s, wordDict, res, sentence, minLen, maxLen);
+        return res;
+    }
+};

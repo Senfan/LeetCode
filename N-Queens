@@ -1,0 +1,25 @@
+class Solution {
+public:
+    
+    vector<vector<string> > solveNQueens(int n) {
+        vector<string> lineVec(n, string(n, '.'));
+        vector<vector<string> > chessboard;
+        const int size = n;
+        vector<int> flag(5*n-2, 1);
+        backTrack(n, chessboard, lineVec, 0, flag);
+        return chessboard;
+    }
+    
+    void backTrack(int n, vector<vector<string>> &chessboard, vector<string> &rowString, int curLine, vector<int> &flag) {
+        if(curLine == n) {chessboard.push_back(rowString); return;}
+        for(int col = 0; col < n; col++) {
+            if(flag[col] && flag[col+curLine+n] && flag[col-curLine+(n << 2) - 2]) {
+                flag[col] = flag[col+curLine+n] = flag[col-curLine+(n << 2) - 2] = 0;
+                rowString[curLine][col] = 'Q';
+                backTrack(n, chessboard, rowString, curLine+1, flag);
+                rowString[curLine][col] = '.';
+                flag[col] = flag[col+curLine+n] = flag[col-curLine+(n << 2) - 2] = 1;
+            }
+        }
+    }
+};
