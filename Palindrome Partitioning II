@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minCut(string s) {
+        int len = s.size();
+        vector<int> dp(len+1);
+        
+        for(int i = 0; i <= len; i++) dp[i] = i - 1;// first K elements
+        
+        for(int pivot = 0; pivot < len; pivot++) {
+            for(int j = 0; pivot - j >= 0 && pivot + j < len && s[pivot - j] == s[pivot + j]; j++) 
+                dp[pivot+j+1] = min(dp[pivot -j] + 1, dp[pivot+j+1]);
+            for(int j = 0; pivot - j >= 0 && pivot + 1 + j < len && s[pivot - j] == s[pivot + 1 + j]; j++)
+                dp[pivot+2+j] = min(dp[pivot+j+2], dp[pivot-j] + 1);
+        }
+        
+        return dp[len];
+    }
+};

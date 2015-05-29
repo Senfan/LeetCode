@@ -1,0 +1,69 @@
+// BFS online :RTE local:没问题不明原因
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if(node == NULL) return NULL;
+        unordered_set<int> visited;
+        unordered_map<int, UndirectedGraphNode *> created;
+        queue<UndirectedGraphNode *> que;
+        que.push(node);
+
+        UndirectedGraphNode *curNode, *clonedG, *tmpNode;
+        while(!que.empty()) {
+            curNode = que.front();
+            que.pop();
+            if(created.count(curNode -> label) == 0) {
+                clonedG = new UndirectedGraphNode(curNode -> label);
+                created[curNode -> label] = clonedG;
+            }else {
+                clonedG = created[curNode -> label];
+            }
+            for(auto each : curNode -> neighbors) {
+                if(visited.count(each -> label) == 0) {
+                    if(each -> label != curNode -> label) {
+                        que.push(each);
+                        if(created.count(each -> label) == 0) {
+                            tmpNode = new UndirectedGraphNode(each -> label);
+                            created[each -> label] == tmpNode;
+                        }else {
+                            tmpNode = created[each -> label];
+                        }
+                        (clonedG -> neighbors).push_back(tmpNode);
+                        (tmpNode -> neighbors).push_back(clonedG);
+                    }else {
+                        (clonedG -> neighbors).push_back(clonedG);
+                    }
+                }
+            }
+            visited.insert(curNode -> label);
+        }
+        return clonedG;
+    }
+};
+
+//DFS
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node)
+    {
+        map<int, UndirectedGraphNode*> marks;
+        if (node) return dfs(node, marks);
+        else return NULL;
+    }
+
+    UndirectedGraphNode * dfs(UndirectedGraphNode *node, map<int, UndirectedGraphNode*> & marks)
+    {
+        UndirectedGraphNode *p;
+        p = new UndirectedGraphNode(node->label);
+        marks[p->label] = p;
+
+        for(UndirectedGraphNode* n : node->neighbors)
+        {
+            if(marks.count(n->label) > 0)
+                (p->neighbors).push_back(marks[n->label]);
+            else
+                (p->neighbors).push_back(dfs(n,marks));
+        }
+        return p;
+    }
+};

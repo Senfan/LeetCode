@@ -1,0 +1,12 @@
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> mem;
+        
+        for(int each : nums) {
+            if(mem.count(each) > 0) return true;
+            mem.insert(each);
+        }
+        return false;
+    }
+};

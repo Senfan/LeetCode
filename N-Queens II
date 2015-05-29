@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int totalNQueens(int n) {
+        vector<string> lineVec(n, string(n, '.'));
+        int res = 0;
+        const int size = n;
+        vector<int> flag(5*n-2, 1);
+        backTrack(n, res, lineVec, 0, flag);
+        return res;
+    }
+    
+    void backTrack(int n, int &res, vector<string> &rowString, int curLine, vector<int> &flag) {
+        if(curLine == n) {res++; return;}
+        for(int col = 0; col < n; col++) {
+            if(flag[col] && flag[col+curLine+n] && flag[col-curLine+(n << 2) - 2]) {
+                flag[col] = flag[col+curLine+n] = flag[col-curLine+(n << 2) - 2] = 0;
+                rowString[curLine][col] = 'Q';
+                backTrack(n, res, rowString, curLine+1, flag);
+                rowString[curLine][col] = '.';
+                flag[col] = flag[col+curLine+n] = flag[col-curLine+(n << 2) - 2] = 1;
+            }
+        }
+    }
+};
