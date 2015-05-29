@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        int lines = grid.size();
+        int cols = grid[0].size();
+
+        vector<int> dp(cols, 1);
+        int i = 0;
+        while(i < cols){
+            if(grid[0][i]) {
+                while(i < cols) dp[i++] = 0;
+            }
+            i++;
+        }
+
+        for(int j = 1; j < lines; j++) {
+            if(grid[j][0]) dp[0] = 0;
+            for(int k = 1; k < cols; k++) {
+                if(grid[j][k]) dp[k] = 0;
+                else {
+                    dp[k] += dp[k-1];
+                }
+            }
+        }
+        return dp[cols-1];
+    }
+};
