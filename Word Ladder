@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int ladderLength( string& start, string &end, unordered_set<string> &dict) {
+        if(start == end) return 0;
+        queue<string> que;
+        string tag;
+        unordered_set<string> visited;
+
+        que.push(start);
+        que.push(tag);
+        int level = 1;
+
+        while(que.size() > 1) {
+            string curString = que.front();
+            que.pop();
+
+            if(curString == tag) {
+                level++;
+                que.push(tag);
+                continue;
+            }
+            
+            if(curString == end) return level;
+
+            string newWord(curString);
+            for(int i = 0; i < curString.size(); i++) {
+                for(char c = 'a'; c <= 'z'; c++) {
+                    newWord[i] = c;
+                    if(dict.count(newWord) > 0 && !visited.count(newWord)) {
+                        que.push(newWord);
+                        visited.insert(newWord);
+                    }
+                    newWord[i] = curString[i];
+                }
+            }
+        }
+
+        return 0;
+    }
+};

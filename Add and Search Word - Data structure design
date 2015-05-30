@@ -1,0 +1,72 @@
+struct TrieNode {
+    TrieNode *childs[26];
+    char ch;
+    bool isLeaf;
+    TrieNode() : ch(0), isLeaf(0) {
+        fill_n(childs, 26, nullptr);
+    }
+    TrieNode(char c) : ch(c), isLeaf(0) {
+        fill_n(childs, 26, nullptr);
+    }
+};
+
+class WordDictionary {
+public:
+    WordDictionary() {
+        root = new TrieNode();
+    }
+
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        int len = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < len; i++) {
+            if(curNode -> childs[word[i]-'a'] == NULL) {
+                TrieNode *tmpNode = new TrieNode(word[i]);
+                curNode -> childs[word[i]-'a'] = tmpNode;
+                curNode = curNode -> childs[word[i] - 'a'];
+                tmpNode = NULL;
+            }else {
+                curNode = curNode -> childs[word[i] - 'a'];
+            }
+        }
+        curNode -> isLeaf = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        return dfs(word, root);
+    }
+    
+    bool dfs(string key,TrieNode* start){
+        if(key.empty()) return start->isLeaf;
+        int index = key[0] - 'a';
+
+        if(key[0] == '.'){
+            //if there is a '.', try every char instead
+            for(int j=0; j < 26; j++){//a dfs similar goes here
+                if(start->childs[j] == NULL) continue;
+                //if(key.size() == 1) start -> childs[j] -> isLeaf;
+                if(dfs(key.substr(1),start->childs[j])) return true;                
+            }
+            return false;
+        }else if(start->childs[index]){
+            if(key.size()>1)
+                return dfs(key.substr(1),start->childs[index]);
+            else
+                return start->childs[index]->isLeaf;
+        }
+
+        return false;
+    }
+private:
+    TrieNode *root;
+};
+
+
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");

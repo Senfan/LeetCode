@@ -1,4 +1,4 @@
-重点题目： 140 84 
+重点题目： 140 84 Edit Distance/ Wildcard Matching
 
 
 1 Min Stack:
@@ -270,4 +270,18 @@
 64 Reorder List
 	A. 注意划分子问题，一步一步让原问题得到解答！！不要总在问题上面打转转，要静下心来，逐步深入问题求解的充分条件，然后一步步去解决子问题就可以！！
 
-65 Unique Path, Minimus Path Sum等矩阵经常可以通过DP解决， 类似串的处理
+65 Unique Path, Minimus Path Sum等矩阵经常可以通过DP解决， 类似串的处理; 
+
+66 Edit Distance
+	A. 双串问题，一般也是典型的DP题目dp[i][j], O(mn);状态的转移取决于如何进行决策的操作，本题中有三种：插入、删除、替代;循环层次的确定，依据子问题的求解方向
+
+67 Word Ladder
+	A. BFS中可以用tag标记层次！！！比较好的解决方案！！
+
+68 Longest Valid Parentheses
+	A. 注意不要死脑筋，可以变通的，典型动态规划题目！！！
+
+69 First Missing Positive 
+	A. 思考关系：与位置有关！！！
+
+70 递归过程中要保存的变量，在函数体中千万不能改变其值，要在调用函数的时候，直接通过运算将本步骤的结果传递给调用的函数的参数就好，否则，返回来的时候，值就不是原来想要的值了！！！

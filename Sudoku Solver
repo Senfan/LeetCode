@@ -1,0 +1,61 @@
+class Solution {
+public:
+
+    bool isValidSudoku(vector<vector<char>>& board) {
+        bool isExist[10];
+        for(int line = 0; line < 9; line++) {
+            memset(isExist, 0, 10 * sizeof(bool));
+            for(int col = 0; col < 9; col++) {
+                if(board[line][col] != '.' && isExist[board[line][col]-'0']) return false;
+                if(board[line][col] != '.') isExist[board[line][col]-'0'] = true;
+            }
+        }
+        
+        for(int col = 0; col < 9; col++) {
+            memset(isExist, 0, 10 * sizeof(bool));
+            for(int line = 0; line < 9; line++) {
+                if(board[line][col] != '.' && isExist[board[line][col]-'0']) return false;
+                if(board[line][col] != '.') isExist[board[line][col]-'0'] = true;
+            }
+        }
+        
+        for(int line = 0; line < 9; line += 3) {
+            for(int col = 0; col < 9; col += 3) {
+                memset(isExist, 0, 10 * sizeof(bool));
+                for(int lx = line; lx < line + 3; lx++) {
+                    for(int cx = col; cx < col + 3; cx++) {
+                        if(board[lx][cx] != '.' && isExist[board[lx][cx]-'0']) return false;
+                        if(board[lx][cx] != '.') isExist[board[lx][cx]-'0'] = true;
+                    }
+                }
+            }
+        }
+    }
+    
+    bool dfs(vector<vector<char> > &board) {
+        for (int row = 0; row < 9; ++row) {
+           for (int col = 0; col < 9; ++col) {
+                 if ('.' == board[row][col]) {
+                     for (int i = 1; i <= 9; ++i) {
+                         board[row][col] = '0' + i;
+                         
+                         if (isValidSudoku(board)) {
+                             if (dfs(board)) {
+                                 return true;
+                             }
+                      }
+                        
+                         board[row][col] = '.';
+                     }
+                     
+                     return false;
+                 }
+             }
+         }
+         return true;
+   }
+    
+    void solveSudoku(vector<vector<char>>& board) {
+         dfs(board);
+    }
+};

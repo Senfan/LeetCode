@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> res;
+        if(s.empty()) return res;
+
+        dfs(res, s, "", 1);
+        return res;
+    }
+
+    void dfs(vector<string> &res, string s, string oneRes, int segm) {
+        if(s.empty() && segm == 5) {
+            res.push_back(oneRes);
+            return;
+        }else if(segm >= 5 ) return;
+        stringstream ss;
+        int tmp;
+        for(int i = 1; i < 4 && i <= s.size(); i++) {
+        	string test = s.substr(0, i);
+        	ss.clear();
+            ss << test;
+            ss >> tmp;
+            
+            if(tmp < 256) {
+                if(test[0] == '0' && test.size() > 1) continue;
+                dfs(res, s.substr(i), oneRes + test + (segm < 4 ? ".": ""), segm+1);
+            }
+        }
+    }
+};
