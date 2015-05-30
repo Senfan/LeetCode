@@ -1,0 +1,79 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+ //MLE 要原地转换
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == NULL) return;
+        
+        vector<ListNode*> vecAdd;
+        ListNode *curNode = head;
+        while(curNode) {
+            vecAdd.push_back(curNode);
+        }
+        
+        int left = 0, right = vecAdd.size();
+        while(left < right) {
+            vecAdd[left++] -> next = vecAdd[right];
+            if(left < right) {
+                vecAdd[right--] -> next = vecAdd[left];
+            }
+        }
+        vecAdd[left] -> next = NULL;
+    }
+};
+
+// 68ms, 分解成子问题一步一步解决子问题，进而求解
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == NULL || head -> next == NULL || head -> next -> next == NULL) return;
+        
+        ListNode *pre = head, *cur = head, *preLast;
+        while(cur -> next) {
+            if(cur -> next -> next) cur = cur -> next -> next;
+            else cur = cur -> next;
+            preLast = pre;
+            pre = pre -> next;
+        }
+        preLast -> next = NULL;
+        
+        ListNode *head2;
+        cur = pre -> next; 
+        pre -> next = NULL;
+        while(cur) {
+            preLast = cur -> next;
+            cur -> next = pre;
+            pre = cur;
+            cur = preLast;
+            head2 = pre;
+        }
+        
+        ListNode *tmp2;
+        while(head) {
+            preLast = head -> next;
+            head -> next = head2;
+            tmp2 = head2 -> next;
+            if(preLast) head2 -> next = preLast;
+            else break;
+            head2 = tmp2;
+            head = preLast;
+        }
+        
+    }
+};

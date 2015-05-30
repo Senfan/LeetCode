@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+
+        if(nums.empty()) return 0;
+        int res = nums[0], curProd = 1, preNegPro = 1;
+        bool isFirst = 1;
+        for(int each : nums) {
+            if(each) {
+                curProd *= each;
+                if(curProd > 0)
+                    res = curProd > res ? curProd : res;
+                else {
+                    res = res > curProd / preNegPro ? res : curProd / preNegPro;
+                    if(isFirst) {preNegPro = curProd; isFirst = false;}
+                }
+            }else {
+                curProd = 1;
+                preNegPro = 1;
+                if(res < 0) res = 0;
+                isFirst = true;
+            }
+        }
+        return res;
+    }
+};
