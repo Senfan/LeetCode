@@ -1,0 +1,71 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+ // soulution 1: O(n), 递归遍历每一节点
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root == NULL) return 0;
+        return 1 + countNodes(root -> left) + countNodes(root -> right);
+    }
+};
+
+// solution 2: o(lgn * lgn), 递归判断每一颗树是不是perfect complete binary tree 88ms
+
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if(root == NULL) return 0;
+        int lHeigh = 0, rHeigh = 0;
+        TreeNode *tmpL = root -> left, *tmpR = root -> right;
+        while(tmpL) { lHeigh++; tmpL = tmpL -> left;}
+        while(tmpR) { rHeigh++; tmpR = tmpR -> right;}
+        
+        if(lHeigh == rHeigh) return pow(2, lHeigh+1) - 1;
+        
+        return 1 + countNodes(root -> left) + countNodes(root -> right);
+    }
+};
+
+// solution 3: O(logn * logn), 依据二叉树编号的规律，利用二分查找实现：左边编码为0，邮编编码为1，其实相当于乘以2或乘以2再加1，刚好对应这样的编码规律，有了这个规律可以知道路径，从而辨识数目 80ms
+class Solution {
+public:
+    bool isExisted(TreeNode* root, int code, int mask) {
+        TreeNode *tmpNode = root;
+        mask >>= 1;
+        while(mask) {
+            if(mask & code) {
+                tmpNode = tmpNode -> right;
+            }else tmpNode = tmpNode -> left;
+            mask >>= 1;
+        }
+        return tmpNode != NULL; 
+    }
+    int countNodes(TreeNode* root) {
+        if(root == NULL) return 0;
+        int height = 1;
+        TreeNode *tmp = root -> left;
+        while(tmp) { height++; tmp = tmp -> left;}
+        int mask = 1 << (height - 1);
+        
+        int left = pow(2, height-1), right = pow(2, height) - 1;
+        int res;
+        while(left <= right) {
+            int mid = (left + right) >> 1;
+            if(isExisted(root, mid, mask)) {
+                left = mid + 1;
+                res = mid;
+            }else {
+                right = mid - 1;
+            }
+        }
+        return res;
+    }
+};
