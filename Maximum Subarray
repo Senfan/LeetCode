@@ -20,3 +20,25 @@ public:
         return sum;
     }
 };
+
+//8ms
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int len = nums.size();
+        if(!len) return 0;
+        if(len == 1) return nums[0];
+        int sum = nums[0], res = nums[0];
+        for(int i = 1; i < len; i++) {
+            if(sum <= 0) {
+                sum = nums[i];
+                res = max(res, sum);
+            }else {
+                sum += nums[i];
+                res = max(res, sum);
+            }
+        }
+        
+        return res;
+    }
+};

@@ -11,3 +11,16 @@ public:
         return m <<= bits;
     }
 };
+
+//进一步优化：变成之美====看了一遍书，为什么原理没有用起来，就是因为自己掌握的不够深刻，不能灵活变通
+
+class Solution {
+public:
+    int rangeBitwiseAnd(int m, int n) {
+        while(n > m) {
+            n &= (n-1);
+        }
+        
+        return n;
+    }
+};

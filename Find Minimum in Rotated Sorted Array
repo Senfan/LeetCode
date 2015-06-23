@@ -1,3 +1,4 @@
+//注意分析题目特点性质，抓住主要可利用性质进行运算！其实就是边界条件的判断问题！！
 O)(log2 n) 8ms
 
 class Solution {
@@ -19,5 +20,23 @@ public:
             }
         }
         return num[b];
+    }
+};
+
+//4ms 
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int size = nums.size();
+        if(size == 1) return nums[0];
+        if(size == 0) return 0;
+        
+        int l = 0, r = size - 1, mid;
+        while(l < r) {
+            mid = l + ((r - l) >> 1);
+            if(nums[mid] > nums[r]) l = mid + 1;
+            else r = mid;
+        } 
+        return nums[l];
     }
 };

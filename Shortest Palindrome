@@ -1,4 +1,4 @@
-// KMP
+// KMP中的前缀函数求解思想= 动态规划求解前缀函数 8ms
 class Solution {
 public:
     string shortestPalindrome(string s) {
@@ -19,6 +19,8 @@ public:
         s.insert(0, preS.substr(len+1, len - next[len << 1]));
         return s;
 }
+
+
 //O(n^2) TLE
 class Solution {
 public:
@@ -47,6 +49,8 @@ public:
         return s.insert(0, tmp);
     }
 };
+
+
 
 //改进：中心扩展法！！O(n^2),但是常数项上会有优化！！ TLE
 

@@ -46,3 +46,41 @@ public:
         return preHead -> next;
     }
 };
+
+
+//28ms
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head == NULL || k == 1) return head;
+        
+        ListNode *preHead = new ListNode(-1);
+        preHead -> next = head;
+        ListNode *preTail = preHead;
+        ListNode *cur = head;
+        int cnt = 0;
+        while(cur) {
+            cnt++;
+            cur = cur -> next;
+        }
+        ListNode *pre = head, *tmp;
+        cur = head -> next;
+        while(cnt >= k) {
+            ListNode *tmpTail = pre;
+            pre -> next = NULL;
+            for(int i = 1; i < k; i++) {
+                tmp = cur -> next;
+                cur -> next = pre;
+                pre = cur;
+                cur = tmp;
+            }
+            preTail -> next = pre;
+            pre = cur;
+            if(tmp) cur = tmp -> next;
+            cnt -= k;
+            preTail = tmpTail;
+        }
+        preTail -> next = pre;
+        return preHead -> next;
+    }
+};
