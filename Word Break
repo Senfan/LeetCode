@@ -1,3 +1,21 @@
+回溯法：TLE
+
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        if(wordDict.empty()) return false;
+        if(s == "") return true;
+        for(int len = 1; len <= s.size(); len++) {
+            if(wordDict.count(s.substr(0, len)) > 0 && wordBreak(s.substr(len), wordDict)) return true;
+        }
+        return false;
+    }
+};
+
+//DP
+
+关于串的操作、数组的操作，又有子问题（特别是与递归有某种联系，一般都有相应的子问题）可以向递归方向考虑
+
 class Solution {
 public:
     bool wordBreak(string s, unordered_set<string>& wordDict) {

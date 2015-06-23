@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        if(matrix.empty()) return 0;
+        
+        int rNum = matrix.size();
+        int cNum = matrix[0].size();
+        
+        vector<int> dp(cNum+1, 0);//为了统一操作，不用初始化判断，类似链表的头结点
+        int maxSize = 0, pre = 0;
+        for(int r = 0; r < rNum; r++) {
+            for(int c = 1; c <= cNum; c++) {
+                int tmp = dp[c];
+                if(matrix[r][c-1] == '1') {
+                    dp[c] = min(dp[c], min(dp[c-1], pre)) + 1; //最主要的是状态的转换：本题中，如果左、上还有左上三个点如果是，则本点就是
+                    maxSize = max(maxSize, dp[c]);
+                }else dp[c] = 0;
+                pre =tmp;
+            }
+        }
+        return pow(maxSize, 2);
+    }
+};
