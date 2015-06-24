@@ -1,29 +1,23 @@
 class Solution {
 public:
-    void inOrder(TreeNode *root, TreeNode *&leftOne, TreeNode *&rightOne) {
-        if(root == NULL || (root -> left == NULL && root -> right == NULL)) return;
-
-        inOrder(root -> left, leftOne, rightOne);
-        if(root -> left && root -> left -> val > root -> val) {
-            leftOne = root;
-            return;
+    void inOrder(TreeNode *root, TreeNode *&a, TreeNode *&b, TreeNode *&pre) {
+        if(!root) return;
+        
+        inOrder(root -> left, a, b, pre);
+        if(root -> val < pre -> val) {
+            if(!a) a = pre;
+            b = root;
         }
-        if(root -> right && root -> right -> val < root -> val) {
-            rightOne = root;
-            return;
-        }
-        inOrder(root -> right, leftOne, rightOne);
+        pre = root;
+        inOrder(root -> right, a, b, pre);
     }
     void recoverTree(TreeNode *root) {
-        TreeNode *leftOne = NULL, *rightOne = NULL, *tmp = NULL;
-        inOrder(root, leftOne, rightOne);
-
-        if(!leftOne) {
-            swap(rightOne -> val, rightOne -> right -> val);
-        }else if(!rightOne) {
-            swap(leftOne -> val, leftOne -> left -> val);
-        }else {
-            swap(leftOne -> left -> val, rightOne -> right -> val);
-        }
+        TreeNode *pre = new TreeNode(INT_MIN);
+        
+        TreeNode *a = NULL, *b = NULL;
+        inOrder(root, a, b, pre);
+        
+        swap(a -> val, b -> val);
+        return;
     }
 };
