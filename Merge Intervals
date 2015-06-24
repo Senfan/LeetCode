@@ -23,3 +23,34 @@ public:
         return res;
     }
 };
+
+//TLE 就是因为 <= 的原因
+class Solution {
+public:
+    static bool cmp(const Interval a, const Interval b) {
+        return a.start <= b.start;
+    }
+    vector<Interval> merge(vector<Interval>& intervals) {
+        vector<Interval> res;
+        if(intervals.empty()) return res;
+        int intNum = intervals.size();
+        if(intNum == 1) return intervals;
+        sort(intervals.begin(), intervals.end(), cmp);
+        Interval pre = intervals[0], cur;
+        for(int i = 1; i < intNum; i++) {
+            cur = intervals[i];
+            if(pre.end < cur.start) {
+                res.push_back(pre);
+                pre = cur;
+            }else {
+                if(pre.end >= cur.end) continue;
+                else {
+                    pre.end = cur.end;
+                }
+            }
+        }
+        res.push_back(pre);
+        return res;
+    }
+    
+};
