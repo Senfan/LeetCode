@@ -1,3 +1,4 @@
+//116ms 问题应该主要花费在映射的查询上
 class Solution {
 public:
     string intToRoman(int num) {
@@ -28,6 +29,7 @@ public:
     }
 };
 
+//32ms
 class Solution {
 public:
     string intToRoman(int num) {
@@ -94,4 +96,67 @@ public:
         return res;
     }
 };
-    
+//56 ms
+ class Solution {
+public:
+    string intToRoman(int num) {
+        stringstream ss;
+        ss.clear();
+        ss  << num;
+        string numS;
+        ss >> numS;
+        
+        int len = numS.size();
+        string res = "";
+        if(len > 0) {
+            switch(numS[len-1]) {
+                case '1': res = "I"; break;
+                case '2': res = "II";break;
+                case '3': res = "III";break;
+                case '4': res = "IV";break;
+                case '5': res = "V";break;
+                case '6': res = "VI";break;
+                case '7': res = "VII";break;
+                case '8': res = "VIII";break;
+                case '9': res = "IX";break;
+            }
+        }
+        len--;
+        if(len > 0) {
+            switch(numS[len-1]) {
+                case '1': res = "X" + res; break;
+                case '2': res = "XX" + res; break;
+                case '3': res = "XXX" + res; break;
+                case '4': res = "XL" + res; break;
+                case '5': res = "L" + res; break;
+                case '6': res = "LX" + res; break;
+                case '7': res = "LXX" + res; break;
+                case '8': res = "LXXX" + res; break;
+                case '9': res = "XC" + res; break;
+            }
+        }
+        len--;
+        if(len > 0) {
+            switch(numS[len-1]) {
+                case '1': res = "C" + res; break;
+                case '2': res = "CC" + res; break;
+                case '3': res = "CCC" + res; break;
+                case '4': res = "CD" + res; break;
+                case '5': res = "D" + res; break;
+                case '6': res = "DC" + res; break;
+                case '7': res = "DCC" + res; break;
+                case '8': res = "DCCC" + res; break;
+                case '9': res = "CM" + res; break;
+            }
+        }
+        len--;
+        if(len > 0) {
+            switch(numS[len-1]) {
+                case '1': res = "M" + res; break;
+                case '2': res = "MM" + res; break;
+                case '3': res = "MMM" + res; break;
+            }
+        }
+        return res;
+    }
+};

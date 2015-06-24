@@ -1,24 +1,50 @@
+//4ms
 class Solution {
 public:
     int totalNQueens(int n) {
-        vector<string> lineVec(n, string(n, '.'));
         int res = 0;
         const int size = n;
         vector<int> flag(5*n-2, 1);
-        backTrack(n, res, lineVec, 0, flag);
+        backTrack(n, res, 0, flag);
         return res;
     }
     
-    void backTrack(int n, int &res, vector<string> &rowString, int curLine, vector<int> &flag) {
+    void backTrack(int n, int &res, int curLine, vector<int> &flag) {
         if(curLine == n) {res++; return;}
         for(int col = 0; col < n; col++) {
             if(flag[col] && flag[col+curLine+n] && flag[col-curLine+(n << 2) - 2]) {
                 flag[col] = flag[col+curLine+n] = flag[col-curLine+(n << 2) - 2] = 0;
-                rowString[curLine][col] = 'Q';
-                backTrack(n, res, rowString, curLine+1, flag);
-                rowString[curLine][col] = '.';
+                backTrack(n, res, curLine+1, flag);
                 flag[col] = flag[col+curLine+n] = flag[col-curLine+(n << 2) - 2] = 1;
             }
         }
+    }
+};
+
+// 8ms 原因在于是否需要寻址上？不同的vector需要不断的切换位置？
+class Solution {
+public:
+    int totalNQueens(int n) {
+        if(n == 0 || n == 1) return 1;
+        vector<bool> markY(n, 1);
+        vector<bool> leftSlash((n << 1) - 1, 1), rightSlash((n << 1) - 1, 1);
+        int res = 0;
+        trackBack(n, markY, leftSlash, rightSlash, res, 0);
+        return res;
+    }
+
+    void trackBack(int n, vector<bool> &markY, vector<bool> &leftSlash, vector<bool> &rightSlash, int &res, int curX){
+            if(curX == n) {
+                res++;
+                return;
+            }
+        for(int i = 0; i < n; i++) {
+            if(markY[i] && leftSlash[curX+i] && rightSlash[curX-i+n-1]) {
+                markY[i] = leftSlash[curX+i] = rightSlash[curX-i+n-1] = false;
+                trackBack(n, markY, leftSlash, rightSlash, res, curX+1);
+                markY[i] = leftSlash[curX+i] = rightSlash[curX-i+n-1] = true;
+            }
+        }
+        return;
     }
 };

@@ -113,7 +113,7 @@ public:
     }
 };
 
-//soulution 3:动态规划，从后往前推的过程，其实动态规划本质上就是记录了子结构的一种映射解决方案。
+//soulution 3:动态规划，从后往前推的过程，其实动态规划本质上就是记录了子结构的一种映射解决方案。12ms
 
 class Solution {
 public:
@@ -136,5 +136,27 @@ public:
     	    }
     	}
     	return dungeon[0][0];
+    }
+};
+
+//16ms 可以把边界条件独立处理，这样就不需要额外的判断 ：动态规划的状态一定要注意如何去定义可以更好的解决问题！！
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        int lines = dungeon.size(), cols = dungeon[0].size();
+        dungeon[lines-1][cols-1] = max(1, 1 - dungeon[lines-1][cols-1]);
+        for(int c = cols - 2; c >= 0; c--) {
+            dungeon[lines-1][c] = max(1, dungeon[lines-1][c+1] - dungeon[lines-1][c]);
+        }
+        for(int line = lines - 2; line >= 0; line--) {
+            dungeon[line][cols-1] = max(1, dungeon[line+1][cols-1] - dungeon[line][cols-1]);
+        }
+        
+        for(int i = lines - 2; i >= 0; i--) {
+            for(int j = cols - 2; j >= 0; j--) {
+                dungeon[i][j] = max(1, min(dungeon[i+1][j], dungeon[i][j+1]) - dungeon[i][j]);
+            }
+        }
+        return dungeon[0][0];
     }
 };

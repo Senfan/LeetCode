@@ -1,7 +1,8 @@
+//线性排序：计数、桶排序、基数排序，前两者互为特例，都是非基于比较的排序，最后一种利用前两者：线性排序主要用于特殊场合（有一定的范围等）
 class Solution {
 public:
     int maximumGap(vector<int> &num) {
-        if(num.empty() || num.size() < 2)
+        if(num.size() < 2)
             return 0;
         int maxNum = *max_element(num.begin(), num.end());
         int minNum = *min_element(num.begin(), num.end());
