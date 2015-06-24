@@ -6,6 +6,7 @@
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+ // 10ms
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
@@ -19,5 +20,41 @@ public:
         }
         head -> next = NULL;
         return pre;
+    }
+};
+
+//8ms stack解决
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == nullptr) return head;
+        stack<ListNode*> stk;
+        ListNode *curNode = head;
+        while(curNode) {
+            stk.push(curNode);
+            curNode = curNode -> next;
+        }
+        head = stk.top();
+        curNode = head;
+        stk.pop();
+        while(stk.size() > 1) {
+            curNode -> next = stk.top();
+            curNode = curNode -> next;
+            stk.pop();
+        }
+        if(stk.size() == 1) {
+            curNode -> next = stk.top();
+            curNode -> next -> next = nullptr;
+            stk.pop();
+        }
+        return head;
     }
 };

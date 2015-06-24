@@ -1,3 +1,5 @@
+//栈的操作还是比较耗费时间的
+//10ms
 class Solution {
 public:
     void reverseWords(string &s) {
@@ -23,5 +25,36 @@ public:
         }
 
         s = s.substr(0, s.size() - 1);
+    }
+};
+
+//O(n) - 8ms; O(n)
+
+class Solution {
+public:
+    void reverseWords(string &s) {
+        if(s.empty()) return;
+        string tmp = s;
+        int size = s.size();
+        s = "";
+        string word = "";
+        string sign = "";
+        while((--size) >= 0) {
+            if(tmp[size] != ' ') {
+                word += tmp[size];
+            }else{
+                if(word.empty()) continue;
+                reverse(word.begin(), word.end());
+                s += (" " + word);
+                word = "";
+            }
+        }
+        if(!word.empty()) {
+            reverse(word.begin(), word.end());
+            s += (" " + word);
+        }
+        s += sign;
+        if(s.empty()) return;
+        s = s.substr(1);
     }
 };

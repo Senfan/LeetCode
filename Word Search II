@@ -127,3 +127,149 @@ public:
         return res;
     }
 };
+
+
+// 115ms   多了一个set的问题？
+struct trieNode {
+    char c;
+    trieNode *childs[26];
+    bool isLeaf;
+
+    trieNode(char x) {
+        c = x;
+        fill_n(childs, 26, nullptr);
+        isLeaf = false;
+    }
+};
+
+class Solution {
+private:
+   trieNode *root = new trieNode('0');
+public:
+
+    void buildTrie(vector<string> words) {
+        int len;
+        trieNode *curNode = NULL;
+        for(auto word : words) {
+            len = word.size();
+            curNode = root;
+            for(int i = 0; i < len; i++) {
+                if(curNode -> childs[word[i]-'a'] == NULL) {
+                    trieNode *tmp = new trieNode(word[i]);
+                    curNode -> childs[word[i]-'a'] = tmp;
+                    if(i == len - 1) tmp -> isLeaf = true;
+                    curNode = tmp;
+                }else {
+                    if(i == len - 1) curNode -> childs[word[i] - 'a'] -> isLeaf = true;
+                    curNode = curNode -> childs[word[i] - 'a'];
+                }
+            }
+        }
+    }
+
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> res;
+        unordered_set<string> set;
+        if(words.empty()) return res;
+
+        buildTrie(words);
+    
+        int lines = board.size(), cols = board[0].size();
+        vector<vector<bool>> mark(lines, vector<bool>(cols, false));
+        for(int l = 0; l < lines; l++) {
+            for(int c = 0; c < cols; c++) {
+                backTrack(lines, cols, l, c, set, board, mark, root, "");
+            }
+        }
+        for(auto each : set) res.push_back(each);
+        return res;
+    }
+
+    void backTrack(int lines, int cols, int line, int col, unordered_set<string> &set, vector<vector<char>> &board, vector<vector<bool>> &mark, trieNode *curNode, string tmpWord) {
+        if(line < 0 || col < 0 || line >= lines || col >= cols) return;
+        if(mark[line][col] == false) {
+            if(curNode -> childs[board[line][col] - 'a']) {
+                mark[line][col] = true;
+                if(curNode -> childs[board[line][col] - 'a'] -> isLeaf) set.insert(tmpWord+board[line][col]);
+                backTrack(lines, cols, line-1, col, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                backTrack(lines, cols, line+1, col, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                backTrack(lines, cols, line, col-1, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                backTrack(lines, cols, line, col+1, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                mark[line][col] = false;
+            }
+        }
+    }
+};
+
+//进一步改进：每当查到一个单词，就用isLeaf排除，从而去掉set操作：104ms
+struct trieNode {
+    char c;
+    trieNode *childs[26];
+    bool isLeaf;
+
+    trieNode(char x) {
+        c = x;
+        fill_n(childs, 26, nullptr);
+        isLeaf = false;
+    }
+};
+
+class Solution {
+private:
+   trieNode *root = new trieNode('0');
+public:
+
+    void buildTrie(vector<string> words) {
+        int len;
+        trieNode *curNode = NULL;
+        for(auto word : words) {
+            len = word.size();
+            curNode = root;
+            for(int i = 0; i < len; i++) {
+                if(curNode -> childs[word[i]-'a'] == NULL) {
+                    trieNode *tmp = new trieNode(word[i]);
+                    curNode -> childs[word[i]-'a'] = tmp;
+                    if(i == len - 1) tmp -> isLeaf = true;
+                    curNode = tmp;
+                }else {
+                    if(i == len - 1) curNode -> childs[word[i] - 'a'] -> isLeaf = true;
+                    curNode = curNode -> childs[word[i] - 'a'];
+                }
+            }
+        }
+    }
+
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> set;
+        if(words.empty()) return set;
+
+        buildTrie(words);
+
+        int lines = board.size(), cols = board[0].size();
+        vector<vector<bool>> mark(lines, vector<bool>(cols, false));
+        for(int l = 0; l < lines; l++) {
+            for(int c = 0; c < cols; c++) {
+                backTrack(lines, cols, l, c, set, board, mark, root, "");
+            }
+        }
+        return set;
+    }
+
+    void backTrack(int lines, int cols, int line, int col, vector<string> &set, vector<vector<char>> &board, vector<vector<bool>> &mark, trieNode *curNode, string tmpWord) {
+        if(line < 0 || col < 0 || line >= lines || col >= cols) return;
+        if(mark[line][col] == false) {
+            if(curNode -> childs[board[line][col] - 'a']) {
+                mark[line][col] = true;
+                if(curNode -> childs[board[line][col] - 'a'] -> isLeaf) {
+                    set.push_back(tmpWord+board[line][col]);
+                    curNode -> childs[board[line][col] - 'a'] -> isLeaf = false;
+                }
+                backTrack(lines, cols, line-1, col, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                backTrack(lines, cols, line+1, col, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                backTrack(lines, cols, line, col-1, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                backTrack(lines, cols, line, col+1, set, board, mark, curNode -> childs[board[line][col] - 'a'], tmpWord+board[line][col]);
+                mark[line][col] = false;
+            }
+        }
+    }
+};

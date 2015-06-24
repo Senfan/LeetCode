@@ -37,3 +37,53 @@ public:
         return head2;
     }
 };
+
+//直接映射，不知道那地方错了，总是WA 1222 122#
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        if(head == NULL) return head;
+        
+        unordered_map<RandomListNode*, RandomListNode*> map;
+        RandomListNode *curNode = head;
+        RandomListNode *newHead = new RandomListNode(head -> label), *newRandom = NULL;
+        map[head] = newHead;
+        if(head -> random == head) {
+            newHead -> random = newHead;
+        }else {
+            if(head -> random == NULL) newHead -> random = NULL;
+            else {
+                newRandom = new RandomListNode(head -> random -> label);
+                newHead -> random = newRandom;
+                map[head -> random] = newRandom;
+            }
+        }
+        
+        RandomListNode *curNew = newHead;
+        curNode = curNode -> next;
+        while(curNode) {
+            if(map.count(curNode) > 0) {
+                curNew -> next = map[curNode];
+            }else {
+                RandomListNode *tmpNode = new RandomListNode(curNode -> label);
+                map[curNode] = tmpNode;
+                curNew -> next = tmpNode;
+                
+                if(curNode -> random == NULL) {
+                    curNew -> next -> random = NULL;
+                }else {
+                    if(map.count(curNode -> random) > 0) {
+                        curNew -> next -> random = map[curNode -> random];
+                    }else {
+                        RandomListNode *tmpRandom = new RandomListNode(curNode -> random -> label);
+                        map[curNode -> random] = tmpRandom;
+                        curNew -> next -> random = tmpRandom;
+                    }
+                }
+            }
+            curNode = curNode -> next;
+            curNew = curNew -> next;
+        }
+        return newHead;
+    }
+};

@@ -18,3 +18,23 @@ public:
         return false;
     }
 };
+
+//8ms 动态规划
+bool isMatch(const char *s, const char *p) {  
+    int slen = strlen(s), plen = strlen(p), i, j;  
+    bool dp[500][500];  
+    memset(dp,false, sizeof(dp));  
+    dp[0][0] = true;  
+    for (i = 1; i <= plen; ++i) {  
+      if (p[i] == '*') {  
+        dp[i][0] = dp[i + 1][0] = dp[i - 1][0];  
+        for (j = 1; j <= slen; ++j)  
+          dp[i][j] = dp[i + 1][j] = (dp[i][j - 1] && (p[i - 1] == s[j - 1] || p[i - 1] == '.') || dp[i - 1][j]);  
+        ++i;          
+      }  
+      else  
+        for (j = 1; j <= slen; ++j)  
+          dp[i][j] = dp[i - 1][j - 1] && (p[i - 1] == s[j - 1] || p[i - 1] == '.');  
+    }  
+    return dp[plen][slen];  
+  }  

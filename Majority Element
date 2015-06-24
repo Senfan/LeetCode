@@ -18,3 +18,20 @@ public:
         }
     }
 };
+
+//编程之美的最佳算法，O(n)20ms
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int res = 0, cnt = 0;
+        for(auto each : nums) {
+            if(res == each) {
+                cnt++;
+            }else {
+                if(cnt == 0) {res = each; cnt++;}
+                else cnt--;
+            }
+        }
+        return res;
+    }
+};

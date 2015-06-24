@@ -65,3 +65,48 @@ public:
         return true;
     }
 };
+
+
+//12ms
+class Solution {
+public:
+    bool isNumber(string s) {
+        if(s.empty()) return false;
+        int sLen = s.size();
+        int i = 0, j = sLen - 1;
+        while(s[i] == ' ') i++;
+        if(s[i] == '-' || s[i] == '+') i++;
+        if(i == sLen) return false;
+        while(s[j] == ' ') j--;
+        bool dotExist = false, eExist = false, existH = false, existP = false, eH = false ,eP = false;
+        for(; i <= j; i++) {
+            if(s[i] == '.') {
+                if(dotExist || (j == i && !existH) || eExist) return false;
+                dotExist = true;
+            }else if(s[i] == 'e') {
+                if(eExist || s[j] == 'e' || !eH) return false;
+                eExist = true;
+                break;
+            }else if(s[i] >= '0' && s[i] <= '9') {
+                if(!dotExist) existH = true;
+                else existP = true;
+                if(!eH) eH = true;
+                else eP = true;
+            }else return false;
+        }
+        if(eExist) {
+            i++;
+            if(s[i] == '-' || s[i] == '+') {
+                if(i >= j) return false;
+                i++;
+            }
+            
+            for(; i <= j; i++) {
+                if(s[i] >= '0' && s[i] <= '9') continue;
+                return false;
+            }
+        }
+        
+        return true;
+    }
+};

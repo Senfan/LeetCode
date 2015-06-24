@@ -1,3 +1,4 @@
+//其实BFS用到的只有两层，其他的用不到,所以可以用两层来记录，这样一来就可以很方便的遍历当前层的所有节点了，否则还需要可以标记
 class Solution {
 public:
     vector<vector<string> > findLadders(string start, string end, unordered_set<string> &dict) {

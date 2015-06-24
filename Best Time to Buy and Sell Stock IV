@@ -1,10 +1,11 @@
+//注意，由于使用滚动数组，所以k要逆序操作更新
 class Solution {
 public:
     int maxProfit(int k, vector<int> &prices) {
         int len = prices.size();
         if(len == 0) return 0;
         
-        if(k >= len) {
+        if(k >= len - 1) {
             return solveMaxProfit(prices);
         }
         

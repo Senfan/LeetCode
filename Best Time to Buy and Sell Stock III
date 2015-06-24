@@ -1,3 +1,30 @@
+//16ms 第二遍编码， 时间耗费在函数调用上，另外主要是判定更新上第一次编码中，只做一次判断就可以更新，而本次编码中不做判断，直接全部更新
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if(prices.size() <= 1) return 0;
+        const int len = prices.size();
+        vector<int> dp0(len), dp1(len);
+        dp0[0] = 0, dp1[len - 1] = 0;
+        int curMin = prices[0], curMax = prices[len-1];
+
+        for(int i = 1; i < len ; i++) {
+            dp0[i] = max(dp0[i-1], prices[i] - curMin);
+            curMin = min(curMin, prices[i]);
+        }
+        for(int i = len - 2; i >= 0; i--) {
+            dp1[i] = max(dp1[i+1], curMax - prices[i]);
+            curMax = max(curMax, prices[i]);
+        }
+        int res = 0;
+        for(int i = 0; i < len; i++) {
+            res = max(res, dp0[i] + dp1[i]);
+        }
+        return res;
+    }
+};
+
+//8ms
 class Solution {
 public:
     int maxProfit(vector<int> &prices) {

@@ -36,3 +36,36 @@ public:
         }else return sign * res;
     }
 };
+
+//12ms 主要是coner cases的思考！！！把逻辑思路想清楚了，然后一条一条的找到相应的解决办法：空格、溢出、非法字符
+class Solution {
+public:
+    int myAtoi(string str) {
+        int len = str.size();
+        if(!len) return 0;
+        long long res = 0;
+        bool negetive = false, isFirst = false;
+        int i = 0;
+        while(str[i] == ' ') i++;
+        for(; i < len; i++) {
+            if(str[i] >= '0' && str[i] <= '9') {
+                res *= 10;
+                res += str[i] - '0';
+                isFirst = true;
+                if(res > INT_MAX) {
+                    if(negetive) return INT_MIN;
+                    return INT_MAX;
+                }
+            }else if(str[i] == '-' && !isFirst) {
+                negetive = true;
+                isFirst = true;
+            }else if(str[i] == '+' && !isFirst) {
+                negetive = false;
+                isFirst = true;
+            }else {
+                return negetive ? -res : res;
+            }
+        }
+        return negetive ? -res : res;
+    }
+};
