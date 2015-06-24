@@ -35,3 +35,21 @@ public:
         return dp[len];
     }
 };
+
+//16ms
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        const int slen = s.size();
+        if(slen == 0  || wordDict.size() == 0) return false;
+        
+        vector<bool> dp(slen+1, false);
+        dp[0] = 1;
+        for(int i = 1; i <= slen; i++) {
+            for(int j = 0; j < i && !dp[i]; j++) {
+                dp[i] = dp[i] || (dp[j] && wordDict.count(s.substr(j, i-j)) > 0);
+            }
+        }
+        return dp[slen];
+    }
+};

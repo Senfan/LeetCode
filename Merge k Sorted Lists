@@ -1,3 +1,4 @@
+//其实本质是归并排序的思想，而且比归并排序更简单了一步
 class Solution {
 public:
     ListNode* merge2Lists(ListNode *l1, ListNode *l2) {
@@ -28,6 +29,93 @@ public:
             l2 = l2 -> next;
             cur = cur -> next; 
         }
+        return res;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int listNum = lists.size();
+        if(listNum == 0) return NULL;
+        if(listNum == 1) return lists[0];
+        if(listNum == 2) return merge2Lists(lists[0], lists[1]);
+        vector<ListNode*> tmp1(lists.begin(), lists.begin() + listNum / 2);
+        vector<ListNode*> tmp2(lists.begin()+listNum/2, lists.end());
+        return merge2Lists(mergeKLists(tmp1), mergeKLists(tmp2));
+    }
+};
+
+//优化一：如果有一个为空，剩下的就不用比较了，直接连接起来就可以 420ms
+//其实本质是归并排序的思想，而且比归并排序更简单了一步
+class Solution {
+public:
+    ListNode* merge2Lists(ListNode *l1, ListNode *l2) {
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+        ListNode *res = NULL, *cur = res;
+        if(l1 -> val > l2 -> val) res = l2, l2 = l2 -> next;
+        else res = l1, l1 = l1 -> next;
+        cur = res;
+        while(l1 && l2) {
+            if(l1 -> val > l2 -> val) {
+                cur -> next = l2;
+                l2 = l2 -> next;
+                cur = cur -> next;
+            }else {
+                cur -> next = l1;
+                l1 = l1 -> next;
+                cur = cur -> next;
+            }
+        }
+        if(l1) 
+            cur -> next = l1;
+            
+        if(l2) 
+            cur -> next = l2;
+            
+        return res;
+    }
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        int listNum = lists.size();
+        if(listNum == 0) return NULL;
+        if(listNum == 1) return lists[0];
+        if(listNum == 2) return merge2Lists(lists[0], lists[1]);
+        vector<ListNode*> tmp1(lists.begin(), lists.begin() + listNum / 2);
+        vector<ListNode*> tmp2(lists.begin()+listNum/2, lists.end());
+        return merge2Lists(mergeKLists(tmp1), mergeKLists(tmp2));
+    }
+};
+
+//优化二：罗姐清晰，使得代码可以更简洁一步 408ms
+
+//其实本质是归并排序的思想，而且比归并排序更简单了一步
+class Solution {
+public:
+    ListNode* merge2Lists(ListNode *l1, ListNode *l2) {
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+        ListNode *res = NULL, *cur = res;
+        if(l1 -> val > l2 -> val) res = l2, l2 = l2 -> next;
+        else res = l1, l1 = l1 -> next;
+        cur = res;
+        while(l1 || l2) {
+            if(!l1) {
+                cur -> next = l2;
+                break;
+            }
+            if(!l2) {
+                cur -> next = l1;
+                break;
+            }
+
+            if(l1 -> val > l2 -> val) {
+                cur -> next = l2;
+                l2 = l2 -> next;
+                cur = cur -> next;
+            }else {
+                cur -> next = l1;
+                l1 = l1 -> next;
+                cur = cur -> next;
+            }
+        }
+            
         return res;
     }
     ListNode* mergeKLists(vector<ListNode*>& lists) {
