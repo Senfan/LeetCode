@@ -19,3 +19,32 @@ public:
         return max(res, dp[0]);
     }
 };
+
+//S ：8ms
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        if(s.empty()) return 0;
+        int sLen = s.size();
+        stack<int> stk;
+        vector<int> dp(sLen, -1);
+        int res = 0, tmp;
+        for(int i = 0; i < sLen; i++) {
+            if(s[i] == '(') {
+                stk.push(i);
+            }else {
+                if(stk.empty()) continue;
+                tmp = stk.top();
+                stk.pop();
+                if(tmp > 0 && dp[tmp-1] != -1) {
+                    dp[i] = dp[tmp-1];
+                    res = max(res, i-dp[i]+1);
+                }else {
+                    dp[i] = tmp;
+                    res = max(res, i-dp[i]+1);
+                }
+            }
+        }
+        return res;
+    }
+};

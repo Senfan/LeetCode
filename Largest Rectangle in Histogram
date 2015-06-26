@@ -1,3 +1,4 @@
+//模型就是从所求出发，分析要用到的条件，然后逐条去构建！！
 class Solution {
 public:
     int largestRectangleArea(vector<int>& height) {
@@ -25,6 +26,69 @@ public:
             res = res < area ? area :res;
         }
 
+        return res;
+    }
+};
+
+//模仿 最大1的矩形，但是由于高度差太大，导致空间利用率低下！超出内存 RE
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& height) {
+        if(height.empty()) return 0;
+        int n = height.size();
+        int maxH = *max_element(height.begin(), height.end());
+        vector<vector<char>> matrix(maxH, vector<char>(n));
+        
+        for(int i = 0; i < n; i++) {
+            int cnt = height[i];
+            for(int j = maxH - 1; cnt > 0; j--, cnt--) {
+                matrix[j][i] = '1';
+            }
+        }
+        
+        vector<int> h(n, 0), l(n, 0), r(n, n);
+        int maxA = 0;
+        for(int i = 0; i < maxH; i++) {
+            int curL = 0, curR = n;
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == '1') h[j]++, l[j] = max(l[j], curL);
+                else h[j] = 0, l[j] = 0, curL = j+1;
+            }
+            
+            for(int j = n-1; j >= 0; j--){
+                if(matrix[i][j] == '1') r[j] = min(r[j], curR);
+                else r[j] = n, curR = j;
+            }
+            
+            for(int j = 0; j < n; j++) {
+                if(h[j]) maxA = max(maxA, h[j] * (r[j] - l[j]));
+            }
+        }
+        return maxA;
+    }
+};
+
+//24ms
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& height) {
+        if(height.empty()) return 0;
+        height.push_back(0);
+        int cnt = height.size();
+        
+        int i = 0, res = 0, area;
+        stack<int> stk;
+        while(i < cnt) {
+            if(stk.empty() || height[i] >= height[stk.top()]) {
+                stk.push(i);
+                i++;
+            }else {
+                int ind = stk.top();
+                stk.pop();
+                area = height[ind] * (stk.empty() ? i : i - stk.top() - 1);
+                if(area > res) res = area;
+            }
+        }
         return res;
     }
 };

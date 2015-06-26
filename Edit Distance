@@ -30,3 +30,25 @@ public:
 
     }  
 };
+
+//注意模型的建立！！！静下心来仔细分析，肯定有子结构性质，如何把问题划分成子结构才是问题的关键
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+        int w1Len = word1.size(), w2Len = word2.size();
+        vector<vector<int>> dp(w1Len+1, vector<int>(w2Len+1));
+        
+        for(int i = 0; i <= w1Len; i++) dp[i][0] = i;
+        for(int i = 0; i <= w2Len; i++) dp[0][i] = i;
+        
+        for(int i = 1; i <= w1Len; i++) {
+            for(int j = 1; j <= w2Len; j++) {
+                if(word1[i-1] == word2[j-1]) dp[i][j] = dp[i-1][j-1];
+                else {
+                    dp[i][j] = min(min(dp[i-1][j], dp[i-1][j-1]), dp[i][j-1]) + 1;
+                }
+            }
+        }
+        return dp[w1Len][w2Len];
+    }
+};

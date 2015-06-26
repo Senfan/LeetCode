@@ -20,3 +20,21 @@ public:
         return res;
     }
 };
+
+
+//S : TLE
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        if(nums.empty()) return 0;
+        int numCnt = nums.size();
+        vector<int> res(numCnt, INT_MAX);
+        res[0] = 0;
+
+        for(int i = 0; i < numCnt; i++) {
+            for(int j = 1; (i+j) < numCnt && j <= nums[i]; j++)
+                res[i+j] = min(res[i+j], res[i]+1);
+        }
+        return res[numCnt-1];
+    }
+};

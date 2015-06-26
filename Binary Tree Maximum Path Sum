@@ -58,3 +58,28 @@ public:
         return res;
     }
 };
+
+//32ms
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        int res = INT_MIN;
+        recFun(root, res);
+        return res;
+    }
+    
+    int recFun(TreeNode *root, int &res) {
+        if(root == NULL) return 0;
+        int left = recFun(root -> left, res);
+        int right = recFun(root -> right, res);
+        int tmpSum = 0;
+        if(left > 0) tmpSum += left;
+        if(right > 0) tmpSum += right;
+        tmpSum += root -> val;
+        if(res < tmpSum) res = tmpSum;
+        int bigger = left > right ? left : right;
+        if(bigger > 0) root -> val += bigger;
+        return root -> val;
+    }
+    
+};

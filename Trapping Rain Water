@@ -47,3 +47,40 @@ public:
         return res;
     }
 };
+
+//12ms
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if(height.empty()) return 0;
+        int cnt = height.size();
+
+        int ind = 0;
+        for(; ind < cnt; ind++) {
+            if(height[ind]) break;
+        }
+
+        stack<int> stk;
+        int res = 0;
+        while(ind < cnt) {
+            if(stk.empty() || height[ind] <= height[stk.top()]) {
+                if(!stk.empty() && height[ind] == height[stk.top()]) stk.top() = ind;
+                else stk.push(ind);
+                ind++;
+            }else {
+                int bottom = height[stk.top()];
+                stk.pop();
+                while(!stk.empty() && height[stk.top()] <= height[ind]) {
+                    res += (ind - stk.top() - 1) * (height[stk.top()] - bottom);
+                    bottom = height[stk.top()];
+                    stk.pop();
+                }
+                if(!stk.empty()) {
+                    res += (ind - stk.top() - 1) * (height[ind] - bottom);
+                }
+                stk.push(ind);
+            }
+        }
+        return res;
+    }
+};

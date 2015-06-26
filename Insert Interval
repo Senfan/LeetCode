@@ -29,3 +29,88 @@ public class Solution {
     return result;
 }
 }
+
+//self :596ms 二分查找找插入点，然后合并
+class Solution {
+public:
+    vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+        vector<Interval> res;
+        if(intervals.empty()) {
+            res.push_back(newInterval);
+            return res;
+        }
+
+        int intNum = intervals.size();
+        if(intNum == 1) {
+            if(newInterval.start > intervals[0].end) {
+                res.push_back(intervals[0]);
+                res.push_back(newInterval);
+                return res;
+            }else if(newInterval.end < intervals[0].start) {
+                res.push_back(newInterval);
+                res.push_back(intervals[0]);
+                return res;
+            }else {
+                newInterval.start = min(newInterval.start, intervals[0].start);
+                newInterval.end = max(newInterval.end, intervals[0].end);
+                res.push_back(newInterval);
+                return res;
+            }
+        }
+        int l = 0, r = intNum - 1, mid, insertPos = -1;
+        if(newInterval.start <= intervals[0].start) insertPos = 0;
+        if(newInterval.start > intervals[intNum-1].end) insertPos = intNum;
+
+        while(insertPos == -1 &&  l < r - 1) {
+            mid = l + ((r - l) >> 1);
+            if(newInterval.start == intervals[mid].start) {
+                insertPos = mid;
+            }else if(newInterval.start < intervals[mid].start){
+                r = mid;
+            }else {
+                l = mid;
+            }
+        }
+
+        if(insertPos == -1) { //not found the pos
+            mid = l + ((r - l) >> 1);
+            if(newInterval.start == intervals[mid].start) {
+                insertPos = mid;
+            }else if(newInterval.start < intervals[mid].start){
+                insertPos = mid;
+            }else {
+                insertPos = r;
+            }
+        }
+
+        l = insertPos - 1;
+        if(insertPos > 0 && intervals[insertPos - 1].end >= newInterval.start) {
+            l = insertPos - 2;
+            newInterval.start = intervals[insertPos - 1].start;
+            newInterval.end = max(intervals[insertPos - 1].end, newInterval.end);
+        }else if(insertPos == 0) {
+            l = -1;
+        }
+
+        int i;
+        for(i = insertPos; i < intNum; i++) {
+            if(intervals[i].start <= newInterval.end) {
+                newInterval.end = max(newInterval.end, intervals[i].end);
+                newInterval.start = min(newInterval.start, intervals[i].start);
+            }else {
+                r = i;
+                break;
+            }
+        }
+        if( i == intNum) r = intNum;
+
+        for(int i = 0; i <= l; i++) {
+            res.push_back(intervals[i]);
+        }
+        res.push_back(newInterval);
+        for(int i = r; i < intNum; i++) {
+            res.push_back(intervals[i]);
+        }
+        return res;
+    }
+};

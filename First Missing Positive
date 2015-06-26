@@ -1,3 +1,4 @@
+//4ms 这样的话，其实每一个数是跟位置之间意义对应的，可以进行原地转换操作，直到找到相应的结果为止
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
@@ -10,5 +11,19 @@ public:
         for(int i = 0; i < len; i++) 
             if(nums[i] != i+1) return i+1;
         return len+1;
+    }
+};
+
+//4ms
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int numCnt = nums.size();
+        if(numCnt == 0) return 1;
+        unordered_set<int> setMap;
+        
+        for(auto each : nums) setMap.insert(each);
+        for(int i = 1; i <= INT_MAX; i++) 
+            if(setMap.count(i) == 0) return i;
     }
 };
