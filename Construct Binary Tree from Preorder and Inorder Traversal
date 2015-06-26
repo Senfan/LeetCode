@@ -30,3 +30,27 @@ public:
         return recursePro(preorder, inorder, 0, preorder.size()-1, 0, inorder.size()-1);
     }
 };
+
+//60ms
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if(preorder.empty()) return NULL;
+        TreeNode *root = recurseBuild(preorder, 0, preorder.size()-1, inorder, 0, inorder.size() - 1);
+        return root;
+    }
+    
+    TreeNode *recurseBuild(vector<int> &preorder, int pleft, int pright, vector<int> &inorder, int ileft, int iright) {
+        TreeNode *root = new TreeNode(preorder[pleft]);
+        int cnt = 0;
+        for(int i = ileft; i <= iright; i++) {
+            if(inorder[i] == preorder[pleft]) break;
+            cnt++;
+        }
+        if(cnt)
+            root -> left = recurseBuild(preorder, pleft+1, pleft+1+cnt, inorder, ileft, ileft+cnt-1);
+        if(ileft + cnt < iright)
+            root -> right = recurseBuild(preorder, pleft+cnt+1, pright, inorder, ileft+cnt+1, iright);
+        return root;
+    }
+};
