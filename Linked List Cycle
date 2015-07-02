@@ -55,3 +55,23 @@ public:
         return false;
     }
 };
+
+//S : 12ms
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head == NULL) return false;
+        ListNode *curNode = head, *preNode = head;
+        
+        while(curNode) {
+            if(curNode -> next && curNode -> next -> next) {
+                preNode = preNode -> next;
+                curNode = curNode -> next -> next;
+                if(curNode == preNode) return true;
+                else continue;
+            }else {
+                return false;
+            }
+        }
+    }
+};

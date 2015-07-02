@@ -19,3 +19,28 @@ public:
         return res;
     }
 };
+
+//S 二进制法生成子集 8ms
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> subRes;
+        res.push_back(subRes);
+        if(nums.empty()) return res;
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+        long long cnt = pow(2, n);
+        
+        for(int i = 1; i < cnt; i++) {
+            vector<int> tmp;
+            long long base = 1;
+            for(int j = 0; j < n; j++) {
+                if(i & base) tmp.push_back(nums[j]);
+                base <<= 1;
+            }
+            res.push_back(tmp);
+        }
+        return res;
+    }
+};

@@ -31,3 +31,21 @@ public:
         preOrder(root);
     }
 };
+
+// S : 树的先序遍历 8ms
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(root == NULL) return;
+        
+        stack<TreeNode*> stk;
+        stk.push(NULL);
+        TreeNode *p = root, *pre;
+        while(p != NULL) {
+            if(p -> right) stk.push(p -> right);
+            if(p -> left) {p -> right = p -> left; pre = p; p = p -> left; pre -> left = NULL;}
+            else {p -> right = stk.top(); p = stk.top(); stk.pop();}
+        }
+        return;
+    }
+};

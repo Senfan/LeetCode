@@ -31,3 +31,28 @@ public:
         return res;
     }
 };
+
+// R 3ms
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(root == NULL) return res;
+        stack<TreeNode *> stk;
+        stk.push(root);
+        
+        TreeNode *curNode = root;
+        
+        while(!stk.empty()) {
+            res.push_back(curNode -> val);
+            if(curNode -> right) stk.push(curNode -> right);
+            if(curNode -> left) curNode = curNode -> left;
+            else {
+                curNode = stk.top();
+                stk.pop();
+            }
+        }
+        
+        return res;
+    }
+};

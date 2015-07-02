@@ -1,0 +1,42 @@
+//R 16ms 沉下心来，仔细寻找问题的出发点！！！  ++等运算符，作为参数传递时，也是先调用后操作，所以getNum(s, i++)编译通不过！！
+// 2 空格的处理技巧， 可以用两个条件同时控制，这样就简化了代码
+
+class Solution {
+public:
+    int calculate(string s) {
+        if(s.empty()) return 0;
+        len = s.size();
+        int res = 0, sign = 1, i = 0, num = getNum(s, i);
+        
+        while(i < len) {
+            if(s[i] == '+') {
+                res += sign * num;
+                sign = 1;
+                num = getNum(s, ++i);
+            }else if(s[i] == '-') {
+                res += sign * num;
+                sign = -1;
+                num = getNum(s, ++i);
+            }else if(s[i] == '*') {
+                num *= getNum(s, ++i);
+            }else {
+                num /= getNum(s, ++i);
+            }
+        }
+        res += num * sign;
+        return res;
+    }
+private:
+    int len;
+    int getNum(string &s, int &i) {
+        int res = 0;
+        while(i < len) {
+            if(s[i] >= '0' && s[i] <= '9')
+                res = res * 10 + s[i] - '0';
+            else if(s[i] != ' ')
+                return res;
+            i++;
+        }
+        return res;
+    }
+};

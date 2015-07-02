@@ -28,3 +28,29 @@ public:
         return res;
     }
 };
+
+// S :14ms
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        if(nums.empty()) return 0;
+        int nLen = nums.size();
+        sort(nums.begin(), nums.end());
+        int res, minDif = INT_MAX;
+        
+        for(int i = 0; i < nLen; i++) {
+            int l = i + 1, r = nLen - 1, sum;
+            while(l < r) {
+                sum = nums[i] + nums[l] + nums[r];
+                if(sum == target) return target;
+                if(abs(sum - target) < minDif) {
+                    minDif = abs(sum - target);
+                    res = sum;
+                }
+                if(sum > target) r--;
+                else l++;
+            }
+        }
+        return res;
+    }
+};

@@ -58,3 +58,35 @@ public:
         return head;
     }
 };
+
+
+// S: 27ms
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return head;
+        
+        ListNode *iniNode = new ListNode(-1);
+        iniNode -> next = head;
+        ListNode *curNode = head -> next, *preNode = head, *tmpNode;
+        
+        while(curNode) {
+            if(curNode -> val >= preNode -> val) {
+                preNode = preNode -> next;
+                curNode = curNode -> next;
+            }else {
+                tmpNode = curNode;
+                curNode = curNode -> next;
+                preNode -> next = curNode;
+                
+                ListNode *insertPos = iniNode;
+                while(insertPos -> next -> val <= tmpNode -> val) insertPos = insertPos -> next;
+                tmpNode -> next = insertPos -> next;
+                insertPos -> next = tmpNode;
+            }
+        }
+        head = iniNode -> next;
+        delete iniNode;
+        return head;
+    }
+};

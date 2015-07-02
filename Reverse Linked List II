@@ -47,3 +47,36 @@ public:
         return head;
     }
 };
+
+// S 4ms
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if(head == NULL || m == n) return head;
+        
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        
+        ListNode *curNode = head, *preNode = iniNode;
+        int cnt = 1;
+        while(cnt < m) {
+            curNode = curNode -> next;
+            preNode = preNode -> next;
+            cnt++;
+        }
+        
+        ListNode *next1 = curNode -> next, *next2;
+        while(cnt < n) {
+            next2 = next1 -> next;
+            next1 -> next = curNode;
+            curNode = next1;
+            next1 = next2;
+            cnt++;
+        }
+        next2 = preNode -> next;
+        preNode -> next -> next = NULL;
+        preNode -> next = curNode;
+        next2 -> next = next1;
+        return iniNode -> next;
+    }
+};

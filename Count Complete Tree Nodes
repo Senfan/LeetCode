@@ -17,7 +17,7 @@ public:
     }
 };
 
-// solution 2: o(lgn * lgn), 递归判断每一颗树是不是perfect complete binary tree 88ms
+// solution 2: o(lgn * lgn), 递归判断每一颗树是不是perfect complete binary tree 88ms / 311ms
 
 class Solution {
 public:

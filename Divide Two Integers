@@ -1,6 +1,6 @@
 O(log2 n) 15ms
 
-
+//注意从微观的角度去处理问题，数值问题记得用位处理的方式更为高效！！！
 #include<limits.h>
 using namespace std;
 class Solution {

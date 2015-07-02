@@ -16,3 +16,29 @@ public:
         return res;
     }
 };
+
+// S 24ms
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int size = height.size();
+        if(size < 2) return 0;
+        
+        int l = 0, r = size - 1, w;
+        int res = 0, area, tem;
+        
+        while(l < r) {
+            w = r - l;
+            area = min(height[l], height[r]) * w;
+            res = max(res, area);
+            if (height[l] <= height[r]) {
+                tem = height[l];
+                while(height[++l] <= tem);
+            }else {
+                tem = height[r];
+                while(height[--r] <= tem);
+            }
+        }
+        return res;
+    }
+};

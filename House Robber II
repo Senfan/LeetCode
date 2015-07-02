@@ -1,3 +1,5 @@
+//记住动态规划要用到的子问题范围，进而优化空间问题！！！
+//环形问题的模型！！！其实用两个就可以包含所有的问题了
 class Solution {
 public:
     int rob(vector<int>& nums) {

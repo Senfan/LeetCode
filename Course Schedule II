@@ -31,3 +31,78 @@ public:
         else return tmp;
     }
 };
+
+// S 864ms
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<int> res;
+        if(prerequisites.empty()) {
+            for(int i = 0; i < numCourses; i++) res.push_back(i); 
+            return res;
+        }
+        unordered_map<int, int> count;
+        unordered_map<int, vector<int>> childs;
+        
+        for(int i = 0; i < numCourses; i++) count[i] = 0;
+        for(auto each : prerequisites) {
+            count[each.first]++;
+            childs[each.second].push_back(each.first);
+        }
+        
+        bool found = false;
+        while(res.size() < numCourses) {
+            for(int i = 0; i < numCourses; i++) {// 可以用队列记录，这样就不用每次都找了
+                if(count.count(i) > 0) {
+                    if(count[i] == 0) {
+                        found = true;
+                        res.push_back(i);
+                        count.erase(i);
+                        for(int j = 0; j < childs[i].size(); j++) {
+                            count[childs[i][j]]--;
+                        }
+                    }
+                }
+            }
+            if(!found) { res.clear(); return res;}
+            else found = false;
+        }
+        return res;
+    }
+};
+
+//用队列改进拓扑排序后：508ms
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<int> res;
+        if(prerequisites.empty()) {
+            for(int i = 0; i < numCourses; i++) res.push_back(i); 
+            return res;
+        }
+        unordered_map<int, int> count;
+        unordered_map<int, vector<int>> childs;
+        
+        for(int i = 0; i < numCourses; i++) count[i] = 0;
+        for(auto each : prerequisites) {
+            count[each.first]++;
+            childs[each.second].push_back(each.first);
+        }
+        
+        queue<int> que;
+        for(int i = 0; i < numCourses; i++) if(count[i] == 0) que.push(i);
+        bool found = false;
+        while(!que.empty()) {
+            int i = que.front();
+            que.pop();
+            res.push_back(i);
+            for(int j = 0; j < childs[i].size(); j++) {
+                count[childs[i][j]]--;
+                if(count[childs[i][j]] == 0) que.push(childs[i][j]);
+            }
+        }
+        if(res.size() == numCourses) return res;
+        res.clear();
+        return res;
+    }
+};

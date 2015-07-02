@@ -46,3 +46,36 @@ public:
  * BSTIterator i = BSTIterator(root);
  * while (i.hasNext()) cout << i.next();
  */
+
+ //你傻吗，本来就是一种中序遍历的题目！！！ 28ms， 几下下心来思考
+ class BSTIterator {
+private:
+    stack<TreeNode*> stk;
+    TreeNode *curNode, *tmp;
+public:
+    BSTIterator(TreeNode *root) {
+        curNode = root;
+        tmp = NULL;
+        while(curNode) {
+            stk.push(curNode);
+            curNode = curNode -> left;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !stk.empty();
+    }
+
+    /** @return the next smallest number */
+    int next() {
+        curNode = stk.top();
+        stk.pop();
+        tmp = curNode -> right;
+        while(tmp) {
+            stk.push(tmp);
+            tmp = tmp -> left;
+        }
+        return curNode -> val;
+    }
+};

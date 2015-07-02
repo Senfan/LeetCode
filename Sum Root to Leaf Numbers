@@ -31,3 +31,24 @@ public:
         return ans;
     }
 };
+
+//S 4ms
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+        int res = 0;
+        if(root == NULL) return 0;
+        dfs(root, 0, res);
+        return res;
+    }
+    
+    void dfs(TreeNode *root, int num, int &res) {
+        num = num * 10 + root -> val;
+        if(root -> left == NULL && root -> right == NULL) {
+            res += num;
+            return;
+        }
+        if(root -> left) dfs(root -> left ,num, res);
+        if(root -> right) dfs(root -> right, num, res);
+    }
+};

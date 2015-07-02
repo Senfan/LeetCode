@@ -29,3 +29,31 @@ public:
         return be;
     }
 };
+
+// S 10ms
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        if(gas.empty()) return -1;
+        int nGas = gas.size();
+        int start = 0, remain = 0, cnt = 0, condition = 0;
+        while(condition <= nGas) {
+            for(int i = start; cnt < nGas;) {
+                remain += gas[i];
+                remain -= cost[i];
+                if(remain >= 0)  {
+                    i = (++i) % nGas;
+                    cnt++;
+                }else {
+                    start = (i + 1) % nGas;
+                    remain = 0;
+                    cnt = 0;
+                    condition++;
+                    break;
+                }
+            }
+            if(cnt == nGas) return start;
+        }
+        return -1;
+    }
+};

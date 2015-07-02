@@ -77,3 +77,42 @@ public:
         
     }
 };
+
+// S :64ms
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == NULL || head -> next == NULL || head -> next -> next == NULL) return;
+        
+        ListNode *mid = head, *curNode = head;
+        while(curNode) {
+            if(curNode -> next && curNode -> next -> next) {
+                mid = mid -> next;
+                curNode = curNode -> next -> next;
+            }else {
+                break;
+            }
+        }
+        
+        curNode = mid -> next;
+        mid -> next = NULL;
+        ListNode *nextNode = curNode -> next, *tmp;
+        curNode -> next = NULL;
+        while(nextNode) {
+            tmp = nextNode -> next;
+            nextNode -> next = curNode;
+            curNode = nextNode;
+            nextNode = tmp;
+        }
+        ListNode *head2 = curNode, *tmp2;
+        curNode = head;
+        while(head2) {
+            tmp = curNode -> next;
+            curNode -> next = head2;
+            tmp2 = head2 -> next;
+            head2 -> next = tmp;
+            head2 = tmp2;
+            curNode = tmp;
+        }
+    }
+};

@@ -7,6 +7,7 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ //典型递归运算，但是其中很多子问题是重复计算的，可以用记录法进行时间上的优化
 class Solution {
 public:
 

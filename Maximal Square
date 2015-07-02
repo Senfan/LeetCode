@@ -21,3 +21,58 @@ public:
         return pow(maxSize, 2);
     }
 };
+
+//S : 12ms
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int lines = matrix.size();
+        if(lines == 0) return 0;
+        int cols = matrix[0].size();
+        
+        vector<vector<int>> record(lines, vector<int>(cols));
+        int maxLen = 0;
+        
+        for(int i = 0; i < lines; i++) {record[i][0] = matrix[i][0] == '1' ? 1 : 0; maxLen = max(maxLen, record[i][0]);}
+        for(int j = 0; j < cols; j++) {record[0][j] = matrix[0][j] == '1' ? 1 : 0; maxLen = max(maxLen, record[0][j]);}
+        
+        for(int i = 1; i < lines; i++) 
+            for(int j = 1; j < cols; j++) {
+                if(matrix[i][j] == '1') {
+                    if(matrix[i-1][j] == '1' && matrix[i-1][j-1] == '1' && matrix[i][j-1] == '1') {
+                        record[i][j] = 1 + min(min(record[i][j-1], record[i-1][j-1]), record[i-1][j]);
+                        maxLen = max(maxLen, record[i][j]);
+                    }else
+                        record[i][j] = 1;
+                }else
+                    record[i][j] = 0;
+            }
+        return maxLen * maxLen;
+    }
+};
+
+// 17ms 函数调用比较好时间，而判断可以避免提前判断函数是否调用
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int lines = matrix.size();
+        if(lines == 0) return 0;
+        int cols = matrix[0].size();
+        
+        vector<vector<int>> record(lines, vector<int>(cols));
+        int maxLen = 0;
+        
+        for(int i = 0; i < lines; i++) {record[i][0] = matrix[i][0] == '1' ? 1 : 0; maxLen = max(maxLen, record[i][0]);}
+        for(int j = 0; j < cols; j++) {record[0][j] = matrix[0][j] == '1' ? 1 : 0; maxLen = max(maxLen, record[0][j]);}
+        
+        for(int i = 1; i < lines; i++) 
+            for(int j = 1; j < cols; j++) {
+                if(matrix[i][j] == '1') {
+                    record[i][j] = 1 + min(min(record[i][j-1], record[i-1][j-1]), record[i-1][j]);
+                    maxLen = max(maxLen, record[i][j]);
+                }else
+                    record[i][j] = 0;
+            }
+        return maxLen * maxLen;
+    }
+};

@@ -31,3 +31,30 @@ public:
         return true;
     }
 };
+//S 迭代算法，优化空间：16ms 
+//int64_t类型 ： INT64_MIN
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(root == NULL) return true;
+        stack<TreeNode*> stk;
+        TreeNode *curNode = root;
+        int64_t pre = -2147483649;
+        do {
+            while(curNode) {
+                stk.push(curNode);
+                curNode = curNode -> left;
+            }
+            if(!stk.empty()) {
+                curNode = stk.top();
+                stk.pop();
+                if(curNode -> val <= pre) return false;
+                else {
+                    pre = curNode -> val;
+                }
+                curNode = curNode -> right;
+            }
+        }while(curNode || !stk.empty());
+        return true;
+    }
+};

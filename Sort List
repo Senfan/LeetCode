@@ -57,3 +57,64 @@ public:
         return head;
     }
 };
+
+//R 64ms链表的归并排序
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getMid(ListNode *low) {
+        ListNode *mid = low, *curNode = low;
+        
+        while(curNode) {
+            if(curNode -> next) {
+                if(curNode -> next -> next) {
+                    mid = mid -> next;
+                    curNode = curNode -> next -> next;
+                }
+            }
+            curNode = curNode -> next;
+        }
+        return mid;
+    }
+    
+    ListNode *mergeSort(ListNode *left) {
+        if(left == NULL || left -> next == NULL) return left;
+        
+        ListNode *mid = getMid(left);
+        ListNode *tmpNode = mid -> next;
+        mid -> next = NULL;
+        left = mergeSort(left);
+        tmpNode = mergeSort(tmpNode);
+        
+        ListNode *iniNode = new ListNode(-1);
+        ListNode *pre = iniNode;
+        
+        while(left && tmpNode) {
+            if(left -> val >= tmpNode -> val) {
+                pre -> next = tmpNode;
+                tmpNode = tmpNode -> next;
+            }else {
+                pre -> next = left;
+                left = left -> next;
+            }
+            pre = pre -> next;
+        }
+        
+        if(left) pre -> next = left;
+        if(tmpNode) pre -> next = tmpNode;
+        left = iniNode -> next;
+        delete iniNode;
+        return left;
+    }
+    ListNode* sortList(ListNode* head) {
+        head = mergeSort(head);
+        return head;
+    }
+};

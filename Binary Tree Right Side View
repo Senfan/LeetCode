@@ -46,3 +46,22 @@ public:
         return res;
     }
 };
+
+
+// S DFS : 4ms
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        if(root == NULL) return res;
+        dfs(root, res, 1);
+        return res;
+    }
+    
+    void dfs(TreeNode *root, vector<int> &res, int curDeep) {
+        if(root == NULL) return;
+        if(curDeep > res.size()) res.push_back(root -> val);
+        dfs(root -> right, res, curDeep + 1);
+        dfs(root -> left, res, curDeep + 1);
+    }
+};

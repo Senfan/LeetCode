@@ -7,6 +7,7 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+ //16ms
 class Solution {
 public:
 
@@ -27,5 +28,25 @@ public:
     TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
         if(inorder.empty()) return NULL;
         return recursePro(inorder, postorder, 0, inorder.size() - 1, 0, postorder.size() - 1);
+    }
+};
+
+
+//S 24ms
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        unordered_map<int, int> map;
+        for(int i = 0; i < inorder.size(); i++) map[inorder[i]] = i;
+        TreeNode *root = recBuild(inorder, 0, inorder.size()-1, postorder, 0, postorder.size()-1, map);
+        return root;
+    }
+    
+    TreeNode* recBuild(vector<int> &inorder, int inL, int inR, vector<int> &postorder, int pL, int pR, unordered_map<int, int> &map) {
+        if(inL > inR) return NULL;
+        TreeNode *root = new TreeNode(postorder[pR]);
+        root -> left = recBuild(inorder, inL, map[postorder[pR]]-1, postorder, pL, pL + map[postorder[pR]] - inL - 1, map);
+        root -> right = recBuild(inorder, map[postorder[pR]]+1, inR, postorder, pL + map[postorder[pR]]-inL, pR-1, map);
+        return root;
     }
 };

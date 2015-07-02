@@ -35,3 +35,34 @@ public:
         return res;
     }
 };
+
+// S 快速排序 4ms，时间复杂度是类线性的，另外，领教了快速排序的优化：A 分布均匀的优化：rand + 相等时的选择 B ：cutOff的优化 C：减少交换次数，这时候应该注意最后要交换的位置是i还是J D： 哨兵的利用减少比较次数
+//一定要注意沉下心来思考问题，从题目出发而不是模棱两可的照搬，这样后面自己写的时候，细节就不是特别清晰，导致眼高手低
+//注意程序的细节优化：循环内部尽量减少函数的调用，如果函数比较简单，则可以做成内联函数；哨兵的利用可以减少比较次数
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        if(nums.empty()) return 0;
+        
+        int nLen = nums.size();
+        return quickSort(nums, 0, nLen - 1, k);
+        
+    }
+    
+    int quickSort(vector<int> &nums, int l, int r, int k) {
+        int i , j;
+        //swap(nums[rand() % (r - l) + l], nums[r]);
+        int tmp = nums[r];
+        i = l - 1, j = r;
+        while(true) {
+            do j--; while(j >= l && nums[j] < tmp);
+            do i++; while(nums[i] > tmp);
+            if(i > j) break;
+            int t = nums[i]; nums[i] = nums[j]; nums[j] = t;
+        }
+        swap(nums[r], nums[i]);
+        if(i == k - 1) return nums[i];
+        else if(i >= k) return quickSort(nums, l, i - 1, k);
+        else return quickSort(nums, i + 1, r, k);
+    }
+};

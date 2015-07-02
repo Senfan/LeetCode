@@ -20,3 +20,50 @@ public:
         return res >= e - star ? res : e - star;
     }
 };
+
+// S : 100ms
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.empty()) return 0;
+        int len = s.size();
+        
+        unordered_map<char, int> map;
+        int tmp = 0, res = 0, beg = 0;
+        for(int i = 0; i < len; i++) {
+            if(map.count(s[i]) && map[s[i]] >= beg) {
+                if(tmp > res) res = tmp;
+                tmp = i - map[s[i]];
+                beg = map[s[i]] + 1;
+                map[s[i]] = i;
+            }else {
+                map[s[i]] = i;
+                tmp++;
+            }
+        }
+        if(tmp > res) res = tmp;
+        return res;
+    }
+};
+
+// 进一步优化：减少运算量 60ms
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if(s.empty()) return 0;
+        int len = s.size();
+        
+        unordered_map<char, int> map;
+        int res = 0, beg = 0, i;
+        for(i = 0; i < len; i++) {
+            if(map.count(s[i]) && map[s[i]] >= beg) {
+                if(i - beg > res) res = i - beg;
+                beg = map[s[i]] + 1;
+                map[s[i]] = i;
+            }else {
+                map[s[i]] = i;
+            }
+        }
+        return res >= i - beg ? res : i - beg;
+    }
+};

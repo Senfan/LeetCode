@@ -41,3 +41,30 @@ public:
         return head;
     }
 };
+
+// S 4ms
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return head;
+        
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        
+        ListNode *preNode = iniNode, *cur1 = head, *cur2 = head -> next, *tmp;
+        while(cur2) {
+            tmp = cur2 -> next;
+            cur2 -> next = cur1;
+            preNode -> next = cur2;
+            cur1 -> next = tmp;
+            preNode = cur1;
+            if(!tmp) break;
+            cur1 = tmp;
+            cur2 = tmp -> next;
+        }
+        
+        head = iniNode -> next;
+        delete iniNode;
+        return head;
+    }
+};

@@ -25,3 +25,32 @@ public:
         return pre;
     }
 };
+
+//R 14ms
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head == NULL) return NULL;
+        ListNode *preNode = head, *curNode = head;
+        bool hasCycle = false;
+        
+        while(curNode) {
+            if(curNode -> next && curNode -> next -> next) {
+                preNode = preNode -> next;
+                curNode = curNode -> next -> next;
+                if(preNode == curNode) {hasCycle = true; break;}
+                else continue;
+            }else {
+                break;
+            }
+        }
+        
+        if(!hasCycle) return NULL;
+        preNode = head;
+        while(preNode != curNode) {
+            preNode = preNode -> next;
+            curNode = curNode -> next;
+        }
+        return curNode;
+    }
+};

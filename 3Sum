@@ -125,6 +125,7 @@ public:
     }
 };
 
+//R :59ms  只要算过了的就不要算了！注意条件是什么，一定要纸笔先行
 class Solution {
 public:
     vector<vector<int> > threeSum(vector<int> &num) {
