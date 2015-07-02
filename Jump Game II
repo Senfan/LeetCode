@@ -38,3 +38,23 @@ public:
         return res[numCnt-1];
     }
 };
+
+//R : 绝妙的算法模型！这种关系要结成网，一定要构成这种模型，在图谱中 16ms
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        if(nums.empty()) return 0;
+        int numCnt = nums.size();
+        
+        int curReach = 0, curMax = 0, res = 0;
+        
+        for(int i = 0; i < numCnt; i++) {
+            if(curReach < i) {
+                res++;
+                curReach = curMax;
+            }
+            curMax = max(curMax, nums[i]+i);
+        }
+        return res;
+    }
+};
