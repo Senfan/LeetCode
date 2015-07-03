@@ -15,3 +15,15 @@ public:
         for(; i < cb + cw + cr; i++) A[i] = 2;
     }
 };
+
+// R 深入思考，然后构建模型，然后内在化，形成知识网络：核心就是交换操作，把确定的放到该放的位置，不确定的一律否定处理
+class Solution {
+public:
+    void sortColors(vector<int>& A) {
+        int n = A.size(), second=n-1, zero=0;
+        for (int i=0; i<=second; i++) {
+            while (A[i]==2 && i<second) swap(A[i], A[second--]);
+            while (A[i]==0 && i>zero) swap(A[i], A[zero++]);
+        }
+    }
+};

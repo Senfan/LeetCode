@@ -79,3 +79,80 @@ private:
 // Trie trie;
 // trie.insert("somestring");
 // trie.search("key");
+
+//S: 64ms
+
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    char val;
+    TrieNode* childs[26];
+    bool isLeaf;
+    TrieNode() {
+        isLeaf = false;
+        fill_n(childs, 26, nullptr);
+    }
+    TrieNode(char c) {
+        isLeaf = false;
+        val = c;
+        fill_n(childs, 26, nullptr);
+    }
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        if(word.empty()) return;
+        int len = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < len; i++) {
+            int ind = word[i] - 'a';
+            if(curNode -> childs[ind] == NULL) {
+                TrieNode *tmpNode = new TrieNode(word[i]);
+                curNode -> childs[ind] = tmpNode;
+            }
+            curNode = curNode -> childs[ind];
+        }
+        curNode -> isLeaf = true;
+    }
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        if(word.empty()) return true;
+        int n = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < n; i++) {
+            int ind = word[i] - 'a';
+            if(curNode -> childs[ind] == NULL) return false;
+            curNode = curNode -> childs[ind];
+        }
+        return curNode -> isLeaf;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    bool startsWith(string prefix) {
+        if(prefix.empty()) return true;
+        int n = prefix.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < n; i++) {
+            int ind = prefix[i] - 'a';
+            if(curNode -> childs[ind] == NULL) return false;
+            curNode = curNode -> childs[ind];
+        }
+        return true;
+    }
+
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");

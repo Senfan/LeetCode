@@ -1,3 +1,4 @@
+// 注意符号判断，可以从更高层次判断
 class Solution {
 public:
     string fractionToDecimal(int64_t numerator, int64_t denominator) {

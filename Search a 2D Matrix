@@ -1,3 +1,4 @@
+//可以看成一个一维数组，整体进行讨论
 class Solution {
 public:
     bool searchMatrix(vector<vector<int> > &matrix, int target) {
