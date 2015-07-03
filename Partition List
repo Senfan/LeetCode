@@ -38,3 +38,43 @@ public:
         return head->val >= x ? res->next : head;
     }
 };
+
+//S : 8ms
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(head == NULL || head -> next == NULL) return head;
+        
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        ListNode *curNode = iniNode;
+        while(curNode -> next) {
+            if(curNode -> next -> val < x) curNode = curNode -> next;
+            else {
+                ListNode *midNode = curNode -> next, *postNode = midNode;
+                while(postNode -> next) {
+                    if(postNode -> next -> val >= x) postNode = postNode -> next;
+                    else {
+                        ListNode *tmp = postNode -> next -> next;
+                        curNode -> next = postNode -> next;
+                        postNode -> next -> next = midNode;
+                        curNode = curNode -> next;
+                        postNode -> next = tmp;
+                    }
+                }
+                break;
+            }
+        }
+        head = iniNode -> next;
+        delete iniNode;
+        return head;
+    }
+};

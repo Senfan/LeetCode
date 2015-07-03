@@ -22,3 +22,22 @@ public:
         return res;
     }
 };
+
+//S 4ms
+class Solution {
+public:
+    int minSubArrayLen(int sum, vector<int>& nums) {
+        if(nums.empty()) return 0;
+        int nLen = nums.size();
+
+        int left = 0, right = 0;
+        int res = INT_MAX, curSum = 0;
+        while(right < nLen || curSum > sum) {
+            while(right < nLen && curSum < sum) curSum += nums[right++];
+            while(curSum >= sum && left <= right) curSum -= nums[left++];
+            if(right == nLen && left == 0) return 0;
+            if(res > right - left + 1) res = right - left + 1;
+        }
+        return res;
+    }
+};

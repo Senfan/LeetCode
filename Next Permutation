@@ -28,3 +28,16 @@ public:
         }
     }
 };
+
+// R 抽象出思想 ： 只要有一个是升序就可以生成下一个排列！！！！
+class Solution {
+public:
+    void nextPermutation(vector<int> &num) {
+        if (num.size() < 2) return;
+        int i, k;
+        for (i = num.size() - 2; i >= 0; --i) if (num[i] < num[i+1]) break;
+        for (k = num.size() - 1; k > i; --k) if (num[i] < num[k]) break;
+        if (i >= 0) swap(num[i], num[k]);
+        reverse(num.begin() + i + 1, num.end());
+    }
+};

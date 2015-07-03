@@ -1,3 +1,4 @@
+// O(n)
 class Solution {
 public:
     double myPow(double x, int n) {
@@ -11,5 +12,21 @@ public:
         }
         if(n < 0) return 1/res;
         return res;
+    }
+};
+
+//很明显，可以用分治法，存在对称的子问题，相同的子问题就不要再重新计算量了！！降低时间复杂度的啊，递归时间复杂度分析可以借助解答树进行
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if (n == 0) {
+            return 1;
+        }
+        if (n < 0) {
+            x = 1 / x;
+            n = -n;
+        }
+        double res = myPow(x, n / 2);
+        return n & 1 ? x * res * res : res * res;
     }
 };

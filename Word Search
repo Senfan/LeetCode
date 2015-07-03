@@ -148,3 +148,80 @@ public:
         return isFund;
     }
 };
+
+
+// 回溯法：WA没找到bug
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        if(word == "") return true;
+        int lines = board.size(), cols = board[0].size();
+        vector<vector<int>> visited(lines, vector<int>(cols, 0));
+        
+        for(int i = 0; i < lines; i++) {
+            for(int j = 0; j < cols; j++) {
+                if(board[i][j] == word[0]) {
+                    visited[i][j] = 1;
+                    if(backTrack(board, word.substr(1), lines, cols, i, j, visited)) return true;
+                    visited[i][j] = 0;
+                }
+            }
+        }
+        return false;
+    }
+    
+    bool backTrack(vector<vector<char>> &board, string word, int lines, int cols, int curLine, int curCol, vector<vector<int>> &visited) {
+        if(word == "") return true;
+        
+        if(curLine - 1 >= 0 && !visited[curLine-1][curCol] && board[curLine-1][curCol] == word[0]) {
+            visited[curLine-1][curCol] = 1;
+            if(backTrack(board, word.substr(1), lines, cols, curLine-1, curCol, visited)) return true;
+            visited[curLine-1][curCol] = 0;
+        }else if(curLine+1 < lines && !visited[curLine+1][curCol] && board[curLine+1][curCol] == word[0]) {
+            visited[curLine+1][curCol] = 1;
+            if(backTrack(board, word.substr(1), lines, cols, curLine+1, curCol, visited)) return true;
+            visited[curLine+1][curCol] = 0;
+        }else if(curCol-1 >= 0 && !visited[curLine][curCol-1] && board[curLine][curCol-1] == word[0]) {
+            visited[curLine][curCol-1] = 1;
+            if(backTrack(board, word.substr(1), lines, cols, curLine, curCol-1, visited)) return true;
+            visited[curLine][curCol-1] = 0;
+        }else if(curCol+1 < cols && !visited[curLine][curCol+1] && board[curLine][curCol+1] == word[0]) {
+            visited[curLine][curCol+1] = 1;
+            if(backTrack(board, word.substr(1), lines, cols, curLine, curCol+1, visited)) return true;
+            visited[curLine][curCol+1] = 0;
+        }
+        return false;
+    }
+};
+
+//R 
+class Solution {
+    public:
+         bool exist(vector<vector<char> > &board, string word) {
+             m=board.size();
+             n=board[0].size();
+            for(int x=0;x<m;x++)
+                for(int y=0;y<n;y++)
+                {
+                    if(isFound(board,word.c_str(),x,y))
+                        return true;
+                }
+            return false;
+        }
+    private:
+        int m;
+        int n;
+        bool isFound(vector<vector<char> > &board, const char* w, int x, int y)
+        {
+            if(x<0||y<0||x>=m||y>=n||board[x][y]=='\0'||*w!=board[x][y])
+                return false;
+            if(*(w+1)=='\0')
+                return true;
+            char t=board[x][y];
+            board[x][y]='\0';
+            if(isFound(board,w+1,x-1,y)||isFound(board,w+1,x+1,y)||isFound(board,w+1,x,y-1)||isFound(board,w+1,x,y+1))
+                return true; 
+            board[x][y]=t;
+            return false;
+        }
+    };

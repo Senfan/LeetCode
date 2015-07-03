@@ -18,3 +18,37 @@ public:
         return res;
     }
 };
+
+//R 其实完全是对称的，所以不用那么多的变量，对称的变量可以用n计数
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n, vector<int>(n));
+        if(n == 0) return res;
+        int cnt = 0, num = n * n, left = 0, right = n - 1, up = 0, down = n - 1;
+        
+        while(cnt != num) {
+            
+            for(int i = left; i <= right; i++) {
+                res[up][i] = ++cnt;
+            }
+            up++;
+            
+            for(int i = up; i <= down && cnt != num; i++) {
+                res[i][right] = ++cnt;
+            }
+            right--;
+            
+            for(int i = right; i >= left && cnt != num; i--) {
+                res[down][i] = ++cnt;
+            }
+            down--;
+            
+            for(int i = down; i >= up && cnt != num; i--) {
+                res[i][left] = ++cnt;
+            }
+            left++;
+        }
+        return res;
+    }
+};

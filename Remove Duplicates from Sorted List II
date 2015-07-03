@@ -35,3 +35,31 @@ public:
         return head2 -> next;
     }
 };
+
+// S 8ms
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return head;
+        ListNode *iniNode = new ListNode(0);
+        
+        iniNode -> next = head;
+        ListNode *preNode = iniNode, *curNode = head -> next;
+        while(curNode) {
+            if(curNode -> val == preNode -> next -> val) {
+                curNode = curNode -> next;
+                while(curNode && curNode -> val == preNode -> next -> val) curNode = curNode -> next;
+                preNode -> next = curNode;
+                if(curNode == NULL) break;
+                else curNode = curNode -> next;
+            }else {
+                preNode = preNode -> next;
+                curNode = curNode -> next;
+            }
+        }
+        
+        head = iniNode -> next;
+        delete iniNode;
+        return head;
+    }
+};
