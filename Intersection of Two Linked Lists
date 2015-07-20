@@ -48,3 +48,46 @@ public:
         return NULL;
     }
 };
+
+//2015年7月20日13:52:35  6mins
+//52ms
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == NULL || headB == NULL) return NULL;
+        
+        int numA = 1, numB = 1;
+        ListNode *ALastNode = NULL, *curNode = headA;
+        while(curNode -> next) {
+            numA++;
+            curNode = curNode -> next;
+        }
+        ALastNode = curNode;
+        
+        curNode = headB;
+        while(curNode -> next) {
+            numB++;
+            curNode = curNode -> next;
+        }
+        
+        if(curNode != ALastNode) return NULL;
+        
+        ListNode *anotherNode;
+        curNode = numA > numB ? headA : headB;
+        anotherNode = curNode == headA ? headB : headA;
+        
+        int diff = abs(numA - numB);
+        
+        while(diff) {
+            curNode = curNode -> next;
+            diff--;
+        }
+        
+        while(curNode){
+            if(curNode == anotherNode) return curNode;
+            curNode = curNode -> next;
+            anotherNode = anotherNode -> next;
+        }
+        
+    }
+};

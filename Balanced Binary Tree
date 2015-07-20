@@ -20,6 +20,27 @@ public:
     }
 };
 
+//优化：提前退出 16ms
+class Solution {
+public:
+
+    int dfs(TreeNode *root, bool &isBal) {
+        if(root == NULL || isBal == false) return 0;
+        int left = dfs(root -> left, isBal);
+        int right = dfs(root -> right, isBal);
+
+        if(abs(left - right) > 1 ) {isBal = false; return 0;}
+        return left >= right ? left + 1 : right + 1;
+    }
+
+    bool isBalanced(TreeNode *root) {
+        bool res = true;
+        dfs(root, res);
+
+        return res;
+    }
+};
+
 
 //遍历一遍即可的另一种 22ms
 class Solution {
