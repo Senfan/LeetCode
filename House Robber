@@ -15,3 +15,23 @@ public:
         return res[len-1];
     }
 };
+
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int pre0 = 0, pre1 = 0;
+        int len = nums.size();
+        if(len == 0) return 0;
+        if(len = 1) return nums[0];
+        if(len == 2) return max(nums[0], nums[1]);
+        
+        pre0 = nums[0], pre1 = max(nums[0], nums[1]);
+        int tem;
+        for(int i = 2; i < len; i++) {
+            tem = max(pre1, pre0+nums[i]);
+            pre0 = pre1;
+            pre1 = tem;
+        }
+        return pre1;
+    }
+};
