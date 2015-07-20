@@ -34,3 +34,22 @@ public:
         return canDone(root, sum, 0);
     }
 };
+
+//2015年7月20日14:06:13 10min
+//12ms
+
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if(root == NULL) return false;
+        
+        return judgeHelper(root, sum);
+    }
+    
+    bool judgeHelper(TreeNode *root, int sum) {
+        if(root == NULL) return false;
+        if(root -> left == NULL && root -> right == NULL && sum - root -> val == 0) return true;
+        if(judgeHelper(root -> left, sum - root -> val) || judgeHelper(root -> right, sum - root -> val)) return true;
+        return false;
+    }
+};

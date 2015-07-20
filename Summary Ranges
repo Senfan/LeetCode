@@ -1,0 +1,50 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> res;
+        if(nums.empty()) return res;
+        
+        int len = nums.size();
+        int cur = 1, start = 0;
+        stringstream ss;
+        string tmp, tmp1;
+        if(len == 1) {
+            ss.clear();
+            ss << nums[0];
+            ss >> tmp;
+            res.push_back(tmp);
+            return res;
+        }
+        while(cur < len) {
+            if(nums[cur] == nums[cur-1] + 1) cur++;
+            else {
+                ss.clear();
+                ss << nums[start];
+                ss >> tmp1;
+                if(cur == start+1) {
+                    res.push_back(tmp1);
+                }else {
+                    ss.clear();
+                    ss << nums[cur-1];
+                    ss >> tmp;
+                    res.push_back(tmp1 + "->" + tmp);
+                }
+                start = cur;
+                cur++;
+            }
+        }
+        
+        ss.clear();
+        ss << nums[start];
+        ss >> tmp1;
+        if(cur == start + 1) {
+            res.push_back(tmp1);
+        }else {
+            ss.clear();
+            ss << nums[cur-1];
+            ss >> tmp;
+            res.push_back(tmp1 + "->" + tmp);
+        }
+        return res;
+    }
+};

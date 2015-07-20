@@ -59,3 +59,46 @@ public:
         return qA.empty() && qB.empty();
     }
 };
+
+//2015年7月20日15:59:52
+//0oms
+class Queue {
+private:
+    stack<int> stkA, stkB;
+public:
+    // Push element x to the back of queue.
+    void push(int x) {
+        stkB.push(x);
+    }
+
+    // Removes the element from in front of queue.
+    void pop(void) {
+        if(stkA.empty()) {
+            int x;
+            while(!stkB.empty()) {
+                x = stkB.top();
+                stkA.push(x);
+                stkB.pop();
+            }
+        }
+        stkA.pop();
+    }
+
+    // Get the front element.
+    int peek(void) {
+        if(stkA.empty()) {
+            int x;
+            while(!stkB.empty()) {
+                x = stkB.top();
+                stkA.push(x);
+                stkB.pop();
+            }
+        }
+        return stkA.top();
+    }
+
+    // Return whether the queue is empty.
+    bool empty(void) {
+        return (stkA.empty() && stkB.empty());
+    }
+};

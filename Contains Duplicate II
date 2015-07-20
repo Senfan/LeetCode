@@ -12,3 +12,39 @@ public:
         return false;
     }
 };
+
+==>对于set，unordered_set在性能上有很大的提高76 -> 28ms :set是二分查找， 后者是直接hash
+//28ms
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        int len = nums.size();
+        if(len < 2) return false;
+        unordered_set<int> record;
+        int ind = 0;
+        while(ind < len) {
+            if(ind > k) record.erase(nums[ind-k-1]);
+            if(record.count(nums[ind])) return true;
+            record.insert(nums[ind]);
+            ind++;
+        }
+        return false;
+    }
+};
+//76ms
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        int len = nums.size();
+        if(len < 2) return false;
+        set<int> record;
+        int ind = 0;
+        while(ind < len) {
+            if(ind > k) record.erase(nums[ind-k-1]);
+            if(record.count(nums[ind])) return true;
+            record.insert(nums[ind]);
+            ind++;
+        }
+        return false;
+    }
+};

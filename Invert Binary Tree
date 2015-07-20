@@ -18,3 +18,15 @@ public:
         root -> right = tmp;
     }
 };
+
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(root == NULL) return NULL;
+        TreeNode *leftChild = invertTree(root -> left);
+        TreeNode *rightChild = invertTree(root -> right);
+        root -> left = rightChild;
+        root -> right = leftChild;
+        return root;
+    }
+};

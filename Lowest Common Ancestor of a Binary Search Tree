@@ -1,0 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //2015年7月20日15:13:05
+ //52 -> 44ms
+class Result {
+    public:
+    TreeNode *node;
+    bool isAncestor;
+    Result(TreeNode *curNode = NULL, bool res = false) {
+        node = curNode;
+        isAncestor = res;
+    }
+};
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(p == NULL || root == NULL || q == NULL) return NULL;
+        Result re = cover(root, p, q);
+        if(re.isAncestor) return re.node;
+        else return NULL;
+    }
+    
+    Result cover(TreeNode *root, TreeNode *p, TreeNode *q) {
+        if(root == NULL) {
+            return Result(NULL, false);
+        }
+        if(root == p && root == q) return Result(root, true);
+        
+        Result x = cover(root -> left, p, q);
+        if(x.isAncestor) return x;
+        
+        Result y = cover(root -> right, p, q);
+        if(y.isAncestor) return y;
+        
+        if(x.node != NULL && y.node != NULL) return Result(root, true);
+        else if(root == p || root == q) {
+            bool isAncestor = x.node != NULL || y.node != NULL ? true : false;
+            return Result(root, isAncestor);
+        }else return Result(x.node != NULL ? x.node : y.node, false);
+    }
+};

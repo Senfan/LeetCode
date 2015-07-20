@@ -1,0 +1,21 @@
+//28 ms fastest: 8ms
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        int ls = s.size(), lt = t.size();
+        if(ls != lt) return false;
+        unordered_map<char, char> map;
+        unordered_set<char> set;
+        for(int i = 0; i < lt; i++) {
+            if(map.count(s[i])) {
+                if(map[s[i]] != t[i]) return false;
+                else continue;
+            }else {
+                if(set.count(t[i])) return false;
+                map[s[i]] = t[i];
+                set.insert(t[i]);
+            }
+        }
+        return true;
+    }
+};
