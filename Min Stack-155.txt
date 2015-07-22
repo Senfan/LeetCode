@@ -42,3 +42,27 @@ public:
 };
 
 
+//28ms
+class MinStack {
+private:
+    stack<int> values, minVal;
+public:
+    void push(int x) {
+        values.push(x);
+        if(minVal.empty() || x <= minVal.top()) minVal.push(x);
+    }
+
+    void pop() {
+        int tmp = values.top();
+        values.pop();
+        if(tmp == minVal.top()) minVal.pop();
+    }
+
+    int top() {
+        return values.top();
+    }
+
+    int getMin() {
+        return minVal.top();
+    }
+};

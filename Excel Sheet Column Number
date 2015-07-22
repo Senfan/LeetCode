@@ -1,3 +1,4 @@
+//12ms
 class Solution {
 public:
     int titleToNumber(string s) {
@@ -10,6 +11,23 @@ public:
             res = res * 26 + s[i] - 'A' + 1;
         }
         
+        return res;
+    }
+};
+
+
+//8ms
+class Solution {
+public:
+    int titleToNumber(string s) {
+        int len = s.size();
+        if(len == 0) return 0;
+        
+        int tmp = 0, res = 0;
+        for(int i = len - 1; i >= 0; i--) {
+            res += (s[i] - 'A' + 1) * pow(26, tmp);
+            tmp++;
+        }
         return res;
     }
 };

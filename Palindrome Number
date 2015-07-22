@@ -1,3 +1,4 @@
+//76ms
 class Solution {
 public:
     bool isPalindrome(int x) {
@@ -9,5 +10,18 @@ public:
             x /= 10;
         }
         return (rev == x || rev / 10 == x);
+    }
+};
+
+//88ms
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        string tmp = to_string(x);
+        int left = 0, right = tmp.size()-1;
+        while(left < right) {
+            if(tmp[left++] != tmp[right--]) return false;
+        }
+        return true;
     }
 };
