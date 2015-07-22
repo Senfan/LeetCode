@@ -25,3 +25,28 @@ public:
         return head;
     }
 };
+
+//32ms 36(delete 防止内存泄露)
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        if(head == NULL) return head;
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        ListNode *preNode = iniNode, *curNode = head;
+        while(curNode) {
+            if(curNode -> val == val) {
+                preNode -> next = curNode -> next;
+                //delete curNode;
+                curNode = preNode -> next;
+            }else {
+                preNode = curNode;
+                curNode = curNode -> next;
+            }
+        }
+        
+        head = iniNode -> next;
+        delete iniNode;
+        return head;
+    }
+};

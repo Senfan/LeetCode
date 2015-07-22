@@ -28,3 +28,17 @@ public:
         return re;
     }
 };
+
+//2015年7月20日20:32:38
+//4ms
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int re = 0;
+        while(n) {
+            re++;
+            n &= (n-1);
+        }
+        return re;
+    }
+};
