@@ -21,3 +21,24 @@ public:
         return end + 1;
     }
 };
+
+
+//4ms
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int len = nums.size();
+        if(len == 0) return len;
+        
+        len--;
+        while(nums[len] == val) len--;
+        
+        for(int i = 0; i < len; i++) {
+            if(nums[i] == val) {
+                nums[i] = nums[len--];
+                while(nums[len] == val) len--;
+            }
+        }
+        return ++len;
+    }
+};

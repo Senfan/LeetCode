@@ -32,3 +32,22 @@ public:
         return res;
     }
 };
+
+
+//8ms
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == NULL) return 0;
+        int res = INT_MIN;
+        helper(root, res, 1);
+        return res;
+    }
+    
+    void helper(TreeNode *root, int &res, int high) {
+        if(root -> left == NULL && root -> right == NULL) res = res < high ? high : res;
+        
+        if(root -> left) helper(root -> left, res, high+1);
+        if(root -> right) helper(root -> right, res, high+1);
+    }
+};
