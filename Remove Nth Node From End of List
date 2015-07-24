@@ -27,3 +27,27 @@ public:
         return head;
     }
 };
+
+//4ms
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        if(head == NULL) return head;
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        ListNode *preNode = iniNode, *curNode = head;
+        
+        while(--n) {
+            curNode = curNode -> next;
+        }
+        while(curNode -> next) {
+            curNode = curNode -> next;
+            preNode = preNode -> next;
+        }
+        preNode -> next = preNode -> next -> next;
+        head = iniNode -> next;
+        delete iniNode;
+        //delete preNode -> next;
+        return head;
+    }
+};
