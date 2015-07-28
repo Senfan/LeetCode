@@ -160,3 +160,63 @@ public:
         return res;
     }
 };
+
+
+//28ms 从左到右是依次相加的，所以，是大数在左边 => 可以分别求各个位上的字符串！
+class Solution {
+public:
+    string intToRoman(int num) {
+        string t, h, ten, b;
+        
+        if(num >= 1000) {
+            t = string(num / 1000, 'M');
+        }
+        
+        num -= (num / 1000) * 1000;
+        
+        if(num >= 100) {
+            switch(num / 100) {
+                case 9: h = "CM"; break;
+                case 8: h = "DCCC"; break;
+                case 7: h = "DCC"; break;
+                case 6: h = "DC"; break;
+                case 5: h = "D"; break;
+                case 4: h = "CD"; break;
+                case 3: h = "CCC"; break;
+                case 2: h = "CC"; break;
+                case 1: h = "C"; break;
+            }
+            num -= num / 100 * 100;
+        }
+        
+        if(num >= 10) {
+            switch(num / 10) {
+                case 9: ten = "XC"; break;
+                case 8: 
+                case 7:
+                case 6:
+                case 5: ten = "L" + string(num / 10 - 5, 'X'); break;
+                case 4: ten = "XL"; break;
+                case 3:
+                case 2:
+                case 1: ten = string(num / 10, 'X'); break;
+            }
+            num -= num / 10 * 10;
+        }
+        
+        if(num >= 1) {
+            switch(num) {
+                case 9: b = "IX"; break;
+                case 8:
+                case 7:
+                case 6:
+                case 5: b = "V" + string(num - 5, 'I'); break;
+                case 4: b = "IV"; break;
+                case 3:
+                case 2:
+                case 1: b = string(num, 'I'); break;
+            }
+        }
+        return t + h + ten + b;
+    }
+};

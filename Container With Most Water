@@ -42,3 +42,26 @@ public:
         return res;
     }
 };
+
+// 40ms
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int len = height.size();
+        if(len < 2) return 0;
+        
+        int left = 0, right = len - 1;
+        int res = INT_MIN, tmp;
+        while(left < right) {
+            res = max(res, (right - left) * min(height[left], height[right]));
+            if(height[left] >= height[right]) {
+                tmp = height[right--];
+                while(left < right && height[right] <= tmp) right--;
+            }else {
+                tmp = height[left++];
+                while(left < right && height[left] <= tmp) left++;
+            }
+        }
+        return res;
+    }
+};

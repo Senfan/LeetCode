@@ -98,3 +98,68 @@ public:
         tmp.pop_back();
     }
 };
+
+
+//16ms 
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>> res;
+        if(root == NULL) return res;
+        vector<int> tmp;
+        backTrack(root, sum, res, tmp);
+        return res;
+    }
+    
+    void backTrack(TreeNode* root, int sum, vector<vector<int>> &res, vector<int> &tmp) {
+        if(root -> left == NULL && root -> right == NULL) {
+            if(sum == root -> val) {
+                tmp.push_back(sum);
+                res.push_back(tmp);
+                tmp.pop_back();
+                return;
+            }else return;
+        }else {
+            tmp.push_back(root -> val);
+            if(root -> left) {
+                backTrack(root -> left, sum - root -> val, res, tmp);
+            }
+            if(root -> right) {
+                backTrack(root -> right, sum - root -> val, res, tmp);
+            }
+            tmp.pop_back();
+        }
+    }
+};
+
+
+//12ms ==> if else语句比较耗时间！
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int>> res;
+        if(root == NULL) return res;
+        vector<int> tmp;
+        backTrack(root, sum, res, tmp);
+        return res;
+    }
+    
+    void backTrack(TreeNode* root, int sum, vector<vector<int>> &res, vector<int> &tmp) {
+        if(root -> left == NULL && root -> right == NULL) {
+            if(sum == root -> val) {
+                tmp.push_back(sum);
+                res.push_back(tmp);
+                tmp.pop_back();
+            }
+            return;
+        }
+        tmp.push_back(root -> val);
+        if(root -> left) {
+            backTrack(root -> left, sum - root -> val, res, tmp);
+        }
+        if(root -> right) {
+            backTrack(root -> right, sum - root -> val, res, tmp);
+        }
+        tmp.pop_back();
+    }
+};
