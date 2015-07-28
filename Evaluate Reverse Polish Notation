@@ -1,7 +1,7 @@
 class Solution {
 public:
     int evalRPN(vector<string>& tokens) {
-        if(tokens.empty()) return 0;\
+        if(tokens.empty()) return 0;
         int len = tokens.size();
         stringstream strm;
         int opa, opb;
@@ -108,5 +108,64 @@ public:
             }
         }
         return stk.top();
+    }
+};
+
+//16ms
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        int len = tokens.size();
+        
+        stack<int> num;
+        stringstream ss;
+        int tmp, num1, num2;
+        for(int i = 0; i < len; i++) {
+            if(tokens[i].size() == 1) {
+                switch(tokens[i][0]) {
+                    case '+':
+                        num1 = num.top();
+                        num.pop();
+                        num2 = num.top();
+                        num.pop();
+                        num.push(num1 + num2);
+                        break;
+                    case '-':
+                        num1 = num.top();
+                        num.pop();
+                        num2 = num.top();
+                        num.pop();
+                        num.push(num2 - num1);
+                        break;
+                    case '*':
+                        num1 = num.top();
+                        num.pop();
+                        num2 = num.top();
+                        num.pop();
+                        num.push(num1 * num2);
+                        break;
+                    case '/':
+                        num1 = num.top();
+                        num.pop();
+                        num2 = num.top();
+                        num.pop();
+                        num.push(num2 / num1);
+                        break;
+                    default:
+                        ss.clear();
+                        ss << tokens[i];
+                        ss >> tmp;
+                        num.push(tmp);
+                        break;
+                }
+            }else {
+                ss.clear();
+                ss << tokens[i];
+                ss >> tmp;
+                num.push(tmp);
+            }
+        }
+        if(num.empty()) return 0;
+        return num.top();
     }
 };
