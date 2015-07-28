@@ -90,3 +90,31 @@ public:
         return head;
     }
 };
+
+// 80ms
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return head;
+        ListNode *iniNode = new ListNode(0), *preNode, *curNode = head -> next, *end = head;
+        iniNode -> next = head;
+        end -> next = NULL;
+        
+        while(curNode) {
+            preNode = iniNode;
+            while(preNode -> next != NULL && preNode -> next -> val <= curNode -> val) preNode = preNode -> next;
+            if(preNode -> next == NULL) {
+                preNode -> next = curNode;
+                end = curNode;
+                curNode = curNode -> next;
+                end -> next = NULL;
+            }else {
+                ListNode *tmp = preNode -> next;
+                preNode -> next = curNode;
+                curNode = curNode -> next;
+                preNode -> next -> next = tmp;
+            }
+        }
+        return iniNode -> next;
+    }
+};

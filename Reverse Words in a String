@@ -58,3 +58,35 @@ public:
         s = s.substr(1);
     }
 };
+
+//8ms
+class Solution {
+public:
+    void reverseWords(string &s) {
+        vector<string> tmp;
+        int len = s.size();
+        string tmpS;
+        for(int i = 0; i < len; i++) {
+            if(s[i] != ' ') tmpS += s[i];
+            else {
+                if(tmpS != "") {
+                    tmp.push_back(tmpS);
+                    tmpS = "";
+                }
+            }
+        }
+        if(tmpS != "") tmp.push_back(tmpS);
+        if(!tmp.empty())
+            reverse(tmp.begin(), tmp.end());
+        else {
+            s = "";
+            return;
+        }
+        
+        s = "";
+        s += tmp[0];
+        for(int i = 1; i < tmp.size(); i++) {
+            s += " " + tmp[i];
+        }
+    }
+};
