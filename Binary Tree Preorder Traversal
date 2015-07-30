@@ -32,7 +32,7 @@ public:
     }
 };
 
-// R 3ms
+// R 0ms
 class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
@@ -53,6 +53,29 @@ public:
             }
         }
         
+        return res;
+    }
+};
+
+//0ms
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode *> stk;
+        
+        TreeNode *curNode = root;
+        while(curNode || !stk.empty()) {
+            while(curNode) {
+                res.push_back(curNode -> val);
+                stk.push(curNode);
+                curNode = curNode -> left;
+            }
+            if(!stk.empty()) {
+                curNode = stk.top() -> right;
+                stk.pop();
+            }
+        }
         return res;
     }
 };

@@ -125,7 +125,8 @@ public:
     }
 };
 
-//R :59ms  只要算过了的就不要算了！注意条件是什么，一定要纸笔先行
+//R :59ms  只要算过了的就不要算了！注意条件是什么，一定要纸笔先行 O(n^2)
+
 class Solution {
 public:
     vector<vector<int> > threeSum(vector<int> &num) {
@@ -161,5 +162,43 @@ public:
         }
         
         return res;
+    }
+};
+
+//60ms O(n^2logn)
+//还是没有学会滑动窗口机制：其是基于排序比较机制的，所以，两端可以依据条件同时移动，最终实现在确定一个变量的前提下最多一次遍历，因为它可以同时处理两个待确定的变量：依赖的关系就是基于排序的比较提供了更多的信息条件！！
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> res;
+        int len = nums.size();
+        if(len < 3) return res;
+        
+        sort(nums.begin(), nums.end());
+        
+        for(int i = 0; i < len; i++) {
+            if(i != 0 && nums[i] == nums[i-1]) continue;
+            for(int j = i + 1; j < len; j++) {
+                if(j != i+1 && nums[j] == nums[j-1]) continue;
+                int p = -(nums[i] + nums[j]);
+                if(p < nums[j]) continue;
+                if(binSearch(p, j + 1, len-1, nums)) {
+                    vector<int> tmp = {nums[i], nums[j], p};
+                    res.push_back(tmp);
+                }
+            }
+        }
+        return res;
+    }
+    
+    bool binSearch(int t, int left, int right, vector<int> &nums) {
+        int mid;
+        while(left <= right) {
+            mid = left + ((right - left) >> 1);
+            if(nums[mid] == t) return true;
+            else if(nums[mid] > t) right = mid - 1;
+            else left = mid + 1;
+        }
+        return false;
     }
 };

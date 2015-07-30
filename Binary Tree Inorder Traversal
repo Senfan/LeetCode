@@ -43,3 +43,28 @@ public:
         return res;
     }
 };
+
+
+//0ms
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        stack<TreeNode *> stk;
+        
+        TreeNode *curNode = root;
+        while(curNode || !stk.empty()) {
+            while(curNode) {
+                stk.push(curNode);
+                curNode = curNode -> left;
+            }
+            if(!stk.empty()) {
+                curNode = stk.top();
+                stk.pop();
+                res.push_back(curNode -> val);
+                curNode = curNode -> right;
+            }
+        }
+        return res;
+    }
+};
