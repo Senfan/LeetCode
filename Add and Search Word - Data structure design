@@ -139,3 +139,78 @@ public:
         return false;
     }
 };
+
+
+//112ms 太慢
+struct TrieNode {
+    TrieNode *childs[26];
+    bool isLeaf;
+    TrieNode(bool leaf=false) {
+        isLeaf = leaf;
+        fill_n(childs, 26, nullptr);
+    }
+};
+
+class WordDictionary {
+private:
+    TrieNode *dic;
+public:
+    WordDictionary() {
+        dic = new TrieNode();
+    }
+
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        if(word == "") return;
+        int len = word.size();
+        TrieNode *curNode = dic;
+        int i;
+        for(i = 0; i < len - 1; i++) {
+            if(curNode -> childs[word[i] - 'a'] == NULL) {
+                curNode -> childs[word[i] - 'a'] = new TrieNode();
+            }
+            curNode = curNode -> childs[word[i] - 'a'];
+        }
+        if(curNode -> childs[word[i] - 'a'] == NULL) {
+            curNode -> childs[word[i] - 'a'] = new TrieNode();
+        }
+        curNode -> childs[word[i] - 'a'] -> isLeaf = true;
+        return;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        if(word == "") return false;
+        int len = word.size();
+        TrieNode *curNode = dic;
+        for(int i = 0; i < len; i++) {
+            if(isalpha(word[i]) && curNode -> childs[word[i] - 'a'] == NULL) return false;
+            if(word[i] == '.') {
+                return searchHelper(word.substr(i), curNode);
+            }
+            curNode = curNode -> childs[word[i] - 'a'];
+        }
+        if(curNode -> isLeaf) return true;
+        return false;
+    }
+    
+    bool searchHelper(string word, TrieNode *start) {
+        if(word == "" && start -> isLeaf) return true;
+        if(word == "") return false;
+        if(word[0] == '.') {
+            for(int i = 0; i < 26; i++) {
+                if(start -> childs[i] && searchHelper(word.substr(1), start->childs[i])) return true;
+            }
+            return false;
+        }else {
+            if(start -> childs[word[0] - 'a'] == NULL) return false;
+            return searchHelper(word.substr(1), start -> childs[word[0] - 'a']);
+        }
+    }
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");

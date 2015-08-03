@@ -27,3 +27,34 @@ public:
         return done == numCourses;
     }
 };
+
+//280ms
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& pre) {
+        if(numCourses < 2) return true;
+        unordered_map<int, int> count;
+        unordered_map<int, vector<int>> post;
+        
+        for(int i = 0; i < pre.size(); i++) {
+            count[pre[i].first]++;
+            post[pre[i].second].push_back(pre[i].first);
+        }
+        
+        queue<int> que;
+        for(int i = 0; i < numCourses; i++)
+            if(count[i] == 0) que.push(i);
+        
+        int cnt = 0;
+        while(!que.empty()) {
+            int course = que.front();
+            que.pop();
+            cnt++;
+            for(int i = 0; i < post[course].size(); i++) {
+                count[post[course][i]]--;
+                if(count[post[course][i]] == 0) que.push(post[course][i]);
+            }
+        }
+        return cnt == numCourses;
+    }
+};

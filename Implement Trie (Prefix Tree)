@@ -156,3 +156,67 @@ private:
 // Trie trie;
 // trie.insert("somestring");
 // trie.search("key");
+
+
+//60ms
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode *childs[26];
+    bool isLeaf;
+    TrieNode() {
+        fill_n(childs, 26, nullptr);
+        isLeaf = false;
+    }
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        int len = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < len; i++) {
+            if(curNode -> childs[word[i] - 'a'] == NULL) {
+                curNode -> childs[word[i] - 'a'] = new TrieNode();
+            }
+            curNode = curNode -> childs[word[i] - 'a'];
+        }
+        curNode -> isLeaf = true;
+    }
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        int len = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < len; i++) {
+            if(curNode -> childs[word[i] - 'a'] == NULL) return false;
+            curNode = curNode -> childs[word[i] - 'a'];
+        }
+        return curNode -> isLeaf;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    bool startsWith(string word) {
+        int len = word.size();
+        TrieNode *curNode = root;
+        for(int i = 0; i < len; i++) {
+            if(curNode -> childs[word[i] - 'a'] == NULL) return false;
+            curNode = curNode -> childs[word[i] - 'a'];
+        }
+        return true;
+    }
+
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");

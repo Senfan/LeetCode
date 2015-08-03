@@ -106,3 +106,43 @@ public:
         return res;
     }
 };
+
+//536ms ==> 改成unordered_map会成为516ms
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& pre) {
+        vector<int> res;
+        if(numCourses == 0) return res;
+        
+        map<int, vector<int>> post;
+        map<int, int> req;
+        
+        int pairCnt = pre.size();
+        for(int i = 0; i < pairCnt; i++) {
+            post[pre[i].second].push_back(pre[i].first);
+            req[pre[i].first]++;
+        }
+        
+        queue<int> courses;
+        
+        for(int i = 0; i < numCourses; i++) {
+            if(req[i] == 0) courses.push(i);
+        }
+        while(!courses.empty()) {
+            int c = courses.front();
+            courses.pop();
+            res.push_back(c);
+            int t = post[c].size();
+            for(int i = 0; i < t; i++) {
+                req[post[c][i]]--;
+                if(req[post[c][i]] == 0) courses.push(post[c][i]);
+            }
+        }
+        
+        if(res.size() == numCourses) return res;
+        else {
+            res.clear();
+            return res;
+        }
+    }
+};
