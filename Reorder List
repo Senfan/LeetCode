@@ -116,3 +116,51 @@ public:
         }
     }
 };
+
+//68ms
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return;
+        
+        ListNode *pre = head, *cur = head, *tmp;
+        
+        while(cur && cur -> next) {
+            cur = cur -> next -> next;
+            tmp = pre;
+            pre = pre -> next;
+        }
+        
+        tmp -> next = NULL;
+        ListNode *re = reverseList(pre);
+        cur = head;
+        ListNode *iniNode = new ListNode(0);
+        ListNode *curEnd = iniNode;
+        while(re && cur) {
+            curEnd -> next = cur;
+            cur = cur -> next;
+            curEnd -> next -> next = re;
+            re = re -> next;
+            curEnd = curEnd -> next -> next;
+        }
+        if(re) curEnd -> next = re;
+        
+        head = iniNode -> next;
+        delete iniNode;
+    }
+    
+    ListNode *reverseList(ListNode *head) {
+        
+        ListNode *curNode = head, *tmp = head -> next, *pre;
+        curNode -> next = NULL;
+        pre = curNode;
+        curNode = tmp;
+        while(curNode) {
+            tmp = curNode -> next;
+            curNode -> next = pre;
+            pre = curNode;
+            curNode = tmp;
+        }
+        return pre;
+    }
+};

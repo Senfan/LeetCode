@@ -49,3 +49,33 @@ public:
         }
     }
 };
+
+
+//0ms
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> res;
+        int len = digits.size();
+        if(len == 0) return res;
+        unordered_map<char, string> map;
+        map['2'] = "abc", map['3'] = "def", map['4'] = "ghi", map['5'] = "jkl", map['6'] = "mno", map['7'] = "pqrs", map['8'] = "tuv", map['9'] = "wxyz", map['0'] = " ";
+
+        string tmp = "";
+        helper(digits, 0, len, tmp, res, map);
+
+        return res;
+    }
+
+    void helper(string &digits, int curInd, int &len, string &tmp, vector<string> &res, unordered_map<char, string> &map) {
+        if(curInd == len) {
+            res.push_back(tmp);
+        }else {
+            for(int i = 0; i < map[digits[curInd]].size(); i++) {
+                tmp += map[digits[curInd]][i];
+                helper(digits, curInd+1, len, tmp, res, map);
+                tmp.pop_back();
+            }
+        }
+    }
+};

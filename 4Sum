@@ -1,3 +1,5 @@
+//num 问题最终都可以转化为 n ^ ( n- 1) ；前面循环确定 n - 2个数目，然后用滑动窗口机制，可以用O(n)的时间确定两个数！！！
+
 class Solution {
 public:
     vector<vector<int> > fourSum(vector<int> &num, int target) {

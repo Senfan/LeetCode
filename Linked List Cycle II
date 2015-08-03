@@ -54,3 +54,25 @@ public:
         return curNode;
     }
 };
+
+//16ms
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode *pre = head, *cur = head;
+        int isCycled = 0;
+        while(cur && cur -> next) {
+            cur = cur -> next -> next;
+            pre = pre -> next;
+            if(pre == cur) {isCycled = 1; break;}
+        }
+        if(!isCycled) return NULL;
+        
+        ListNode *tmp = head;
+        while(tmp != cur) {
+            tmp = tmp -> next;
+            cur = cur -> next;
+        }
+        return cur;
+    }
+};

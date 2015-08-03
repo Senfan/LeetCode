@@ -75,3 +75,18 @@ public:
         }
     }
 };
+
+
+//12ms
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *pre = head, *cur = head;
+        while(cur && cur -> next) {
+            cur = cur -> next -> next;
+            pre = pre -> next;
+            if(pre == cur) return true;
+        }
+        return false;
+    }
+};

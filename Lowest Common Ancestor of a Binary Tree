@@ -1,0 +1,38 @@
+//24ms Bubble up方案！！！
+
+class Result {
+public:
+    TreeNode *node;
+    int isAnc;
+    Result(TreeNode* p = NULL, int x = 0) {
+        node = p;
+        isAnc = x;
+    }
+};
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root == NULL || p == NULL || q == NULL) return NULL;
+        Result re = cover(root, p, q);
+        return re.isAnc == 1 ? re.node : NULL;
+    }
+    
+    Result cover(TreeNode *root, TreeNode *p, TreeNode *q) {
+        if(root == NULL) return Result(NULL, 0);
+        if(root == p && root == q) return Result(root, 1);
+        
+        Result rx = cover(root -> left, p, q);
+        if(rx.isAnc) return rx;
+        
+        Result ry = cover(root -> right, p, q);
+        if(ry.isAnc) return ry;
+        
+        if(rx.node && ry.node) return Result(root, 1);
+        else if(root == p || root == q) {
+            return Result(root, rx.node || ry.node ? 1 : 0);
+        }else {
+            return Result(rx.node != NULL ? rx.node : ry.node, 0);
+        }
+        
+    }
+};

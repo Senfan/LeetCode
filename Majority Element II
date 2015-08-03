@@ -1,0 +1,32 @@
+//摩尔投票问题20ms ：先用几个元素（最多的符合条件的元素个数），找出众数，然后统计个数：可以达到线性时间复杂度，以及常量空间复杂度
+//用else if可以避免相同元素的出现！！！！
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int num1, num2, cnt1 = 0, cnt2 = 0;
+        
+        for(int each : nums) {
+            if(cnt1 == 0 || num1 == each) {
+                num1 = each;
+                cnt1++;
+            }else if(cnt2 == 0 || num2 == each) {
+                cnt2++;
+                num2 = each;
+            }else {
+                cnt1--;
+                cnt2--;
+            }
+        }
+        
+        cnt1 = cnt2 = 0;
+        for(int each : nums) {
+            if(each == num1) cnt1++;
+            else if(each == num2) cnt2++;
+        }
+        vector<int> res;
+        if(cnt1 > nums.size() / 3) res.push_back(num1);
+        if(cnt2 > nums.size() / 3) res.push_back(num2);
+        
+        return res;
+    }
+};

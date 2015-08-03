@@ -30,3 +30,24 @@ public:
         }while(p != NULL || !stk.empty());
     }
 };
+
+//24ms
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        stack<TreeNode*> stk;
+        TreeNode *curNode = root;
+        int cnt = 0;
+        while(curNode || !stk.empty()) {
+            while(curNode) {
+                stk.push(curNode);
+                curNode = curNode -> left;
+            }
+            curNode = stk.top();
+            cnt++;
+            if(cnt == k) return curNode -> val;
+            stk.pop();
+            curNode = curNode -> right;
+        }
+    }
+};
