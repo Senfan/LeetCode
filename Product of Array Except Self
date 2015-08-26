@@ -1,0 +1,33 @@
+//64ms 一定要静下心来，仔细思考，有效思考，坚定自己的想法
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        long long prod = 1;
+        int zeroCnt = 0;
+        for(auto e : nums) {
+            if(e == 0) {
+                zeroCnt++;
+                if(zeroCnt == 2) break;
+                else continue;
+            }
+            prod *= e;
+        }
+        
+        if(zeroCnt == 2) {
+            vector<int> res(nums.size(), 0);
+            return res;
+        }
+        if(zeroCnt == 0) {
+            for(int i = 0; i < nums.size(); i++) {
+                nums[i] = prod / nums[i];
+            }
+        }else {
+            for(int i = 0; i < nums.size(); i++) {
+                if(nums[i] == 0) nums[i] = prod;
+                else nums[i] = 0;
+            }
+        }
+        
+        return nums;
+    }
+};

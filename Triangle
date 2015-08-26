@@ -57,3 +57,28 @@ public:
         return res;
     }
 };
+
+//DP 8ms 要有动态规划的意识
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& T) {
+        int lines = T.size();
+        for(int i = 1; i < lines; i++) {
+            for(int j = 0; j < T[i].size(); j++) {
+                if(j == 0) T[i][j] += T[i-1][0];
+                else if(j == T[i].size() - 1) {
+                    T[i][j] += T[i-1][j-1];
+                }
+                else {
+                    T[i][j] += T[i-1][j] > T[i-1][j-1] ? T[i-1][j-1] : T[i-1][j];
+                }
+            }
+        }
+        
+        int res = INT_MAX;
+        for(int i = 0; i < T[lines-1].size(); i++) {
+            if(res > T[lines-1][i]) res = T[lines-1][i];
+        }
+        return res;
+    }
+};

@@ -1,0 +1,12 @@
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int len = nums.size();
+        if(len == 0) return 0;
+        
+        long long sum = 0;
+        for(auto e : nums) sum += e;
+        
+        return (1+len) * (len) / 2 - sum;
+    }
+};

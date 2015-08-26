@@ -85,3 +85,33 @@ private:
     //unordered_set<UndirectedGraphNode *> visited;
     unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> map;
 };
+
+//S : 84ms DFS
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if(node == NULL) return node;
+        if(visited.count(node -> label) == 0) {
+            if(map.count(node -> label) == 0) {
+                UndirectedGraphNode *newNode = new UndirectedGraphNode(node -> label);
+                map[node -> label] = newNode;
+            }
+            visited.insert(node -> label);
+            for(auto each : node -> neighbors) {
+                if(map.count(each -> label) == 0) {
+                    UndirectedGraphNode *tmpNode = new UndirectedGraphNode(each -> label);
+                    map[node -> label] -> neighbors.push_back(tmpNode);
+                    map[each -> label] = tmpNode;
+                }else {
+                    map[node -> label] -> neighbors.push_back(map[each -> label]);
+                }
+                cloneGraph(each);
+            }
+            return map[node -> label];
+        } 
+    }
+    
+private: 
+    unordered_map<int, UndirectedGraphNode*> map;
+    unordered_set<int> visited;
+};

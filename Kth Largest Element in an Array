@@ -66,3 +66,28 @@ public:
         else return quickSort(nums, i + 1, r, k);
     }
 };
+
+//4ms
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        return helper(nums, 0, nums.size() - 1, k);
+    }
+    
+    int helper(vector<int> &nums, int left, int right, int k) {
+        
+        int i = left, j = right + 1;
+        int tmp = nums[left];
+        
+        while(1) {
+            do i++; while(i <= right && nums[i] < tmp);
+            do j--; while(nums[j] > tmp);
+            if(i > j) break;
+            int x = nums[j]; nums[j] = nums[i]; nums[i] = x;
+        }
+        swap(nums[j], nums[left]);
+        if(j == nums.size() - k) return nums[j];
+        if(j < nums.size() - k) return helper(nums, j+1, right, k);
+        else return helper(nums, left, j-1, k);
+    }
+};
