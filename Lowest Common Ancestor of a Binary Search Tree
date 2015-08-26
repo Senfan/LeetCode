@@ -47,3 +47,21 @@ public:
         }else return Result(x.node != NULL ? x.node : y.node, false);
     }
 };
+
+//40ms 一定特别注意：二查搜索树的最近公共祖先问题！！
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(p == NULL || q == NULL) return NULL;
+        if(p -> val > q -> val) return lowestCommonAncestor(root, q, p);
+        
+        TreeNode *curNode = root;
+        while(curNode) {
+            if(curNode -> val > q -> val) {
+                curNode = curNode -> left;
+            }else if(curNode -> val < p -> val) {
+                curNode = curNode -> right;
+            }else return curNode;
+        }
+    }
+};

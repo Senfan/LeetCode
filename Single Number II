@@ -10,3 +10,20 @@ public:
         return ones;
     }
 };
+
+//12ms 回归问题本源，从根本看问题
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ones = 0, twos = 0, threes = 0;
+        int len = nums.size();
+        for(int i = 0; i < len; i++) {
+            twos |= ones & nums[i];
+            ones ^= nums[i];
+            threes = ones & twos;
+            ones &= ~threes;
+            twos &= ~threes;
+        }
+        return ones;
+    }
+};

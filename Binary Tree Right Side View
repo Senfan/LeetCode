@@ -65,3 +65,27 @@ public:
         dfs(root -> left, res, curDeep + 1);
     }
 };
+
+// 4ms
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        
+        if(root == NULL) return res;
+        int curLevel = 0, maxLevel = -1;
+        preOrder(root, curLevel, maxLevel);
+        return res;
+    }
+private:
+    vector<int> res;
+    void preOrder(TreeNode *root, int curl, int &maxl) {
+        if(root) {
+            if(curl > maxl) {
+                res.push_back(root -> val);
+                maxl = curl;
+            }
+            preOrder(root -> right, curl+1, maxl);
+            preOrder(root -> left, curl+1, maxl);
+        }
+    }
+};

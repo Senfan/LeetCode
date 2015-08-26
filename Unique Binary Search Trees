@@ -1,4 +1,5 @@
 //模型就在那里，循着问题的根本出发，去思考、去求证！！不要总是想着背题，如果经验主义想不起来，就立马用How to solve it,从问题本身出发，去建立模型！！
+//0ms 千万要记得去分析，去实现
 class Solution {
 public:
     int numTrees(int n) {

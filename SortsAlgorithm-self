@@ -1,0 +1,73 @@
+排序分为基于比较的与非基于比较的排序，两者在时间复杂度上有明显的gap，本篇主要实现主要的基于比较的排序算法
+
+1.基于插入的快速排序
+//由于用do while形式，所以j = right + 1；
+//最终落点在j上
+void qSort(vector<int> &nums, int left, int right) {
+	if(left >= right) return;
+
+	int i = left, j = right + 1;
+	int midVal = nums[left];
+
+	while(1) {
+		do i++; while(i <= right && nums[i] < midVal);
+		do j--; while(nums[j] > midVal);
+		if(i > j) break;
+		int tmp = nums[j]; nums[j] = nums[i]; nums[i] = tmp;
+	}
+	swap(nums[left], nums[j]);
+	qSort(nums, left, j-1);
+	qSort(nums, j+1, right);
+}
+
+
+2.冒泡排序
+
+void bubbleSort(vector<int> &nums) {
+	int len = nums.size();
+	if(len < 2) return;
+
+	bool isDone = false;
+	for(int i = len - 1; i > 0 && !isDone; i--) {
+		bool exchange = false;
+		for(int j = 0; j < i; j++) {
+			if(nums[j] > nums[j+1]) {
+				int tmp = nums[j];
+				nums[j] = nums[j+1];
+				nums[j+1] = tmp;
+				exchange = true;
+			}
+		}
+		if(exchange) isDone = false;
+		else isDone = true; 
+	}
+}
+
+
+3. 堆排序
+//一个siftDown算法就可以满足建立堆以及堆排序的实现
+
+void heapSort(vector<int> &nums) {
+	int len = nums.size();
+	for(int i = (len-2) / 2; i >= 0; i--) siftDown(nums, i, len-1);
+
+	for(int i = len - 1; i >= 0; i--) {
+		swap(nums[0], nums[i]);
+		siftDown(nums, 0, i-1);
+    }
+}
+
+
+void siftDown(vector<int> &nums, int s, int e) {
+	int i = s, j = 2 * i + 1;
+	int tmp = nums[s];
+	while(j <= e) {
+		if(j < e && nums[j] > nums[j+1]) j++;
+		if(tmp > nums[j]) {
+			nums[i] = nums[j];
+			i = j;
+			j = 2 * j + 1;
+		}else break;
+	}
+	nums[i] = tmp;
+}

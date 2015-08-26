@@ -30,3 +30,26 @@ public:
         if(nRight > 0) generate(res, nLeft, nRight - 1, str+")");
     }
 };
+
+//4ms
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        string tmp = "";
+        backTrack(0, 0, n, tmp);
+        return res;
+    }
+private:
+    vector<string> res;
+    void backTrack(int l, int r, int n, string tmp) {
+        if(l > n) return;
+        if(l == n && r == n) {
+            res.push_back(tmp);
+            return;
+        }
+        if(l >= r) {
+            backTrack(l+1, r, n, tmp+"(");
+            backTrack(l, r+1, n, tmp+")");
+        }
+    }
+};

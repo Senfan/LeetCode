@@ -29,7 +29,7 @@ public:
         return be;
     }
 };
-
+//重点是，如果一次失败，不用再次从头的下一个开始比较，因为其中有更为紧俏的约束条件！！！就像是KMP算法的思想一样！！！
 // S 10ms
 class Solution {
 public:

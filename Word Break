@@ -36,7 +36,7 @@ public:
     }
 };
 
-//16ms
+//16ms 把bool改成int就会成为8ms
 class Solution {
 public:
     bool wordBreak(string s, unordered_set<string>& wordDict) {
@@ -51,5 +51,17 @@ public:
             }
         }
         return dp[slen];
+    }
+};
+
+//TLE 回溯法
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        if(s == "") return true;
+        for(int i = 1; i <= s.size(); i++) {
+            if(wordDict.count(s.substr(0, i)) && wordBreak(s.substr(i), wordDict)) return true;
+        }
+        return false;
     }
 };
