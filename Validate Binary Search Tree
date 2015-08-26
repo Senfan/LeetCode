@@ -58,3 +58,19 @@ public:
         return true;
     }
 };
+
+//R 16ms
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        
+        return helper(root, -2147483649, 2147483648);
+    }
+    
+    bool helper(TreeNode *root, long long min, long long max) {
+        if(root == NULL) return true;
+        if(root -> val <= min || root -> val >= max) return false;
+        if(!helper(root -> left, min, root -> val) || !helper(root -> right, root -> val, max)) return false;
+        return true;
+    }
+};

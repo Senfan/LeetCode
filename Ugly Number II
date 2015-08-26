@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if(n == 1) return 1;
+        vector<int> res = {1};
+        int ind2 = 0, ind3 = 0, ind5 = 0;
+        for(int c = 0; c < n; c++) {
+            while(res[ind2] * 2 <= res[c]) ind2++;
+            while(res[ind3] * 3 <= res[c]) ind3++;
+            while(res[ind5] * 5 <= res[c]) ind5++;
+
+            int u = min(min(res[ind2] * 2, res[ind3] * 3), res[ind5]*5);
+            res.push_back(u);
+        }
+        return res[n-1];
+    }
+};
