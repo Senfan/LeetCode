@@ -1,3 +1,4 @@
+//组合就是每一个位置试着填充任意一个数，然后每一次调用就是确定一个数，共调用K次！
 class Solution {
 public:
 
@@ -12,9 +13,9 @@ public:
         }
 
         for(int i = cur; i < 10 && i <= n; i++) {
-            tmp.push_back(i);
+            tmp.push_back(i); //包含这个元素
             backTrack(res, k-1, n-i, tmp, i+1);
-            tmp.pop_back();
+            tmp.pop_back();//不包含这个元素 ==> 回溯法的体现！！
         }
     }
     vector<vector<int>> combinationSum3(int k, int n) {
@@ -24,6 +25,39 @@ public:
 
         backTrack(res, k, n, tmp, 1);
 
+        return res;
+    }
+};
+
+//S :  4ms 位向量法
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        int total = pow(2, 9);
+        vector<vector<int>> res;
+        if(k == 0 || n <= 0) return res;
+        int cnt = 0, x, ma;
+        for(int i = 1; i < total; i++) {
+            cnt = 0;
+            x = i;
+            while(x) {
+                cnt++;
+                x &= (x-1);
+            }
+            if(cnt == k) {
+                vector<int> tmp;
+                ma = 1;
+                int sum = 0;
+                for(int j = 1; j <= 9; j++) {
+                    if(ma & i) {
+                        tmp.push_back(j);
+                        sum += j;
+                    }
+                    ma <<= 1;
+                }
+                if(sum == n) res.push_back(tmp);
+            }
+        }
         return res;
     }
 };
