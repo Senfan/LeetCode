@@ -35,3 +35,32 @@ public:
         return result;
     }
 };
+
+// R 20ms
+//典型的子集生成模型：增量构造法; 子集生成可以有三种思路，但是增量构造法，可以从位置的角度考虑建模，进而可以避免由于重复元素引起的子集重复！！！一定要理解模型的含义，这样才可以灵活运用，可以从多个不同角度，但是每一角度，都要搞清楚其模型基础含义！！
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> res;
+        vector<int> sub;
+        if(candidates.empty()) return res;
+        sort(candidates.begin(), candidates.end());
+        
+        backTrack(candidates, res, sub, 0,target);
+        return res;
+    }
+    
+    void backTrack(vector<int> &V, vector<vector<int>> &res, vector<int> &sub, int curNum, int target) {
+        if(!target) {
+            res.push_back(sub);
+        }else if(target > 0) {
+            for(int i = curNum; i < V.size(); i++) {
+                sub.push_back(V[i]);
+                backTrack(V, res, sub, i+1, target - V[i]);
+                sub.pop_back();
+                while(i+1 != V.size() && V[i+1] == V[i]) i++;
+            }
+        }
+    }
+    
+};

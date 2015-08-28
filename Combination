@@ -21,3 +21,27 @@ public:
         return re;
     }
 };
+
+
+//增量构造法 20ms
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> res;
+        if(n == 0 || k == 0) return res;
+        vector<int> sub;
+        backTrack(n, k, 1, res, sub);
+    }
+    
+    void backTrack(int n, int k, int num, vector<vector<int>> &res, vector<int> sub) {
+        if(!k) {
+            res.push_back(sub);
+        }else if(k) {
+            for(int i = num; i <= n; i++) {
+                sub.push_back(i);
+                backTrack(n, k - 1, i+1, res, sub);
+                sub.pop_back();
+            }
+        }
+    }
+};
