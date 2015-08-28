@@ -25,3 +25,32 @@ public:
         return s.substr(reL, reR-reL+1);
     }
 };
+
+//36ms常数级别上的改进
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        int len = s.size();
+        int max = 0, left;
+        for(int i = 0; i < len && (len - i) >= max / 2; i++) {
+            for(int j = 0; i - j >= 0 && i + j < len; j++) {
+                if(s[i-j] != s[i+j]) break;
+                if(j * 2 + 1 > max) {
+                    max = j * 2 + 1;
+                    left = i - j;
+                }
+            }
+            
+            for(int j = 0; i - j >= 0 && i + j + 1 < len; j++) {
+                if(s[i-j] != s[i+j+1]) break;
+                if(j * 2 + 2 > max) {
+                    max = j * 2 + 2;
+                    left = i - j;
+                }
+            }
+        }
+        
+        return s.substr(left, max);
+    }
+};

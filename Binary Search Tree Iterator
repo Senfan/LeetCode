@@ -79,3 +79,35 @@ public:
         return curNode -> val;
     }
 };
+
+
+//24ms
+class BSTIterator {
+public:
+    stack<TreeNode *> stk;
+    BSTIterator(TreeNode *root) {
+        TreeNode* curNode = root;
+        while(curNode) {
+            stk.push(curNode);
+            curNode = curNode -> left;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !stk.empty();
+    }
+
+    /** @return the next smallest number */
+    int next() {
+        TreeNode *curNode = stk.top();
+        stk.pop();
+        int res = curNode -> val;
+        curNode = curNode -> right;
+        while(curNode) {
+            stk.push(curNode);
+            curNode = curNode -> left;
+        }
+        return res;
+    }
+};
