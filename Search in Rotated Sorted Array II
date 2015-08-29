@@ -54,7 +54,7 @@ public:
 };
 
 
-// R : 8ms 经典算法，同I :先判断在哪一部分
+// R : 8ms 经典算法，同I :先判断在哪一部分 O(n)
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
@@ -72,6 +72,43 @@ public:
                 if(target > nums[mid] && target <= nums[r]) l = mid + 1;
                 else r = mid - 1;
             }else l++;
+        }
+        return false;
+    }
+};
+
+//S : 8ms O(n) 但是上述代码更简洁！！！因为问题的关键可以回归到nums[l] 与 nums[mid] 大小比较的时候
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int len = nums.size();
+        if(len == 0) return false;
+        int div = len;
+        for(int i = 1; i < len; i++) {
+            if(nums[i] < nums[i-1]) {
+                div = i;
+                break;
+            }
+        }
+        
+        if(div == len) {
+            return binSearch(nums, 0, len-1, target);
+        }else {
+            return binSearch(nums, 0, div-1, target) || binSearch(nums, div, len-1, target);
+        }
+        
+    }
+    
+    bool binSearch(vector<int> &nums, int l, int r, int t) {
+        int mid;
+        while(l <= r) {
+            mid = (l + r) >> 1;
+            if(nums[mid] == t) return true;
+            else if(nums[mid] > t) {
+                r = mid - 1;
+            }else {
+                l = mid + 1;
+            }
         }
         return false;
     }
