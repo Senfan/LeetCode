@@ -17,3 +17,23 @@ public:
         }
     }
 };
+
+//R 4ms 通用方法模型建立：
+//顺时针转换：先从上到下转换行的顺序，然后交换主对角线对称的元素
+//逆时针转换：先从左到右转换列，然后交换主对角线对称的元素
+void rotate(vector<vector<int> > &matrix) {
+    reverse(matrix.begin(), matrix.end());
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = i + 1; j < matrix[i].size(); ++j)
+            swap(matrix[i][j], matrix[j][i]);
+    }
+}
+
+//
+void anti_rotate(vector<vector<int> > &matrix) {
+    for (auto vi : matrix) reverse(vi.begin(), vi.end());
+    for (int i = 0; i < matrix.size(); ++i) {
+        for (int j = i + 1; j < matrix[i].size(); ++j)
+            swap(matrix[i][j], matrix[j][i]);
+    }
+}
