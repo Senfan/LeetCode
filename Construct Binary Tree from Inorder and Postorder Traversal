@@ -50,3 +50,27 @@ public:
         return root;
     }
 };
+
+//S 48ms
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& iV, vector<int>& pV) {
+        return helper(iV, 0, iV.size() - 1, pV, 0, pV.size() - 1);
+    }
+    
+    TreeNode *helper(vector<int> &iV, int il, int ir, vector<int> &pV, int pl, int pr) {
+        if(il <= ir) {
+            TreeNode *root = new TreeNode(pV[pr]);
+            int i;
+            for(i = il; i <= ir; i++) {
+                if(iV[i] == pV[pr]) break;
+            }
+            
+            root -> left = helper(iV, il, i-1, pV, pl, pl+i-il-1);
+            root -> right = helper(iV, i+1, ir, pV, pl+i-il, pr-1);
+            return root;
+        }else {
+            return NULL;
+        }
+    }
+};
