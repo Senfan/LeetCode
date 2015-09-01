@@ -49,3 +49,41 @@ public:
         return;
     }
 };
+
+// S : 8ms 对比之前的解法，者中解法太ugly，其实，模型就是：无论是栈中的还是左子树，本题的关键就是找到下一个要连接的点，与栈不栈无所谓，所以，可以归为一个循环中，这才是问题的根本模型==>不要把问题拼凑的太零散，找到充分必要条件就好，这样才能简单的实现！！！
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        stack<TreeNode*> stk;
+        if(root == NULL) return;
+        stk.push(root);
+        TreeNode *curNode = NULL, *tmpNode = NULL;
+        while(!stk.empty()) {
+            if(stk.top() != root) {
+                curNode -> right = stk.top();
+            }
+            curNode = stk.top();
+            stk.pop();
+            while(curNode) {
+                if(curNode -> right) stk.push(curNode -> right);
+                if(curNode -> left) {
+                    curNode -> right = curNode -> left;
+                    tmpNode = curNode;
+                    curNode = curNode -> left;
+                    tmpNode -> left = NULL;
+                }else {
+                    break;
+                }
+            }
+        }
+    }
+};

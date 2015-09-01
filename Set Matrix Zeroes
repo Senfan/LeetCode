@@ -54,3 +54,58 @@ public:
         }
     }
 };
+
+//S 88ms 看题目一定要仔细，看有没有影响因素在里面
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        bool firstCol = false;
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                if(matrix[i][j] == 0) {
+                    if(j == 0) {
+                        firstCol = true;
+                    }else {
+                        matrix[0][j] = 0;
+                        matrix[i][0] = 0;
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < matrix.size(); i++) {
+            for(int j = 0; j < matrix[0].size(); j++) {
+                cout << matrix[i][j] << ' ';
+            }
+            cout << endl;
+        }
+
+        for(int i = 1; i < matrix.size(); i++) {
+            if(matrix[i][0] == 0) {
+                for(int j = 0; j < matrix[0].size(); j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        for(int i = 1; i < matrix[0].size(); i++) {
+            if(matrix[0][i] == 0) {
+                for(int j = 0; j < matrix.size(); j++) {
+                    matrix[j][i] = 0;
+                }
+            }
+        }
+
+        if(matrix[0][0] == 0) {
+            for(int i = 1; i < matrix[0].size(); i++) {
+                matrix[0][i] = 0;
+            }
+        }
+
+        if(firstCol) {
+            for(int i = 0; i < matrix.size(); i++) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+};

@@ -27,3 +27,24 @@ public:
         }
     }
 };
+
+//S : 4ms
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int cntR = 0, cntW = 0, cntB = 0;
+        
+        for(auto e : nums) {
+            switch (e) {
+                case 0: cntR++; break;
+                case 1: cntW++; break;
+                case 2: cntB++; break;
+            }
+        }
+        
+        nums.clear();
+        nums.insert(nums.begin(), cntB, 2);
+        nums.insert(nums.begin(), cntW, 1);
+        nums.insert(nums.begin(), cntR, 0);
+    }
+};

@@ -1,28 +1,28 @@
-O(log2 n) 15ms
 
-//注意从微观的角度去处理问题，数值问题记得用位处理的方式更为高效！！！
-#include<limits.h>
-using namespace std;
-class Solution {
-public:
-    int divide(int dividend, int divisor) {
-        long long re = 0;
-        int sign = ((dividend >= 0 && divisor >= 0) || (dividend < 0 && divisor < 0)) ? 1 : -1;
         
-        long long absDividend = abs((long long)dividend);
-        long long absDivisor = abs((long long)divisor);
         
-        while(absDividend >= absDivisor) {
-            long long base = absDivisor;
-            for( int i = 0; absDividend >= base; i++) {
-                re += 1<<i;
                 absDividend -= base;
                 base <<= 1;
-            }
-        }
-        re *= sign;
-        if(re > INT_MAX)
+                re += 1<<i;
+            for( int i = 0; absDividend >= base; i++) {
+            long long base = absDivisor;
             return INT_MAX;
+            }
+        if(re > INT_MAX)
+        int sign = ((dividend >= 0 && divisor >= 0) || (dividend < 0 && divisor < 0)) ? 1 : -1;
+        long long absDividend = abs((long long)dividend);
+        long long absDivisor = abs((long long)divisor);
+        long long re = 0;
+        re *= sign;
         return re;
+        while(absDividend >= absDivisor) {
+        }
+    int divide(int dividend, int divisor) {
     }
+#include<limits.h>
+//注意从微观的角度去处理问题，数值问题记得用位处理的方式更为高效！！！
+class Solution {
+O(log2 n) 15ms
+public:
+using namespace std;
 };

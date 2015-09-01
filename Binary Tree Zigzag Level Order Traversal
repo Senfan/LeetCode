@@ -75,3 +75,39 @@ public:
         return res;
     }
 };
+
+//S: 4ms
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        queue<TreeNode*> que;
+        vector<vector<int>> res;
+        if(root == NULL) return res;
+        que.push(root);
+        que.push(NULL);
+        int cnt = 0;
+        vector<int> subRes;
+        TreeNode *curNode = NULL;
+        while(que.size() > 1) {
+            curNode = que.front();
+            que.pop();
+            if(curNode == NULL) {
+                if(cnt & 1) reverse(subRes.begin(), subRes.end());
+                res.push_back(subRes);
+                subRes.clear();
+                cnt++;
+                que.push(NULL);
+                continue;
+            }
+            
+            subRes.push_back(curNode -> val);
+            if(curNode -> left) que.push(curNode -> left);
+            if(curNode -> right) que.push(curNode -> right);
+        }
+        if(!subRes.empty()) {
+            if(cnt & 1) reverse(subRes.begin(), subRes.end());
+            res.push_back(subRes);
+        }
+        return res;
+    }
+};

@@ -1,0 +1,108 @@
+//R 4ms 一定静下心来思考问题，大多数问题都可以换成地递归问题，也就是说是子问题！！！！只要好好思考就一定能够找到解决问题的简单模型，特别是子问题类，然后可以进一步优化
+// 第一类， 有运算符的问题可以分解为小问题，然后地柜解决子问题求解！！！问题模型就是子问题啊
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) 
+    {
+        int len = input.size();
+        vector<int> result;
+        for(int i = 0 ; i < len ; i++)
+        {
+            char c = input[i];
+            //功能：如果参数是除字母，数字和空格外可打印字符，函数返回非零值，否则返回零值。
+            //在这里表示if(c == '+' || c == '-' || c == '*')
+            if(ispunct(c))
+            {
+                vector<int> leftResult = diffWaysToCompute(input.substr(0 , i));
+                vector<int> rightResult = diffWaysToCompute(input.substr(i+1));
+                for(int j = 0 ; j < leftResult.size() ; j++)
+                {
+                    for(int k = 0 ; k < rightResult.size() ; k++)
+                    {
+                        switch(c)
+                        {
+                            case '+':
+                                result.push_back(leftResult[j] + rightResult[k]);
+                                break;
+                            case '-':
+                                result.push_back(leftResult[j] - rightResult[k]);
+                                break;
+                            case '*':
+                                result.push_back(leftResult[j] * rightResult[k]);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            
+        }
+        if(result.empty())
+            result.push_back(stoi(input));
+        return result;
+    }
+};
+
+
+//上述计算过程中因为有子问题重复，所以，可以通过备忘录法，进行记录求解！！
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) 
+    {
+        unordered_map<string , vector<int> > dpmap; //保存计算过的结果
+        return diffWaysToCompute(input , dpmap);
+    }
+    vector<int> diffWaysToCompute(string input , unordered_map<string , vector<int> > &dpmap)
+    {
+        int len = input.size();
+        vector<int> result;
+        for(int i = 0 ; i < len ; i++)
+        {
+            char c = input[i];
+            if(c == '+' || c == '-' || c == '*')
+            {
+                string leftStr = input.substr(0 , i);
+                string rightStr = input.substr(i + 1);
+                vector<int> leftResult;
+                vector<int> rightResult;
+                
+                if(dpmap.find(leftStr) != dpmap.end())
+                    leftResult = dpmap[leftStr];
+                else
+                    leftResult = diffWaysToCompute(leftStr , dpmap);
+                if(dpmap.find(rightStr) != dpmap.end())
+                    rightResult = dpmap[rightStr];
+                else
+                    rightResult = diffWaysToCompute(rightStr , dpmap);
+                    
+
+                for(int j = 0 ; j < leftResult.size() ; j++)
+                {
+                    for(int k = 0 ; k < rightResult.size() ; k++)
+                    {
+                        switch(c)
+                        {
+                            case '+':
+                                result.push_back(leftResult[j] + rightResult[k]);
+                                break;
+                            case '-':
+                                result.push_back(leftResult[j] - rightResult[k]);
+                                break;
+                            case '*':
+                                result.push_back(leftResult[j] * rightResult[k]);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+            
+        }
+        if(result.empty())
+            result.push_back(stoi(input));
+        dpmap[input] = result;      //把计算过的结果加入哈希表
+        return result;
+    }
+};

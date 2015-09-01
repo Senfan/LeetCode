@@ -24,3 +24,30 @@ public:
         return res;
     }
 };
+
+//S 暴力枚举 TLE
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        vector<int> res;
+        vector<int> mark(pow(2, n), 0);
+        if(n == 0) return res;
+        res.push_back(0);
+        res.push_back(1);
+        int cnt = 2;
+        int curNum = 1;
+        while(cnt < pow(2, n)) {
+            for(int i = 2; i < pow(2, n); i++) {
+                int x = curNum ^ i;
+                if(mark[i] == 0 && (x & (x-1)) == 0) {
+                    res.push_back(i);
+                    curNum = i;
+                    cnt++;
+                    mark[i] = 1;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+};

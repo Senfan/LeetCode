@@ -80,3 +80,33 @@ public:
         return iniNode -> next;
     }
 };
+
+// S 4ms
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if(n == m || head == NULL || head -> next == NULL) return head;
+        
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        
+        ListNode *preNode = iniNode, *tailNode = NULL;
+        int i;
+        for(i = 1; i < m; i++) {
+            preNode = preNode -> next;
+        }
+        ListNode *curNode = preNode -> next;
+        ListNode *nextNode = curNode -> next;
+        ListNode *tmpNode = NULL;
+        for(; i < n; i++) {
+            tmpNode = nextNode -> next;
+            nextNode -> next = curNode;
+            curNode = nextNode;
+            nextNode = tmpNode;
+        }
+        preNode -> next -> next = nextNode;
+        preNode -> next = curNode;
+        
+        return iniNode -> next;
+    }
+};

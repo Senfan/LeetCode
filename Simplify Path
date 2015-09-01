@@ -1,3 +1,5 @@
+//这道题目的最重要的意义就是告诉自己处理有分隔符的字符串：getline去处理，！！！！！妙妙妙！！！
+
 class Solution {
 public:
     string simplifyPath(string path) {

@@ -79,7 +79,7 @@ public:
 };
 
 
-// R: 完全可以模拟手工计算的乘法计算！！！！！
+// R: 完全可以模拟手工计算的乘法计算！！！！！ 8ms
 //两个数字相乘，不可能超过两个数字位数的和！！！
 
 string multiply(string num1, string num2) {
@@ -101,3 +101,70 @@ string multiply(string num1, string num2) {
     }
     return "0";
 }
+
+
+//S 20ms 太慢
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+
+        int len1 = num1.size(), len2 = num2.size();
+
+        if(len1 < len2) {
+            swap(num1, num2);
+            swap(len1, len2);
+        }
+
+        string sub = "", res = "";
+        int tmp, tag;
+        for(int i = len2-1; i >= 0; i--) {
+            sub = string(len2 - 1 - i, '0');
+            tag = 0;
+            for(int j = len1 - 1; j >= 0; j--) {
+                tmp = (num1[j] - '0') * (num2[i] - '0') + tag;
+                tag = tmp / 10;
+                sub += ((tmp % 10) + '0');
+            }
+            if(tag) sub += (tag + '0');
+            res = add(res, sub);
+        }
+        reverse(res.begin(), res.end());
+        int tLen = res.size();
+        int i;
+        for(i = 0; i < tLen && res[i] == '0'; i++);
+        res.erase(0, i);
+        return res.empty() ? "0" : res;
+    }
+
+    string add(string s1, string s2) {
+        string res = "";
+        int len1 = s1.size(), len2 = s2.size();
+
+        int tmp = min(len1, len2);
+        int tag = 0;
+        int i;
+        for(i = 0; i < tmp; i++) {
+            int x = (s1[i] + s2[i] - '0' - '0' + tag);
+            res += (x % 10) + '0';
+            tag = x / 10;
+        }
+
+        if(i < len1) {
+            for(; i < len1; i++) {
+                int x = (s1[i] - '0' + tag);
+                res += (x % 10) + '0';
+                tag = x / 10;
+            }
+        }
+        if(i < len2) {
+            for(; i < len2; i++) {
+                int x = (s2[i] - '0' + tag);
+                res += (x % 10) + '0';
+                tag = x / 10;
+            }
+        }
+
+        if(tag) res += '1';
+        return res;
+    }
+};
