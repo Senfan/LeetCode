@@ -63,3 +63,35 @@ public:
         return head;
     }
 };
+
+// S 12ms
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head == NULL || head -> next == NULL) return head;
+        ListNode *iniNode = new ListNode(0);
+        iniNode -> next = head;
+        
+        ListNode *pre = iniNode, *start = head, *cur = head -> next;
+        
+        while(cur) {
+            if(cur -> val == start -> val) {
+                cur = cur -> next;
+            }else if(start -> next == cur){
+                pre = start;
+                start = cur;
+                cur = cur -> next;
+            }else {
+                pre -> next = cur;
+                start = cur;
+                cur = cur -> next;
+            }
+        }
+        if(start -> next != NULL) {
+            pre -> next = NULL;
+        } 
+        head = iniNode -> next;
+        delete iniNode;
+        return head;
+    }
+};
